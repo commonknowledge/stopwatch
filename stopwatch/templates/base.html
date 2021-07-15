@@ -1,0 +1,93 @@
+{% load static wagtailuserbar ckdjango_tags ckwagtail_tags %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    <head>
+        <script>
+            document.documentElement.classList.remove('no-js')
+        </script>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+                {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+                {% with self.get_site.site_name as site_name %}
+                    {% if site_name %}- {{ site_name }}{% endif %}
+                {% endwith %}
+            {% endblock %}
+        </title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {% webpack_bundle 'main' 'css' %}
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@300&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+        {% block extra_css %}
+        {% endblock %}
+    </head>
+
+    <body class="min-vh-100 d-flex flex-column {% block body_class %}{% endblock %}">
+        {% wagtailuserbar %}
+
+        {% block body %}
+        {% block header %}
+        <nav class="navbar navbar-expand py-4 navbar-light">
+            <div class="container align-items-end">
+                <a class="navbar-brand" href="/">
+                    <img class="logo d-md-none" src={% static 'img/logo.png' %} />
+                    <img class="logo d-none d-md-inline-block" src={% static 'img/logo.png' %} />
+                </a>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <span class="flex-grow-1"></span>
+
+                {% menubar %}
+                </div>
+            </div>
+        </nav>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% block spacer %}
+        <span class="flex-grow-1"></span>
+        {% endblock %}
+        {% endblock %}
+
+        <div class="bg-panel">
+            <footer class="container py-5 fs-6 text">
+                <div class="row">
+                    <div class="col-8 d-flex flex-column flex-md-row align-items-start">
+                        <div class="mb-3 me-3">
+                            <p>
+                                © StopWatch
+                                <script>document.write(new Date().getFullYear().toString())</script>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex flex-column flex-md-row align-items-start align-items-md-start justify-content-end">
+                        <div class="mb-3">
+                            <a class="d-block d-md-inline-block me-3" href="#">Accessibility</a>
+                            <a class="d-block d-md-inline-block me-3" href="#">Privacy policy</a>
+                        </div>
+
+                        <div>
+                            Site by <a target="_blank" href="https://commonknowledge.coop">Common Knowledge</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        {% webpack_bundle 'main' %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    
+        {% block extra_js %}
+        {% endblock %}
+    </body>
+</html>

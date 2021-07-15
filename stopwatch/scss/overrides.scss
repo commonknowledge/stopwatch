@@ -1,0 +1,91 @@
+:root {
+  --bs-font-sans-serif: "Open Sans", "sans-serif";
+}
+
+body {
+  ::selection {
+    background: $primary-hover-light;
+  }
+
+  font-size: 16px;
+
+  @include media-breakpoint-up(md) {
+    font-size: 18px;
+  }
+
+  color: $dark;
+}
+
+@mixin heading-large {
+  font-weight: bold;
+  line-height: 125%;
+  font-size: 32px;
+
+  @include media-breakpoint-up(md) {
+    font-size: 48px;
+  }
+}
+
+@mixin heading-mid-large {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 125%;
+}
+
+@mixin heading-medium {
+  font-weight: bold;
+  line-height: 125%;
+
+  font-size: 18px;
+
+  @include media-breakpoint-up(md) {
+    font-size: 24px;
+  }
+}
+
+@mixin heading-small {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 125%;
+}
+
+@mixin microcopy {
+  font-style: normal;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.heading-large,
+h1 {
+  @include heading-large;
+}
+
+.heading-mid-large {
+  @include heading-mid-large;
+}
+
+.heading-medium,
+h2 {
+  @include heading-medium;
+}
+
+.heading-small,
+h3 {
+  @include heading-small;
+}
+
+.microcopy,
+h4 {
+  @include microcopy;
+}
+
+.nav-link {
+  font-weight: bold;
+  color: $secondary;
+  padding: 0 !important;
+
+  &.active {
+    color: $dark;
+    border-bottom: 2px solid $primary;
+  }
+}

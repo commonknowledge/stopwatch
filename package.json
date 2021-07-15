@@ -1,0 +1,36 @@
+{
+  "name": "stopwatch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:commonknowledge/stopwatch.git",
+  "author": "Common Knowledge <hello@commonknowledge.coop>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "bootstrap": "^5.0.1",
+    "css-loader": "^5.2.5",
+    "mini-css-extract-plugin": "^1.6.0",
+    "node-sass": "^6.0.0",
+    "postcss-loader": "^5.3.0",
+    "sass-loader": "^11.1.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.37.1",
+    "webpack-bundle-tracker": "^1.0.0",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-react": "^7.13.13",
+    "@vanillaes/csv": "^2.1.11",
+    "babel-loader": "^8.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-dropzone": "^11.3.4",
+    "react-pdf": "^5.3.0",
+    "react-virtualized-auto-sizer": "^1.0.5",
+    "react-window": "^1.8.6",
+    "react-window-infinite-loader": "^1.0.7"
+  }
+}

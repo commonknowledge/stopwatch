@@ -1,0 +1,25 @@
+.logo {
+  mix-blend-mode: multiply;
+  height: 40px;
+
+  @include media-breakpoint-up(md) {
+    height: 80px;
+  }
+}
+
+.logo-small {
+  mix-blend-mode: multiply;
+  height: 80px;
+
+  @include media-breakpoint-up(md) {
+    height: 103px;
+  }
+}
+
+.search-highlight {
+  background-color: rgba(2, 128, 139, 0.1);
+}
+
+.flex-basis-0 {
+  flex-basis: 0;
+}

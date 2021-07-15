@@ -1,0 +1,7 @@
+{
+  "python.pythonPath": "/home/vscode/.local/share/virtualenvs/workspace-dqq3IVyd/bin/python",
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.formatOnSave": false
+  }
+}

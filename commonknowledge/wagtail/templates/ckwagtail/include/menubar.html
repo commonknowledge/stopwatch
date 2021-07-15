@@ -1,0 +1,9 @@
+{% load ckbootstrap_tags %}
+
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    {% for page in pages %}
+      <li class="nav-item ms-4">
+          {% bs_link class="nav-link" href=page.url label=page.title %}
+      </li>
+    {% endfor %}
+</ul>
