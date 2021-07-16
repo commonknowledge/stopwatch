@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'commonknowledge.wagtail',
 
     'wagtail_content_import',
+    'import_export',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -193,6 +194,8 @@ MEDIA_URL = '/media/'
 WAGTAIL_SITE_NAME = "stopwatch"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+WAGTAILIMAGES_IMAGE_MODEL = 'stopwatch.StopwatchImage'
+WAGTAILDOCS_DOCUMENT_MODEL = 'stopwatch.StopWatchDocument'
 
 WAGTAILSEARCH_BACKENDS = {
     'default': {

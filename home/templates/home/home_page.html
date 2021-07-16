@@ -9,6 +9,12 @@
       Research and action for fair and accountable policing.
     </h1>
   </header>
+
+  {% for page in self.get_children %}
+    <a href="{{page.url}}">
+      {{page.title}}
+    </a>
+  {% endfor %}
 </main>
 
 {% endblock content %}

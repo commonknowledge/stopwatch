@@ -24,3 +24,4 @@ urllib3 = '>=1.26.4'
 wagtail = '>=2.13'
 wagtail-transfer = '>=0.8.0'
 wagtail-content-import = "*"
+django-import-export = "*"
