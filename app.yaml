@@ -52,7 +52,7 @@ jobs:
     instance_size_slug: basic-xs
     kind: PRE_DEPLOY
     name: release
-    run_command: bash .bin/release.sh
+    run_command: pipenv run bash .bin/release.sh
 name: stopwatch
 region: ams
 services:
@@ -67,7 +67,7 @@ services:
     name: server
     routes:
       - path: /
-    run_command: gunicorn --worker-tmp-dir /dev/shm stopwatch.wsgi
+    run_command: pipenv run gunicorn --worker-tmp-dir /dev/shm stopwatch.wsgi
 static_sites:
   - dockerfile_path: Dockerfile
     github:
