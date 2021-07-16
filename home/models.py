@@ -1,5 +1,6 @@
 from wagtail.core.models import Page
+from commonknowledge.wagtail.models import ChildListMixin
 
 
-class HomePage(Page):
+class HomePage(ChildListMixin, Page):
     pass

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static ckbootstrap_tags %}
 
 {% block content %}
 
@@ -10,11 +10,25 @@
     </h1>
   </header>
 
-  {% for page in self.get_children %}
-    <a href="{{page.url}}">
-      {{page.title}}
-    </a>
-  {% endfor %}
+  <div class="container">
+    <h2 class="mb-4">News</h2>
+
+    <ul class="list-group mb-3">
+      {% for page in child_list_page %}
+        <ul class="list-group-item">
+          <a href="{{page.url}}">
+            {{page.title}}
+          </a>
+        </ul>
+      {% endfor %}
+    </ul>
+
+    {% if child_list_paginator.num_pages > 1 %}
+    <nav aria-label="Pages" class="d-flex flex-column align-items-center">
+        {% bs_pagination child_list_paginator %}
+    </nav>
+    {% endif %}
+  </div>
 </main>
 
 {% endblock content %}

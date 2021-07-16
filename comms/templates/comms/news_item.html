@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<main class="container pb-4 pb-lg-5">
+  {% if self.photo %}
+  {% image self.photo height-500 class="img-fluid" %}
+  {% endif %}
+
+  <h1>{{self.title}}</h1>
+
+  <div class="text-italic">
+    {{self.intro_text|richtext}}
+  </div>
+
+  <div>
+    {{self.content|richtext}}
+  </div>
+</main>
+
+{% endblock content %}
