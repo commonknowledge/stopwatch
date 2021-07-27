@@ -2,6 +2,10 @@
   --bs-font-sans-serif: "Open Sans", "sans-serif";
 }
 
+img {
+  filter: grayscale(1);
+}
+
 body {
   ::selection {
     background: $primary-hover-light;
@@ -87,5 +91,23 @@ h4 {
   &.active {
     color: $dark;
     border-bottom: 2px solid $primary;
+  }
+}
+
+a.card {
+  text-decoration: unset;
+  color: unset;
+}
+
+.card.card-flush {
+  > * {
+    padding: 0;
+  }
+
+  overflow: hidden;
+
+  .card-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
