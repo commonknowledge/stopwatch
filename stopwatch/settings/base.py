@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'home',
     'search',
     'comms',
+    'widgets',
 
     'commonknowledge.bootstrap',
     'commonknowledge.django',

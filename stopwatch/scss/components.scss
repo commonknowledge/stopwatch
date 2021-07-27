@@ -1,5 +1,6 @@
 .logo {
   mix-blend-mode: multiply;
+  filter: grayscale(1);
   height: 40px;
 
   @include media-breakpoint-up(md) {
