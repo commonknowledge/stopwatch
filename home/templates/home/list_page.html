@@ -1,24 +1,111 @@
 {% extends "base.html" %}
-{% load static ckbootstrap_tags wagtailembeds_tags %}
+{% load static ckbootstrap_tags ckdjango_tags wagtailembeds_tags wagtailimages_tags %}
 
 {% block content %}
 
-<header class="position-relative border-bottom border-2 border-primary mb-2">
-  <div class="position-absolute p-3 z-2 h-100 w-100 d-flex flex-column text-sm justify-content-end">
-    <h1>{{self.title}}</h1>
-    <div>
-      {{self.page_description}}
-    </div>
+<header class="position-relative block-lg bg-panel border-2 border-primary">
+  <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
+    <h1 class="px-3 ">{{self.title}}</h1>
   </div>
   <div class="block-lg scale-embed opacity-50">
-    {% embed self.landing_video %}
   </div>
 </header>
-
-<main>
-  <div class="container">
-    {{self.body}}
+{% if self.newsflash %}
+  <div class="bg-alert position-relative text-white text-bold py-4">
+    <div class="position-absolute w-100 top-50 start-50 pt-1 translate-middle">
+      <div id="news-ticker" class="d-none position-relative">
+        {% for item in self.featured_items %}
+    
+          <div class="d-inline-block">
+            {{ item.title }} •&nbsp;
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
+{% endif %}
+
+<main class="bg-white mt-2">
+  {% if self.style == 'COMPACT' %}
+  <div class="containers square-grid" {% infinite_scroll_container item_selector='.card' %}>
+    {% for page in child_list_page %}
+      <a class="card card-flush mx-2 mb-2 flex-shrink-0" href="{{page.url}}">
+        <div class="ratio ratio-1x1">
+          {% image page.photo width-600 class="card-img-top cover ratio" %}
+        </div>
+
+        <div class="card-body mw-100">
+          <h2 class="card-title heading-small pt-2">{{page.title}}</h2>
+          <p class="card-text text-sm">
+            {% if page.description %}
+            {{page.description}}
+            {% else %}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem.
+            {% endif %}
+          </p>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+  {% elif self.style == 'EXPANDED' %}
+  <div class="containers bg-white mb-4" {% infinite_scroll_container item_selector='.card' %}>
+    {% for page in child_list_page %}
+      <div class="card card-flush mx-2 mb-5 flex-shrink-0">
+        {% image page.photo width-600 class="card-img-top cover block-md" %}
+
+        <div class="card-body mw-100">
+          <h2 class="card-title pt-2 whitespace-wrap">{{page.title}}</h2>
+          <p class="card-text">
+            {% if page.description %}
+            {{page.description}}
+            {% elif page.summary %}
+            {{page.summary}}
+            {% else %}
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Feugiat nisl pretium fusce id. Consectetur libero id faucibus nisl. Sagittis purus sit amet volutpat consequat mauris nunc. Congue eu consequat ac felis donec et odio.
+            </p>
+            <p>
+              Mauris rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque. Odio morbi quis commodo odio aenean sed adipiscing diam donec.
+            </p>
+            {% endif %}
+          </p>
+
+          <a class="btn btn-primary" href="{{page.url}}">
+            Read more
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 </main>
 
 {% endblock content %}
+
+
+{% block extra_js %}
+{% if self.newsflash %}
+<script
+  src="https://cdn.jsdelivr.net/npm/dynamic-marquee@2"
+></script>
+<script>
+  (function initNewsTicker() {
+    const Marquee = dynamicMarquee.Marquee;
+    const loop = dynamicMarquee.loop;
+    const tickerEl = document.getElementById('news-ticker')
+
+    const tickerItems = Array.from(tickerEl.children)
+    tickerItems.forEach(child => {
+      child.remove()
+    })
+
+    const marquee = new Marquee(tickerEl, {
+      rate: -100,
+    });
+
+    tickerEl.classList.remove('d-none')
+    loop(marquee, tickerItems.map(item => () => item.cloneNode(true)))
+  })()
+</script>
+{% endif %}
+{% endblock %}

@@ -1,9 +1,5 @@
-from django.db.models.fields import CharField
 from wagtail.core.blocks.field_block import ChoiceBlock
 from wagtail.core.blocks.stream_block import StreamBlock
-from wagtail.core.fields import StreamField
-from comms.models import NewsItem
-from django.db import models
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
@@ -87,3 +83,15 @@ class CtaBlock(StructBlock):
 class NewsletterSignupBlock(CtaBlock):
     class Meta:
         template = 'widgets/newsletter_block.html'
+
+
+TEXT_MODULES = (
+    ('text', RichTextBlock()),
+)
+
+COMMON_MODULES = TEXT_MODULES + (
+    ('articles_list', ArticlesListBlock()),
+    ('cta', CtaBlock()),
+    ('tabs', TabsBlock()),
+    ('newsletter_signup', NewsletterSignupBlock()),
+)

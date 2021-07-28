@@ -25,22 +25,6 @@ body {
 @mixin heading-large {
   font-weight: 600;
   line-height: 125%;
-  font-size: 32px;
-
-  @include media-breakpoint-up(md) {
-    font-size: 48px;
-  }
-}
-
-@mixin heading-mid-large {
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 125%;
-}
-
-@mixin heading-medium {
-  font-weight: 600;
-  line-height: 125%;
   letter-spacing: -0.03em;
 
   font-size: 32px;
@@ -50,9 +34,16 @@ body {
   }
 }
 
-@mixin heading-small {
+@mixin heading-medium {
   font-weight: 600;
   font-size: 18px;
+  letter-spacing: -0.03em;
+  line-height: 125%;
+}
+
+@mixin heading-small {
+  font-weight: 600;
+  font-size: 16px;
   letter-spacing: -0.03em;
   line-height: 125%;
 }
@@ -65,21 +56,18 @@ body {
 }
 
 .heading-large,
-h1 {
+h1,
+h2 {
   @include heading-large;
 }
 
-.heading-mid-large {
-  @include heading-mid-large;
-}
-
-.heading-medium,
-h2 {
+h3,
+.heading-medium {
   @include heading-medium;
 }
 
-.heading-small,
-h3 {
+h4,
+.heading-small {
   @include heading-small;
 }
 
@@ -89,7 +77,8 @@ h4 {
 }
 
 .text-sm {
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 125%;
 }
 
 .nav-link {
@@ -116,7 +105,10 @@ a.card {
   overflow: hidden;
 
   .card-title {
-    white-space: nowrap;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
     text-overflow: ellipsis;
   }
 }

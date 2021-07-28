@@ -1,3 +1,4 @@
+from widgets.models import COMMON_MODULES, TEXT_MODULES
 from django.db import models
 from wagtail.core.models import Page
 from wagtail.admin.edit_handlers import FieldPanel
@@ -17,9 +18,10 @@ class CommsPage(Page):
 
 class NewsItem(CommsPage):
     intro_text = fields.RichTextField(blank=True)
-    content = fields.RichTextField(blank=True)
+    summary = fields.StreamField(TEXT_MODULES, min_num=0, blank=True)
+    body = fields.StreamField(COMMON_MODULES, min_num=0, blank=True)
 
     content_panels = CommsPage.content_panels + [
         FieldPanel('intro_text'),
-        FieldPanel('content')
+        FieldPanel('body')
     ]

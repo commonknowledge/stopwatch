@@ -9,25 +9,48 @@ from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from commonknowledge.wagtail.models import ChildListMixin
 
-from widgets.models import ArticlesListBlock, CtaBlock, NewsletterSignupBlock, TabsBlock
+from widgets.models import COMMON_MODULES
 
 
-class ListPage(Page):
+class LandingPage(Page):
     page_description = models.CharField(max_length=512, default='')
     landing_video = models.URLField(blank=True, null=True)
 
-    body = StreamField([
-        ('articles_list', ArticlesListBlock()),
-        ('cta', CtaBlock()),
-        ('tabs', TabsBlock()),
-        ('newsletter_signup', NewsletterSignupBlock())
-    ], min_num=0, blank=True)
+    body = StreamField(COMMON_MODULES, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('page_description'),
         FieldPanel('landing_video'),
         StreamFieldPanel('body'),
     ]
+
+
+class ListPage(ChildListMixin, Page):
+    class StyleChoices:
+        COMPACT = 'COMPACT'
+        EXPANDED = 'EXPANDED'
+
+        options = (
+            (COMPACT, 'Compact'),
+            (EXPANDED, 'Expanded')
+        )
+
+    searchable = models.BooleanField(default=False)
+    newsflash = models.BooleanField(default=False)
+    style = models.CharField(choices=StyleChoices.options,
+                             max_length=128, default=StyleChoices.COMPACT)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('searchable'),
+        FieldPanel('newsflash'),
+        FieldPanel('style'),
+    ]
+
+    def get_page_size(self):
+        if self.style == ListPage.StyleChoices.COMPACT:
+            return 100
+        else:
+            return 25
 
     @property
     def featured_items(self):

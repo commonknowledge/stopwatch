@@ -10,14 +10,21 @@
   {% image value.image height-300 class="img-fluid opacity-50 cover block-lg" %}
 </div>
 
-<div class="full-bleed d-flex flex-direction-row overflow-auto mt-1">
+<div class="full-bleed d-flex flex-direction-row overflow-auto mt-1 bg-white">
   {% for page in qs %}
-    <a class="card card-flush mx-2 flex-shrink-0 block-md-square-container" href="{{page.url}}">
+    <a class="card card-flush mx-2 mb-3 flex-shrink-0 block-md-square-container" href="{{page.url}}">
       {% image page.photo width-320 class="card-img-top cover block-md-square" %}
 
       <div class="card-body mw-100">
         <h5 class="card-title">{{page.title}}</h5>
-        <p class="card-text">{{page.intro_text}}</p>
+
+        <p class="card-text text-sm">
+          {% if page.intro_text %}
+            {{page.intro_text}}
+          {% else %}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem.
+          {% endif %}
+        </p>
       </div>
     </a>
   {% endfor %}
