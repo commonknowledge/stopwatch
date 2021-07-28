@@ -36,10 +36,21 @@
   z-index: 2 !important;
 }
 
+.z-sticky {
+  z-index: $zindex-sticky !important;
+}
+
 .cover {
   object-fit: cover !important;
 }
 
 .opacity-50 {
   opacity: 0.5 !important;
+}
+
+.scale-embed {
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
 }

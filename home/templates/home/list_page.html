@@ -1,12 +1,21 @@
 {% extends "base.html" %}
-{% load static ckbootstrap_tags %}
+{% load static ckbootstrap_tags wagtailembeds_tags %}
 
 {% block content %}
 
-<main>
-  <header>
-  </header>
+<header class="position-relative border-bottom border-2 border-primary mb-2">
+  <div class="position-absolute p-3 z-2 h-100 w-100 d-flex flex-column text-sm justify-content-end">
+    <h1>{{self.title}}</h1>
+    <div>
+      {{self.page_description}}
+    </div>
+  </div>
+  <div class="block-lg scale-embed opacity-50">
+    {% embed self.landing_video %}
+  </div>
+</header>
 
+<main>
   <div class="container">
     {{self.body}}
   </div>

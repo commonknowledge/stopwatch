@@ -41,6 +41,7 @@ body {
 @mixin heading-medium {
   font-weight: 600;
   line-height: 125%;
+  letter-spacing: -0.03em;
 
   font-size: 32px;
 
@@ -52,6 +53,7 @@ body {
 @mixin heading-small {
   font-weight: 600;
   font-size: 18px;
+  letter-spacing: -0.03em;
   line-height: 125%;
 }
 
@@ -84,6 +86,10 @@ h3 {
 .microcopy,
 h4 {
   @include microcopy;
+}
+
+.text-sm {
+  font-size: 13px;
 }
 
 .nav-link {
