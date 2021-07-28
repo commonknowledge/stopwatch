@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.documents.models import Document, AbstractDocument
+from wagtail.snippets.models import register_snippet
 
 
 class User(AbstractUser):
@@ -27,6 +28,17 @@ class StopwatchRendition(AbstractRendition):
 class StopWatchDocument(AbstractDocument):
     import_ref = models.CharField(max_length=1024, null=True, blank=True)
     admin_form_fields = Document.admin_form_fields
+
+
+@register_snippet
+class StaffMember(models.Model):
+    name = models.CharField(max_length=1024)
+    title = models.CharField(max_length=1024)
+    photo = models.ForeignKey(
+        StopwatchImage, on_delete=models.SET_NULL, related_name='+', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 def pre_save_image_or_doc(sender, instance, *args, **kwargs):

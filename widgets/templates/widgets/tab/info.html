@@ -1,0 +1,27 @@
+{% load ckwagtail_tags %}
+
+<h3 class="heading-medium mb-3">{{self.title}}</h3>
+
+<div>
+  {{self.content}}
+</div>
+
+{% if self.author %}
+<div class="d-flex flex-row align-items-center">
+  {% avatar image=self.author.photo name=self.author.name %}
+  <div class="ms-2">
+    <div>{{self.author.name}}</div>
+    <div class="text-muted">{{self.author.title}}</div>
+  </div>
+</div>
+{% endif %}
+
+{% if self.related_page %}
+<a class="btn btn-outline-primary" href="{{self.related_page.url}}">
+  {% if self.call_to_action %}
+  {{self.call_to_action}}
+  {% else %}
+  {{self.related_page}}
+  {% endif %}
+</a>
+{% endif %}

@@ -1,0 +1,23 @@
+{% load wagtailimages_tags %}
+
+{% if image %}
+{% image self.image height-200 class="img-fluid" %}
+{% endif %}
+
+<h2>
+  {{self.heading}}
+</h2>
+
+<div>
+  {{self.content}}
+</div>
+
+<form>
+  <div class="form-group mb-3">
+    <input type="email" class="form-control" id="emailField" placeholder="Email address" aria-label="Email address">
+  </div>
+  
+  <button type="submit" class="btn btn-primary d-block">
+    Submit
+  </button>
+</form>

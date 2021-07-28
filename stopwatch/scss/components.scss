@@ -21,19 +21,39 @@
   background-color: rgba(2, 128, 139, 0.1);
 }
 
-.img-large {
-  height: 15rem;
+.block-lg {
+  height: 20rem;
 }
 
-.img-medium {
+.block-md-square {
   height: 11rem;
   width: 11rem;
 }
 
-.img-medium-container {
+.block-md-square-container {
   width: 11rem;
 }
 
 .flex-basis-0 {
   flex-basis: 0;
+}
+
+.avatar {
+  border-radius: 100%;
+  width: 3rem;
+  height: 3rem;
+  background-color: $secondary;
+}
+
+.avatar-initials {
+  @include heading-small;
+}
+
+.block-articles_list,
+.block-cta {
+  padding-bottom: map-get($spacers, 5);
+}
+
+.block-tabs {
+  background-color: $panel;
 }

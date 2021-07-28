@@ -26,3 +26,4 @@ wagtail-transfer = '>=0.8.0'
 wagtail-content-import = "*"
 django-import-export = "*"
 django-storages = "*"
+django-autocomplete-light = "*"

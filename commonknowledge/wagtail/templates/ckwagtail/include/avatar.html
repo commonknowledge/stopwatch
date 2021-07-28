@@ -1,0 +1,11 @@
+{% load wagtailimages_tags %}
+
+{% if image %}
+{% image image width-100 class="avatar {{class}}" %}
+{% else %}
+<div class="avatar position-relative avatar-empty">
+  <div class="avatar-initials position-absolute top-50 start-50 translate-middle">
+    {{initials}}
+  </div>
+</div>
+{% endif %}

@@ -1,19 +1,19 @@
 {% load wagtailimages_tags %}
 
-<div class="bg-secondary full-bleed img-large position-relative">
-  {% image value.photo height-300 class="img-fluid" %}
-
-  <div class="position-absolute h-100 w-100 d-flex flex-column justify-content-end">
+<div class="bg-secondary full-bleed block-lg position-relative">
+  <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
     <h2 class="m-3">
       {{self.heading}}
     </h2>
   </div>
+
+  {% image value.image height-300 class="img-fluid opacity-50 cover block-lg" %}
 </div>
 
 <div class="full-bleed d-flex flex-direction-row overflow-auto mt-1">
   {% for page in qs %}
-    <a class="card card-flush mx-2 flex-shrink-0 img-medium-container" href="{{page.url}}">
-      {% image page.photo width-320 class="card-img-top img-medium" %}
+    <a class="card card-flush mx-2 flex-shrink-0 block-md-square-container" href="{{page.url}}">
+      {% image page.photo width-320 class="card-img-top cover block-md-square" %}
 
       <div class="card-body mw-100">
         <h5 class="card-title">{{page.title}}</h5>
@@ -23,6 +23,6 @@
   {% endfor %}
 </div>
 
-<a class="btn d-block btn-primary" href="{{self.site_area.url}}">
+<a class="btn d-block btn-primary mt-2" href="{{self.site_area.url}}">
   View all {{self.site_area.title}}
 </a>

@@ -1,8 +1,61 @@
+from django.db.models.fields import CharField
+from wagtail.core.blocks.field_block import ChoiceBlock
+from wagtail.core.blocks.stream_block import StreamBlock
+from wagtail.core.fields import StreamField
 from comms.models import NewsItem
 from django.db import models
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
-from commonknowledge.wagtail.helpers import get_children_of_type
+from wagtail.snippets.blocks import SnippetChooserBlock
+
+
+def IconBlock(**kwargs):
+    return ChoiceBlock(
+        choices=(
+            ('chat-left', 'Speech Bubble'),
+            ('grap-up', 'Graph'),
+            ('hammer', 'Gavel'),
+        ),
+        template='widgets/icon_block.html',
+        **kwargs
+    )
+
+
+class TabsBlock(StructBlock):
+    class Meta:
+        template = 'widgets/tabs_block.html'
+
+    class BaseTab(StructBlock):
+        icon = IconBlock()
+        short_title = CharBlock()
+        title = CharBlock()
+        call_to_action = CharBlock(required=False)
+        related_page = PageChooserBlock(required=False)
+
+    class StatsTab(BaseTab):
+        class Meta:
+            template = 'widgets/tab/stats.html'
+
+    class InfoTab(BaseTab):
+        class Meta:
+            template = 'widgets/tab/info.html'
+
+        content = RichTextBlock()
+        author = SnippetChooserBlock('stopwatch.StaffMember', required=False)
+
+    heading = CharBlock()
+    tabs = StreamBlock([
+        ('stats', StatsTab()),
+        ('info', InfoTab()),
+    ])
+
+    def get_context(self, value, *args, **kwargs):
+        context = super().get_context(value, *args, **kwargs)
+        tabs = value['tabs']
+        context['tab_data'] = [{'meta': tab['value'], 'tab': tabs[idx]}
+                               for idx, tab in enumerate(tabs.raw_data)]
+
+        return context
 
 
 class ArticlesListBlock(StructBlock):
@@ -22,11 +75,15 @@ class ArticlesListBlock(StructBlock):
 
 
 class CtaBlock(StructBlock):
+    class Meta:
+        template = 'widgets/cta_block.html'
+
     heading = CharBlock()
-    image = ImageChooserBlock()
+    image = ImageChooserBlock(required=False)
     content = RichTextBlock()
-    target = PageChooserBlock()
+    target = PageChooserBlock(required=False)
 
 
 class NewsletterSignupBlock(CtaBlock):
-    pass
+    class Meta:
+        template = 'widgets/newsletter_block.html'

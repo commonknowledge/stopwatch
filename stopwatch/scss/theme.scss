@@ -2,7 +2,7 @@
 $body-bg: #fbfbfb;
 $primary: #6558f5;
 $secondary: #dfe6ed;
-$panel: #ecf0f1;
+$panel: #f7f9fa;
 $primary-hover-light: #02808b1a;
 $brand1: #e10001;
 $custom-colors: (
@@ -10,6 +10,12 @@ $custom-colors: (
   "brand1": $brand1,
 );
 $dark: #333333;
+
+// Font sizes:
+$font-size-sm: 0.75rem;
+
+// Buttons
+$btn-font-weight: 600;
 
 // Card
 $card-border-width: 0;

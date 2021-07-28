@@ -16,3 +16,11 @@ def menubar(context, **kwargs):
     kwargs['request'] = context.get('request')
 
     return kwargs
+
+
+@register.inclusion_tag('ckwagtail/include/avatar.html')
+def avatar(**kwargs):
+    if 'name' in kwargs:
+        name = kwargs['name'].split(' ')
+        kwargs['initials'] = name[0][0].upper() + name[-1][0].upper()
+    return kwargs

@@ -1,0 +1,15 @@
+{% load wagtailimages_tags %}
+
+{% image sellf.image height-200 class="img-fluid" %}
+
+<h2>
+  {{self.heading}}
+</h2>
+
+<div>
+  {{self.content}}
+</div>
+
+<a href="{{self.target.url}}" class="btn btn-primary d-block">
+  {{self.target.title}}
+</a>
