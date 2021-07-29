@@ -27,10 +27,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     'stopwatch',
-    'home',
     'search',
-    'comms',
-    'widgets',
 
     'commonknowledge.bootstrap',
     'commonknowledge.django',

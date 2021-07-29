@@ -8,7 +8,7 @@ from wagtail.core.rich_text import RichText
 from stopwatch.models import StopWatchDocument, StopwatchImage
 from import_export import resources, widgets, fields
 
-from comms import models
+from stopwatch import models
 
 
 class ImageWidget(widgets.Widget):
@@ -68,9 +68,9 @@ class TextToStreamWidget(widgets.Widget):
         return str(value)
 
 
-class NewsItemResource(resources.ModelResource):
+class ArticleResource(resources.ModelResource):
     class Meta:
-        model = models.NewsItem
+        model = models.Article
         fields = ('import_ref', 'title',
                   'intro_text', 'body', 'photo', 'summary', 'slug', 'first_published_at')
         import_id_fields = ('import_ref',)

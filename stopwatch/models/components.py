@@ -1,29 +1,18 @@
-from wagtail.core.blocks.field_block import ChoiceBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-
-def IconBlock(**kwargs):
-    return ChoiceBlock(
-        choices=(
-            ('chat-left', 'Speech Bubble'),
-            ('grap-up', 'Graph'),
-            ('hammer', 'Gavel'),
-        ),
-        template='widgets/icon_block.html',
-        **kwargs
-    )
+from stopwatch.models.fields import IconFieldBlock
 
 
 class TabsBlock(StructBlock):
     class Meta:
-        template = 'widgets/tabs_block.html'
+        template = 'stopwatch/components/tabs.html'
 
     class BaseTab(StructBlock):
-        icon = IconBlock()
+        icon = IconFieldBlock()
         short_title = CharBlock()
         title = CharBlock()
         call_to_action = CharBlock(required=False)
@@ -31,11 +20,11 @@ class TabsBlock(StructBlock):
 
     class StatsTab(BaseTab):
         class Meta:
-            template = 'widgets/tab/stats.html'
+            template = 'stopwatch/tabs/stats.html'
 
     class InfoTab(BaseTab):
         class Meta:
-            template = 'widgets/tab/info.html'
+            template = 'stopwatch/tabs/info.html'
 
         content = RichTextBlock()
         author = SnippetChooserBlock('stopwatch.StaffMember', required=False)
@@ -57,11 +46,10 @@ class TabsBlock(StructBlock):
 
 class ArticlesListBlock(StructBlock):
     class Meta:
-        template = 'widgets/articles_list_block.html'
+        template = 'stopwatch/components/articles_list.html'
 
     heading = CharBlock()
-    image = ImageChooserBlock(required=False)
-    site_area = PageChooserBlock(page_type='home.ListPage')
+    site_area = PageChooserBlock(page_type='stopwatch.Category')
 
     def get_context(self, value, *args, **kwargs):
         context = super().get_context(value, *args, **kwargs)
@@ -74,7 +62,7 @@ class ArticlesListBlock(StructBlock):
 
 class CtaBlock(StructBlock):
     class Meta:
-        template = 'widgets/cta_block.html'
+        template = 'stopwatch/components/cta.html'
 
     heading = CharBlock()
     image = ImageChooserBlock(required=False)
@@ -84,7 +72,7 @@ class CtaBlock(StructBlock):
 
 class NewsletterSignupBlock(CtaBlock):
     class Meta:
-        template = 'widgets/newsletter_block.html'
+        template = 'stopwatch/components/newsletter_signup.html'
 
 
 TEXT_MODULES = (

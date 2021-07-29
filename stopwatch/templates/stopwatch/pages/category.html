@@ -7,8 +7,8 @@
   <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
     <h1 class="px-3 ">{{self.title}}</h1>
   </div>
-  <div class="block-lg scale-embed opacity-50">
-  </div>
+  
+  {% image self.photo height-600 class="img-fluid opacity-50 block-lg cover" %}
 </header>
 {% if self.newsflash %}
   <div class="bg-alert position-relative text-white text-bold py-4">

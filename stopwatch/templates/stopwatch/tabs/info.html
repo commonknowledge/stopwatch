@@ -1,0 +1,33 @@
+{% load ckwagtail_tags %}
+
+<div class="d-flex flex-column py-3 h-100">
+  <h3 class="heading-large mb-2">{{self.title}}</h3>
+  
+  <div class="paragraph-container max-lines-6 mb-3">
+    {{self.content}}
+  </div>
+
+  <span class="flex-grow-1"></span>
+  
+  {% if self.author %}
+  <div class="d-flex flex-row align-items-center mb-3">
+    {% avatar image=self.author.photo name=self.author.name %}
+    <div class="ms-2">
+      <div>{{self.author.name}}</div>
+      <div class="text-muted">{{self.author.title}}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <span class="flex-grow-1"></span>
+  
+  {% if self.related_page %}
+    <a class="btn btn-outline-primary" href="{{self.related_page.url}}">
+      {% if self.call_to_action %}
+      {{self.call_to_action}}
+      {% else %}
+      {{self.related_page}}
+      {% endif %}
+    </a>
+  {% endif %}  
+</div>

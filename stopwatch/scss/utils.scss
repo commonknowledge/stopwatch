@@ -54,3 +54,17 @@
     height: 100%;
   }
 }
+
+.paragraph-container {
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.max-lines-6 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 9;
+  text-overflow: ellipsis;
+}
