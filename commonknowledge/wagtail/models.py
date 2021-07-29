@@ -5,7 +5,7 @@ from commonknowledge.helpers import safe_to_int
 
 class ChildListMixin:
     def get_child_list_queryset(self):
-        return self.get_children().specific()
+        return self.get_children().order_by('-first_published_at').specific()
 
     def get_page_size(self):
         return 20

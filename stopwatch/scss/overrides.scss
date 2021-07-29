@@ -111,4 +111,12 @@ a.card {
     -webkit-line-clamp: 3;
     text-overflow: ellipsis;
   }
+
+  .card-text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 9;
+    text-overflow: ellipsis;
+  }
 }

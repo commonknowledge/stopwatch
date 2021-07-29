@@ -54,7 +54,7 @@ class ListPage(ChildListMixin, Page):
 
     @property
     def featured_items(self):
-        return get_children_of_type(self, NewsItem).filter(photo__isnull=False)[:10]
+        return get_children_of_type(self, NewsItem).filter(photo__isnull=False).order_by('-first_published_at')[:10]
 
 
 class ExternalPage(Page):

@@ -1,6 +1,7 @@
 from wagtail.core.blocks.field_block import ChoiceBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
+from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
@@ -65,7 +66,8 @@ class ArticlesListBlock(StructBlock):
     def get_context(self, value, *args, **kwargs):
         context = super().get_context(value, *args, **kwargs)
 
-        context['qs'] = value['site_area'].featured_items
+        if value.get('site_area') is not None:
+            context['qs'] = value['site_area'].featured_items
 
         return context
 
@@ -87,6 +89,7 @@ class NewsletterSignupBlock(CtaBlock):
 
 TEXT_MODULES = (
     ('text', RichTextBlock()),
+    ('document', DocumentChooserBlock()),
 )
 
 COMMON_MODULES = TEXT_MODULES + (
