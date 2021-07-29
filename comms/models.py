@@ -17,11 +17,12 @@ class CommsPage(Page):
 
 
 class NewsItem(CommsPage):
-    intro_text = fields.RichTextField(blank=True)
+    intro_text = models.CharField(max_length=1024, default='', blank=True)
     summary = fields.StreamField(TEXT_MODULES, min_num=0, blank=True)
     body = fields.StreamField(COMMON_MODULES, min_num=0, blank=True)
 
     content_panels = CommsPage.content_panels + [
         FieldPanel('intro_text'),
+        FieldPanel('summary'),
         FieldPanel('body')
     ]
