@@ -40,16 +40,43 @@
                     <img class="logo" src={% static 'img/logo.png' %} />
                 </a>
 
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleMenu" aria-controls="navbarToggleMenu" aria-expanded="false" aria-label="Toggle navigation">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleMenu" aria-controls="navbarToggleMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi-list"></i>
               </button>
             </nav>
             
             <div class="collapse" id="navbarToggleMenu">
-              <div class="bg-dark p-4">
-                <h4 class="text-white">Collapsed content</h4>
-                <span class="text-muted">Toggleable via the navbar brand.</span>
-              </div>
+                <ul class="nav nav-outline flex-column text-uppercase">
+                    {% mainmenu %}
+                        {% for item in menu.children %}
+                            {% if item.first and not item.leaf %}
+                                {% for child in item.children %}
+                                    <ul class="nav nav-item position-relative w-100">
+                                        <li class="nav-item w-50">
+                                            {% if child.first %}
+                                                <a href={{item.page.url}} class="nav-link text-dark">
+                                                    {{item.page.title}}
+                                                </a>
+                                            {% endif %}
+                                        </li>
+                                        <li class="nav-item w-50">
+                                            <a class="nav-link text-sm text-muted" href="{{child.page.url}}">
+                                                {{child.page.title}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                {% endfor %}
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="{{item.page.url}}">
+                                        {{item.page.title}}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    
+                    {% endmainmenu %}
+                </ul>
             </div>
           </div>
         {% endblock %}

@@ -120,3 +120,19 @@ a.card {
     text-overflow: ellipsis;
   }
 }
+
+.nav-outline {
+  border-top: 2px solid $secondary;
+
+  li {
+    flex-grow: 0;
+    flex-shrink: 0;
+    line-height: 1rem;
+    border-bottom: 2px solid $secondary;
+    padding: map-get($spacers, 2);
+
+    &:not(:last-child) {
+      border-right: 2px solid $secondary;
+    }
+  }
+}
