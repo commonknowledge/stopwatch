@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags django_bootstrap5 %}
+
+{% block content %}
+
+{% if self.photo %}
+{% image self.photo height-500 class="img-fluid" %}
+{% endif %}
+
+<header class="container my-4">
+  <h1>{{self.title}}</h1>
+  {{self.intro|richtext}}
+</header>
+
+<main class="container streamfield">
+
+  <form action="{% pageurl page %}" method="POST">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <button class="d-block w-100 btn btn-primary" type="submit">
+        Submit
+      </button>
+  </form>
+</main>
+
+{% endblock content %}

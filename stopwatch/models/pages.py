@@ -1,11 +1,13 @@
 from django.db.models.fields import URLField
+from modelcluster.fields import ParentalKey
 from wagtail.core.blocks.field_block import URLBlock
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.core.fields import StreamField
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.core.fields import RichTextField, StreamField
 from django.http.response import HttpResponseRedirect
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
 from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin
 
@@ -43,6 +45,31 @@ class Article(Page):
         FieldPanel('intro_text'),
         FieldPanel('summary'),
         FieldPanel('body')
+    ]
+
+
+class Form(AbstractEmailForm):
+    template = 'stopwatch/pages/form.html'
+    landing_page_template = 'stopwatch/pages/form_submitted.html'
+
+    intro = RichTextField(blank=True)
+    thank_you_page = StreamField(COMMON_MODULES)
+
+    class FormField(AbstractFormField):
+        page = ParentalKey('Form', on_delete=models.CASCADE,
+                           related_name='form_fields')
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro', classname="full"),
+        InlinePanel('form_fields', label="Form fields"),
+        StreamFieldPanel('thank_you_page', classname="full"),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
     ]
 
 

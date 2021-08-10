@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     "anymail",
     "rest_framework",
+    'django_bootstrap5',
 
     'django.contrib.gis',
     'django.contrib.admin',
