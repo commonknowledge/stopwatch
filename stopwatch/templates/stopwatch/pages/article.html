@@ -3,20 +3,17 @@
 
 {% block content %}
 
-<main class="container pb-4 pb-lg-5">
-  {% if self.photo %}
-  {% image self.photo height-500 class="img-fluid" %}
-  {% endif %}
+{% if self.photo %}
+{% image self.photo height-500 class="img-fluid" %}
+{% endif %}
 
+<header class="container my-4">
   <h1>{{self.title}}</h1>
+</header>
 
-  <div class="text-italic">
-    {{self.intro_text|richtext}}
-  </div>
-
-  <div>
-    {{self.content|richtext}}
-  </div>
+<main class="container streamfield">
+  {{self.summary}}
+  {{self.body}}
 </main>
 
 {% endblock content %}

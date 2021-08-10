@@ -202,6 +202,15 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+WAGTAILEMBEDS_FINDERS = [
+    {
+        'class': 'commonknowledge.wagtail.embed_providers.flourish.FlourishFinder',
+    },
+    {
+        'class': 'wagtail.embeds.finders.oembed',
+    }
+]
+
 # Rest settings
 
 REST_FRAMEWORK = {
