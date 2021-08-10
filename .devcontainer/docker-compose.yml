@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   app:
@@ -16,7 +16,7 @@ services:
         USER_GID: 1000
 
     volumes:
-      - ..:/workspace:cached
+      - ..:/workspace:delegated
 
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
