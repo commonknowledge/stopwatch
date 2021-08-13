@@ -1,4 +1,4 @@
-{% load wagtailimages_tags %}
+{% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags django_bootstrap5 %}
 
 {% image self.image height-200 class="img-fluid" %}
 
@@ -10,6 +10,17 @@
   {{self.content}}
 </div>
 
-<a href="{{self.target.url}}" class="btn btn-primary d-block">
-  {{self.target.title}}
-</a>
+{% if form %}
+  <form action="{% pageurl self.target %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+    <button type="submit" class="btn btn-primary w-100">
+      {{self.target.title}}
+    </button>
+  </form>
+{% else %}
+  <a href="{{self.target.url}}" class="btn btn-primary d-block">
+    {{self.target.title}}
+  </a>
+{% endif %}

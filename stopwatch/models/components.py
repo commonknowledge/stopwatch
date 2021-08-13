@@ -78,6 +78,17 @@ class CtaBlock(StructBlock):
     content = RichTextBlock()
     target = PageChooserBlock(required=False)
 
+    def get_context(self, value, *args, **kwargs):
+        from stopwatch.models.pages import Form
+
+        context = super().get_context(value, *args, **kwargs)
+        target = value.get('target', None)
+
+        if target and issubclass(target.specific_class, Form):
+            context['form'] = target.specific.get_form(page=self, user=None)
+
+        return context
+
 
 class NewsletterSignupBlock(CtaBlock):
     class Meta:

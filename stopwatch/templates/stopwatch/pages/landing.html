@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static ckbootstrap_tags wagtailembeds_tags %}
+{% load static wagtailcore_tags ckbootstrap_tags wagtailembeds_tags %}
 
 {% block content %}
 
@@ -19,7 +19,7 @@
 
 <main>
   <div class="container">
-    {{self.body}}
+    {% include_block self.body %}
   </div>
 </main>
 
