@@ -50,31 +50,7 @@
   {% elif self.style == 'EXPANDED' %}
   <div class="containers bg-white mb-4" {% infinite_scroll_container item_selector='.card' %}>
     {% for page in child_list_page %}
-      <div class="card card-flush mx-2 mb-5 flex-shrink-0">
-        {% image page.photo width-600 class="card-img-top cover block-md" %}
-
-        <div class="card-body mw-100">
-          <h2 class="card-title pt-2 whitespace-wrap">{{page.title}}</h2>
-          <p class="card-text">
-            {% if page.description %}
-            {{page.description}}
-            {% elif page.summary %}
-            {{page.summary}}
-            {% else %}
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Feugiat nisl pretium fusce id. Consectetur libero id faucibus nisl. Sagittis purus sit amet volutpat consequat mauris nunc. Congue eu consequat ac felis donec et odio.
-            </p>
-            <p>
-              Mauris rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque. Odio morbi quis commodo odio aenean sed adipiscing diam donec.
-            </p>
-            {% endif %}
-          </p>
-
-          <a class="btn btn-primary" href="{{page.url}}">
-            Read more
-          </a>
-        </div>
-      </div>
+      {% include "stopwatch/includes/article-list-item.html" with page=page %}
     {% endfor %}
   </div>
   {% endif %}
