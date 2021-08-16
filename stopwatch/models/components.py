@@ -1,5 +1,6 @@
 from django.utils.safestring import mark_safe
 from wagtail.core.blocks.field_block import TextBlock, URLBlock
+from wagtail.core.blocks.list_block import ListBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
 from wagtail.documents.blocks import DocumentChooserBlock
@@ -69,6 +70,14 @@ class EmbedBlock(StructBlock):
     embed_url = URLBlock()
 
 
+class DownloadsBlock(StructBlock):
+    class Meta:
+        template = 'stopwatch/components/embed.html'
+
+    title = CharBlock(required=False)
+    documents = ListBlock(DocumentChooserBlock())
+
+
 class CtaBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/cta.html'
@@ -98,7 +107,7 @@ class NewsletterSignupBlock(CtaBlock):
 TEXT_MODULES = (
     ('text', RichTextBlock()),
     ('embed', EmbedBlock()),
-    ('document', DocumentChooserBlock()),
+    ('downloads', DownloadsBlock()),
 )
 
 CONTENT_MODULES = TEXT_MODULES + (

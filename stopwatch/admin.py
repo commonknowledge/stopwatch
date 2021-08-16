@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
+from django.db import transaction
 from import_export.admin import ImportExportModelAdmin, ImportForm, ConfirmImportForm
 from wagtail.core.models import Page
 
@@ -19,6 +20,8 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(models.Article)
 class NewsItemAdmin(ImportExportModelAdmin):
+    actions = ('fixup_html',)
+
     class CustomImportForm(ImportForm):
         parent_id = forms.IntegerField()
 
@@ -45,5 +48,10 @@ class NewsItemAdmin(ImportExportModelAdmin):
             res['parent'] = Page.objects.get(pk=parent_id)
 
         return res
+
+    @transaction.atomic
+    def fixup_html(self, request, queryset):
+        for article in queryset:
+            resources.fixup_article_html(article)
 
     resource_class = resources.ArticleResource

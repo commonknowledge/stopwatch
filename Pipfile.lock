@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a636fbe81af9b6a9ce2b083eba953e04dc31abad8523ecf71547ed6f1a4e56ca"
+            "sha256": "4333abd5f949f8756f2af2397d92e030cacd8ec404bf4d0e02edf0ace216a24c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -38,23 +38,24 @@
                 "sha256:84729e322ad1d5b4d25f805bfa05b902dd96450f43842c4e99067d5e1369eb25",
                 "sha256:fff47e031e34ec82bf17e00da8f592fe7de69aeea38be00523c04623c04fb666"
             ],
+            "index": "pypi",
             "version": "==4.9.3"
         },
         "boto3": {
             "hashes": [
-                "sha256:1ef5fdbd554d7c5878223ab54d400f02a47b6802f06216c18cbf66bc3fb7f8ca",
-                "sha256:3ab8b36870e130d9c615f1a72ee88071135afa148b47354d5b28b4624860b224"
+                "sha256:00748c760dc30be61c6db4b092718f6a9f8d27c767da0e232695a65adb75cde8",
+                "sha256:59b6e8e79b2114e21388288a06a004f2a9378b1e0fc58466a35da8fb74fe2dd8"
             ],
             "index": "pypi",
-            "version": "==1.18.20"
+            "version": "==1.18.21"
         },
         "botocore": {
             "hashes": [
-                "sha256:adf70e966b63bb2f847dba8478de2d5f5c2d03c57fc0aafee35cdbf38b7ad0c0",
-                "sha256:dd1a6177006e93695ee745871718d85a81412e586f93d7c666bce7bc107ce90f"
+                "sha256:12cfe74b0a5c44afb34bdd86c1f8ad74bc2ad9ec168eaed9040ef70cb3db944f",
+                "sha256:fa5ac13829d24fcdd385e82c3b6d78e22d93f427cca8dac38158cae84a8cc2f5"
             ],
             "index": "pypi",
-            "version": "==1.21.20"
+            "version": "==1.21.21"
         },
         "certifi": {
             "hashes": [
@@ -120,11 +121,11 @@
         },
         "django-bootstrap5": {
             "hashes": [
-                "sha256:7b1c36dd33a2cc5ceadb4cf948c483efc3d0818953a7ccfbf25249881e2919bc",
-                "sha256:88d3df6866ba82dac5c26122b10f6bc0b1670dba7bd41ca88b25dbf3e0be2906"
+                "sha256:0021355df9212c511876e3f5336ba470416a6dd52f61bf5acec5bb783ab41ff5",
+                "sha256:ac05ca69b990e62657c0bf40db14946c22fd64c7fb9dfe094a9f22ecc58f86c5"
             ],
             "index": "pypi",
-            "version": "==2.1.1"
+            "version": "==2.1.2"
         },
         "django-colorfield": {
             "hashes": [
