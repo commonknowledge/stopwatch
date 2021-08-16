@@ -6,6 +6,7 @@ $panel: #f7f9fa;
 $primary-hover-light: #02808b1a;
 $alert: #e9a2ad;
 $brand1: #e10001;
+$page-theme: var(--page-theme, $brand1);
 $custom-colors: (
   "panel": $panel,
   "alert": $alert,

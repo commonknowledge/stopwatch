@@ -29,7 +29,7 @@ class TabsBlock(StructBlock):
             template = 'stopwatch/tabs/info.html'
 
         content = RichTextBlock()
-        author = SnippetChooserBlock('stopwatch.StaffMember', required=False)
+        author = SnippetChooserBlock('stopwatch.Person', required=False)
 
     heading = CharBlock()
     tabs = StreamBlock([
@@ -73,10 +73,10 @@ class CtaBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/cta.html'
 
-    heading = CharBlock()
+    heading = CharBlock(required=False)
     image = ImageChooserBlock(required=False)
-    content = RichTextBlock()
-    target = PageChooserBlock(required=False)
+    content = RichTextBlock(required=False)
+    target = PageChooserBlock(required=True)
 
     def get_context(self, value, *args, **kwargs):
         from stopwatch.models.pages import Form
@@ -101,9 +101,12 @@ TEXT_MODULES = (
     ('document', DocumentChooserBlock()),
 )
 
-COMMON_MODULES = TEXT_MODULES + (
-    ('articles_list', ArticlesListBlock()),
+CONTENT_MODULES = TEXT_MODULES + (
     ('cta', CtaBlock()),
-    ('tabs', TabsBlock()),
     ('newsletter_signup', NewsletterSignupBlock()),
+)
+
+LANDING_MODULES = CONTENT_MODULES + (
+    ('articles_list', ArticlesListBlock()),
+    ('tabs', TabsBlock()),
 )

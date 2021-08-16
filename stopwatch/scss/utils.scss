@@ -68,3 +68,7 @@
   -webkit-line-clamp: 9;
   text-overflow: ellipsis;
 }
+
+.bg-page-theme {
+  background-color: $page-theme;
+}

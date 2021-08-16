@@ -31,7 +31,7 @@ class StopWatchDocument(AbstractDocument):
 
 
 @register_snippet
-class StaffMember(models.Model):
+class Person(models.Model):
     name = models.CharField(max_length=1024)
     title = models.CharField(max_length=1024)
     photo = models.ForeignKey(

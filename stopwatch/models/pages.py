@@ -12,7 +12,7 @@ from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin
 
 from stopwatch.models.core import StopwatchImage
-from stopwatch.models.components import COMMON_MODULES, TEXT_MODULES
+from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES
 
 
 class LandingPage(Page):
@@ -21,7 +21,7 @@ class LandingPage(Page):
     page_description = models.CharField(max_length=512, default='')
     landing_video = models.URLField(blank=True, null=True)
 
-    body = StreamField(COMMON_MODULES, min_num=0, blank=True)
+    body = StreamField(LANDING_MODULES, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('page_description'),
@@ -39,13 +39,13 @@ class Article(Page):
 
     intro_text = models.CharField(max_length=1024, default='', blank=True)
     summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
-    body = StreamField(COMMON_MODULES, min_num=0, blank=True)
+    body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
         ImageChooserPanel('photo'),
         FieldPanel('intro_text'),
-        FieldPanel('summary'),
-        FieldPanel('body')
+        StreamFieldPanel('summary'),
+        StreamFieldPanel('body')
     ]
 
 
@@ -54,7 +54,7 @@ class Form(AbstractEmailForm):
     landing_page_template = 'stopwatch/pages/form_submitted.html'
 
     intro = RichTextField(blank=True)
-    thank_you_page = StreamField(COMMON_MODULES)
+    thank_you_page = StreamField(CONTENT_MODULES)
 
     class FormField(AbstractFormField):
         page = ParentalKey('Form', on_delete=models.CASCADE,

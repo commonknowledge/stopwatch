@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags ckbootstrap_tags wagtailembeds_tags %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --page-theme: {{self.color}};
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<header>
+  {% image self.photo height-500 class="img-fluid" %}
+
+  <div class="bg-page-theme w-100 p-2 pt-4 d-flex flex-column text-sm justify-content-end">
+    <h1>{{self.title}}</h1>
+
+    <div>
+      {{self.description|richtext}}
+    </div>
+  </div>
+</header>
+
+<main class="my-4 use-page-theme container streamfield">
+  {% include_block self.body %}
+</main>
+
+{% endblock content %}

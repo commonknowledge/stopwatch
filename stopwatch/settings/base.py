@@ -28,6 +28,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 INSTALLED_APPS = [
     'stopwatch',
     'search',
+    'projects',
 
     'commonknowledge.bootstrap',
     'commonknowledge.django',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
     "anymail",
     "rest_framework",
     'django_bootstrap5',
+    'colorfield',
 
     'django.contrib.gis',
     'django.contrib.admin',
