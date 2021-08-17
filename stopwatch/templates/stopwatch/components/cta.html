@@ -6,9 +6,7 @@
   {{self.heading}}
 </h2>
 
-<div>
-  {{self.content}}
-</div>
+{{self.content|richtext}}
 
 {% if form %}
   <form action="{% pageurl self.target %}" method="POST">

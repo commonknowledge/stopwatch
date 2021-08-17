@@ -1,3 +1,5 @@
 {% load static ckbootstrap_tags wagtailembeds_tags %}
 
-{% embed self.embed_url %}
+<div class="embed{% if self.fullscreen %} embed-fullscreen{% endif %}">
+  {% embed self.embed_url %}
+</div>

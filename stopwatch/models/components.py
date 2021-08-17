@@ -1,5 +1,5 @@
 from django.utils.safestring import mark_safe
-from wagtail.core.blocks.field_block import TextBlock, URLBlock
+from wagtail.core.blocks.field_block import BooleanBlock, TextBlock, URLBlock
 from wagtail.core.blocks.list_block import ListBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
@@ -63,16 +63,24 @@ class ArticlesListBlock(StructBlock):
         return context
 
 
+class PullQuoteBlock(StructBlock):
+    class Meta:
+        template = 'stopwatch/components/pull_quote.html'
+
+    quote = TextBlock()
+
+
 class EmbedBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/embed.html'
 
     embed_url = URLBlock()
+    fullscreen = BooleanBlock(default=False)
 
 
 class DownloadsBlock(StructBlock):
     class Meta:
-        template = 'stopwatch/components/embed.html'
+        template = 'stopwatch/components/downloads.html'
 
     title = CharBlock(required=False)
     documents = ListBlock(DocumentChooserBlock())
@@ -106,6 +114,7 @@ class NewsletterSignupBlock(CtaBlock):
 
 TEXT_MODULES = (
     ('text', RichTextBlock()),
+    ('quote', PullQuoteBlock()),
     ('embed', EmbedBlock()),
     ('downloads', DownloadsBlock()),
 )

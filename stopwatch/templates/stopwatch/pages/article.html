@@ -9,6 +9,11 @@
 
 <header class="container my-4">
   <h1>{{self.title}}</h1>
+  {% if self.author_names %}
+    <div class="mt-2 fw-bold">
+      {{self.author_names}}
+    </div>
+  {% endif %}
 </header>
 
 <main class="container streamfield">
@@ -16,4 +21,33 @@
   {% include_block self.body %}
 </main>
 
-{% endblock content %}
+{% if self.authors %}
+  <div class="container my-5">
+    <h2>About the author</h2>
+  
+    {% for author in self.authors %}
+      {% include "stopwatch/includes/about-the-author.html" with author=author %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if self.related_articles %}
+  <div class="container my-5">
+    <h2>More articles</h2>
+
+    {% for article in self.related_articles %}
+      {% include "stopwatch/includes/article-list-item.html" with page=article %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% with site_settings=settings.stopwatch.SiteSettings %}
+  <div class="container my-5">
+    {% include "stopwatch/components/cta.html" with self=site_settings.donate_block only %}
+  </div>
+  <div class="container my-5">
+    {% include "stopwatch/components/newsletter_signup.html" with self=site_settings.mailing_list_block only %}
+  </div>
+{% endwith %}
+
+{% endblock %}

@@ -6,8 +6,12 @@ $panel: #f7f9fa;
 $primary-hover-light: #02808b1a;
 $alert: #e9a2ad;
 $brand1: #e10001;
+$darkgrey: #505050;
+$midgrey: #a3a3a3;
 $page-theme: var(--page-theme, $brand1);
 $custom-colors: (
+  "darkgrey": $darkgrey,
+  "midgrey": $midgrey,
   "panel": $panel,
   "alert": $alert,
   "brand1": $brand1,

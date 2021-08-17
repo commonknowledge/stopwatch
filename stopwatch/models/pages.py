@@ -1,17 +1,18 @@
 from django.db.models.fields import URLField
 from modelcluster.fields import ParentalKey
 from wagtail.core.blocks.field_block import URLBlock
-from wagtail.core.models import Page
+from wagtail.core.models import Orderable, Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.core.fields import RichTextField, StreamField
 from django.http.response import HttpResponseRedirect
 from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin
 
-from stopwatch.models.core import StopwatchImage
+from stopwatch.models.core import Person, SiteSettings, StopwatchImage
 from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES
 
 
@@ -30,6 +31,17 @@ class LandingPage(Page):
     ]
 
 
+class ArticleAuthor(Orderable, models.Model):
+    page = ParentalKey('Article', on_delete=models.CASCADE,
+                       related_name='article_authors')
+    person = models.ForeignKey(
+        Person, on_delete=models.CASCADE, related_name='+')
+
+    panels = [
+        SnippetChooserPanel('person'),
+    ]
+
+
 class Article(Page):
     template = 'stopwatch/pages/article.html'
 
@@ -45,8 +57,39 @@ class Article(Page):
         ImageChooserPanel('photo'),
         FieldPanel('intro_text'),
         StreamFieldPanel('summary'),
-        StreamFieldPanel('body')
+        StreamFieldPanel('body'),
+
+        MultiFieldPanel([
+            InlinePanel('article_authors'),
+        ], 'Authors'),
     ]
+
+    @property
+    def authors(self):
+        return [
+            x.person
+            for x
+            in self.article_authors.all()
+        ]
+
+    @property
+    def author_names(self):
+        authors = self.authors
+        if len(authors) == 0:
+            return None
+
+        if len(authors) == 1:
+            return authors[0].name
+
+        first = authors[:-1]
+        last = authors[-1]
+
+        return ', '.join(x.name for x in first) + ' & ' + last.name
+
+    @property
+    def related_articles(self):
+        # TODO: Use tags to determine this once we have tags.
+        return list(get_children_of_type(self.get_parent(), Article)[:5])
 
 
 class Form(AbstractEmailForm):

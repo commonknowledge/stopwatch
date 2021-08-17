@@ -1,16 +1,14 @@
-{% load wagtailimages_tags %}
+{% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags %}
 
 {% if image %}
-{% image self.image height-200 class="img-fluid" %}
+  {% image self.image height-200 class="img-fluid" %}
 {% endif %}
 
 <h2>
   {{self.heading}}
 </h2>
 
-<div>
-  {{self.content}}
-</div>
+{{self.content|richtext}}
 
 <form>
   <div class="form-group mb-3">
