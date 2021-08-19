@@ -1,0 +1,29 @@
+{% load static wagtailcore_tags ckwagtail_tags wagtailembeds_tags %}
+
+<div class="row g-4">
+  <h2>{{value.heading}}</h2>
+
+  {% for person in self.people %}
+    <div>
+      <div class="d-flex flex-row">
+        <div class="flex-grow-1">
+          <div>
+            {{person.name}}
+          </div>
+          <div>
+            {{person.title}}
+          </div>
+        </div>
+        <div>
+          {% avatar_img image=person.photo name=person.name %}  
+        </div>
+      </div>
+
+      <div>
+        {{person.name}} is {{person.bio}}
+      </div>
+
+      {% include "stopwatch/includes/person-contact-details.html" with person=person only %}
+    </div>
+  {% endfor %}
+</div>

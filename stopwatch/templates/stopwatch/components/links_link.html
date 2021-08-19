@@ -1,0 +1,13 @@
+{% load static ckbootstrap_tags wagtailembeds_tags %}
+
+<div class="linkblock-link">
+  <h3>{{self.name}}</h3>
+
+  {% if self.description %}
+  <div class="mb-2">
+    {{self.description}}
+  </div>
+  {% endif %}
+
+  {{link}}
+</div>

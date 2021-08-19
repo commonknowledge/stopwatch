@@ -1,5 +1,7 @@
-from django.utils.safestring import mark_safe
-from wagtail.core.blocks.field_block import BooleanBlock, TextBlock, URLBlock
+
+from stopwatch.models.core import Person
+from django.utils.html import format_html
+from wagtail.core.blocks.field_block import BooleanBlock, EmailBlock, TextBlock, URLBlock
 from wagtail.core.blocks.list_block import ListBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
@@ -43,6 +45,75 @@ class TabsBlock(StructBlock):
         tabs = value['tabs']
         context['tab_data'] = [{'meta': tab['value'], 'tab': tabs[idx]}
                                for idx, tab in enumerate(tabs.raw_data)]
+
+        return context
+
+
+class AlertBlock(StructBlock):
+    class Meta:
+        template = 'stopwatch/components/alert.html'
+
+    heading = CharBlock()
+    content = TextBlock()
+
+
+class LinksBlock(StructBlock):
+    class Meta:
+        template = 'stopwatch/components/links.html'
+
+    class LinkBlock(StructBlock):
+        class Meta:
+            template = 'stopwatch/components/links_link.html'
+
+        name = CharBlock()
+        description = TextBlock(required=False)
+
+        def __init__(self, tag, link_block, **kwargs):
+            local_blocks = (
+                (tag, link_block),
+            )
+            super().__init__(local_blocks=local_blocks, **kwargs)
+            self.tag = tag
+
+        def get_target(self, value):
+            return value[self.tag]
+
+        def get_href(self, value):
+            return str(self.get_target(value))
+
+        def get_label(self, value):
+            return str(self.get_target(value))
+
+        def get_link(self, value):
+            return format_html('<a href="{}">{}</a>', self.get_href(value), self.get_label(value))
+
+        def get_context(self, value, parent_context):
+            context = super().get_context(value, parent_context=parent_context)
+            context['link'] = self.get_link(value)
+            return context
+
+    class MailtoLinkBlock(LinkBlock):
+        def get_href(self, value):
+            return 'mailto:' + super().get_href(value)
+
+    class InternalLinkBlock(LinkBlock):
+        def get_href(self, value):
+            return self.get_target(value).url
+
+    heading = CharBlock()
+    message = RichTextBlock(required=False)
+    links = StreamBlock((
+        ('alert', AlertBlock()),
+        ('website', LinkBlock('url', URLBlock())),
+        ('email', MailtoLinkBlock('address', EmailBlock())),
+        ('page', InternalLinkBlock('page', PageChooserBlock()))
+    ))
+
+    def get_context(self, value, *args, **kwargs):
+        context = super().get_context(value, *args, **kwargs)
+
+        if value.get('site_area') is not None:
+            context['qs'] = value['site_area'].featured_items
 
         return context
 
@@ -107,6 +178,14 @@ class CtaBlock(StructBlock):
         return context
 
 
+class PersonListBlock(StructBlock):
+    class Meta:
+        template = 'stopwatch/components/person_list.html'
+
+    heading = CharBlock()
+    people = ListBlock(SnippetChooserBlock(Person))
+
+
 class NewsletterSignupBlock(CtaBlock):
     class Meta:
         template = 'stopwatch/components/newsletter_signup.html'
@@ -121,7 +200,10 @@ TEXT_MODULES = (
 
 CONTENT_MODULES = TEXT_MODULES + (
     ('cta', CtaBlock()),
+    ('links', LinksBlock()),
     ('newsletter_signup', NewsletterSignupBlock()),
+    ('person_listing', PersonListBlock()),
+    ('alert', AlertBlock())
 )
 
 LANDING_MODULES = CONTENT_MODULES + (
