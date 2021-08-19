@@ -158,3 +158,15 @@ a.card {
     overflow-y: auto;
   }
 }
+
+.breadcrumb-item,
+.breadcrumb-item a {
+  @include microcopy;
+  text-decoration: none;
+  color: $darkgrey;
+
+  &:last-child:not(:first-child) {
+    color: $dark;
+    font-weight: 500;
+  }
+}

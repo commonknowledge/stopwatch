@@ -1,6 +1,8 @@
 from django.template.exceptions import TemplateSyntaxError
 from wagtail.core.models import Site
 from django import template
+from django.utils.html import format_html, format_html_join
+
 register = template.Library()
 
 
@@ -55,3 +57,26 @@ def avatar_img(**kwargs):
         name = kwargs['name'].split(' ')
         kwargs['initials'] = name[0][0].upper() + name[-1][0].upper()
     return kwargs
+
+
+@register.simple_tag(takes_context=True)
+def breadcrumbs(context, page, **kwargs):
+    page = page.get_parent()
+    classname = kwargs.pop('class', 'breadcrumb')
+    item_classname = kwargs.pop('item_class', 'breadcrumb-item')
+    crumbs = []
+
+    while page and not page.is_site_root():
+        crumbs.append(page)
+        page = page.get_parent()
+
+    inner_html = format_html_join(
+        '',
+        '<li class="{}"><a href="{}">{}</a></li>',
+        (
+            (item_classname, page.url, page.title)
+            for page in crumbs
+        )
+    )
+
+    return format_html('<ol class="{}">{}</ol>', classname, inner_html)

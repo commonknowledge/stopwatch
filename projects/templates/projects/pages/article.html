@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags ckbootstrap_tags ckwagtail_tags wagtailembeds_tags %}
+
+{% block content %}
+
+<header>
+  {% image self.photo height-500 class="img-fluid" %}
+</header>
+
+<main class="my-4 use-page-theme container streamfield">
+  <div>
+    {% breadcrumbs page=self %}
+    <h1>{{self.title}}</h1>
+  </div>
+
+
+  <aside class="heading-medium text-muted">
+    {{self.description}}
+  </aside>
+
+  {% include_block self.body %}
+</main>
+
+{% endblock content %}

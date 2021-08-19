@@ -32,11 +32,21 @@ class Project(Page):
     ]
 
     @property
+    def pages(self):
+        return self.get_children().filter(show_in_menus=True)
+
+    @property
+    def themes(self):
+        return get_children_of_type(self.project, EventTheme)
+
+    @property
     def project(self):
         return self
 
 
 class ProjectPage(Page):
+    show_in_menus_default = True
+
     class Meta:
         abstract = True
 
@@ -75,11 +85,11 @@ class ProjectEvents(ChildListMixin, ProjectPage):
 
     @property
     def themes(self):
-        return get_children_of_type(self.project, EventTheme).specific()
+        return self.project.themes
 
 
 class EventTheme(ProjectPage):
-    template = 'projects/pages/theme.html'
+    template = 'projects/pages/article.html'
 
     parent_page_types = (Project,)
     photo = models.ForeignKey(

@@ -7,4 +7,31 @@
   {% include_block self.body %}
 </main>
 
+{% if self.themes.exists %}
+<div class="microcopy text-center my-3">
+  Event themes
+</div>
+
+<div class="container-fluid">
+  <div class="row g-3">
+    {% for theme in self.themes %}
+      <div class="col-md-6">
+        <a href={{theme.url}} class="card">
+          <div class="microcopy card-body d-flex justify-content-between flex-row">
+            <span>{{theme.title}}</span>
+            <div>
+              <span class="color-circle" style="background-color: {{theme.color}};"></span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            {{theme.description}}
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 {% endblock project_content %}
