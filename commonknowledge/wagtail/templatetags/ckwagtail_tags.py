@@ -50,7 +50,7 @@ def mainmenu(parser, token):
 
 
 @register.inclusion_tag('ckwagtail/include/avatar.html')
-def avatar(**kwargs):
+def avatar_img(**kwargs):
     if 'name' in kwargs:
         name = kwargs['name'].split(' ')
         kwargs['initials'] = name[0][0].upper() + name[-1][0].upper()

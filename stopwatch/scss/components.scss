@@ -73,3 +73,14 @@
     margin-bottom: map-get($spacers, 5);
   }
 }
+
+.color-circle {
+  position: relative;
+  top: -1px;
+  margin: 1px 0;
+  vertical-align: middle;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+}

@@ -1,0 +1,60 @@
+{% extends "projects/base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags ckdjango_tags ckbootstrap_tags wagtailembeds_tags %}
+
+{% block project_content %}
+
+<main class="my-4 use-page-theme container streamfield">
+  <div class="row">
+    <div class="col" {% infinite_scroll_container item_selector='.card' %}>
+      <h2>Events</h2>
+
+      <div class="my-5">
+        <h3 class="microcopy">Filters</h3>
+
+        {% for theme in self.themes %}
+          {% filter_toggle_link class="btn btn-outline-secondary" label=theme.title name="theme" value=theme.slug %}
+        {% endfor %}
+      </div>
+
+      {% for event in child_list_page %}
+        <article class="p-2 card card-flush mb-3">
+          <div class="card-body d-flex flex-direction-column justify-content-between microcopy">
+            <div class="me-2">
+              <span class="color-circle me-1" style="background-color: {{event.theme.color}};"></span>
+
+              {{event.theme.title}}
+            </div>
+            <div class="me-2">
+              {{event.start_time|date:"l"}}
+            </div>
+            <div class="me-2">
+              {{event.start_time|date:"H:i"}}–{{event.end_time|date:"H:i"}}
+            </div>
+          </div>
+
+          <div class="card-body">
+            <h3 class="my-3">
+              {{event.title}}
+            </h3>
+
+            {{event.intro_text|richtext}}
+          </div>
+
+          <div class="card-body">
+            {% for speaker in event.speakers %}
+              {% include "stopwatch/includes/avatar.html" with person=speaker %}
+            {% endfor %}
+          </div>
+
+          <div class="card-body">
+            <a href="{{event.registration_page}}" class="btn btn-outline-secondary w-100">
+              Register
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+
+{% endblock project_content %}

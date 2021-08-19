@@ -10,6 +10,8 @@ from django.db import models
 from colorfield.fields import ColorField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from stopwatch.models import CONTENT_MODULES
+from commonknowledge.wagtail.models import ChildListMixin
+from commonknowledge.wagtail.helpers import get_children_of_type
 
 
 class Project(Page):
@@ -29,6 +31,10 @@ class Project(Page):
         StreamFieldPanel('body'),
     ]
 
+    @property
+    def project(self):
+        return self
+
 
 class ProjectPage(Page):
     class Meta:
@@ -44,6 +50,8 @@ class ProjectPage(Page):
 
 
 class ProjectArticle(ProjectPage):
+    template = 'projects/pages/article.html'
+
     parent_page_types = (Project,)
     photo = models.ForeignKey(
         'stopwatch.StopwatchImage', null=True, blank=True, on_delete=models.SET_NULL)
@@ -51,11 +59,28 @@ class ProjectArticle(ProjectPage):
     description = RichTextField()
 
 
-class ProjectEvents(ProjectPage):
+class ProjectEvents(ChildListMixin, ProjectPage):
+    template = 'projects/pages/project_events.html'
     parent_page_types = (Project,)
+
+    def get_filters(self, request):
+        theme = request.GET.get('theme', None)
+        if theme is not None:
+            return {
+                'theme__slug': theme
+            }
+
+    def get_child_list_queryset(self):
+        return get_children_of_type(self, Event)
+
+    @property
+    def themes(self):
+        return get_children_of_type(self.project, EventTheme).specific()
 
 
 class EventTheme(ProjectPage):
+    template = 'projects/pages/theme.html'
+
     parent_page_types = (Project,)
     photo = models.ForeignKey(
         'stopwatch.StopwatchImage', null=True, blank=True, on_delete=models.SET_NULL)
@@ -73,7 +98,7 @@ class EventTheme(ProjectPage):
 
 class EventSpeaker(Orderable, models.Model):
     page = ParentalKey('Event', on_delete=models.CASCADE,
-                       related_name='speakers')
+                       related_name='event_speakers')
     person = models.ForeignKey(
         'stopwatch.Person', on_delete=models.CASCADE, related_name='+')
 
@@ -83,6 +108,7 @@ class EventSpeaker(Orderable, models.Model):
 
 
 class Event(ProjectPage):
+    template = 'projects/pages/event.html'
     parent_page_types = (ProjectEvents,)
 
     photo = models.ForeignKey(
@@ -94,12 +120,23 @@ class Event(ProjectPage):
     theme = models.ForeignKey(
         EventTheme, on_delete=models.SET_NULL, null=True, blank=True)
 
+    registration_page = models.URLField(
+        blank=True, null=True, verbose_name='Registration link')
     body = StreamField(CONTENT_MODULES, verbose_name='Event details')
+
+    @property
+    def speakers(self):
+        return tuple(
+            speaker.person
+            for speaker
+            in self.event_speakers.all()
+        )
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             ImageChooserPanel('photo'),
             PageChooserPanel('theme'),
+            RichTextFieldPanel('registration_page'),
             RichTextFieldPanel('intro_text'),
         ], 'Basics'),
 
@@ -109,7 +146,7 @@ class Event(ProjectPage):
         ], 'Timings'),
 
         MultiFieldPanel([
-            InlinePanel('speakers'),
+            InlinePanel('event_speakers'),
         ], 'Speakers'),
 
         StreamFieldPanel('body'),
