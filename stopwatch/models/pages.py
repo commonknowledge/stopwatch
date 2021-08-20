@@ -1,6 +1,7 @@
 from django.db.models.fields import URLField
+from django.db.models.fields.related import RelatedField
 from modelcluster.fields import ParentalKey
-from wagtail.core.blocks.field_block import URLBlock
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.core.models import Orderable, Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
@@ -8,12 +9,20 @@ from wagtail.core.fields import RichTextField, StreamField
 from django.http.response import HttpResponseRedirect
 from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
+from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from taggit.models import Tag, TaggedItemBase
 from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin
+from commonknowledge.django.cache import django_cached
 
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
 from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES
+
+
+class ArticleTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'Article', on_delete=models.CASCADE, related_name='tagged_items')
 
 
 class LandingPage(Page):
@@ -45,6 +54,8 @@ class ArticleAuthor(Orderable, models.Model):
 class Article(Page):
     template = 'stopwatch/pages/article.html'
 
+    tags = ClusterTaggableManager(through=ArticleTag, blank=True)
+
     import_ref = models.IntegerField(null=True, blank=True)
     photo = models.ForeignKey(
         StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
@@ -52,6 +63,10 @@ class Article(Page):
     intro_text = models.CharField(max_length=1024, default='', blank=True)
     summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
     body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
+
+    search_fields = Page.search_fields + [
+        index.FilterField('tag_id')
+    ]
 
     content_panels = Page.content_panels + [
         ImageChooserPanel('photo'),
@@ -62,6 +77,10 @@ class Article(Page):
         MultiFieldPanel([
             InlinePanel('article_authors'),
         ], 'Authors'),
+    ]
+
+    promote_panels = Page.promote_panels + [
+        FieldPanel('tags'),
     ]
 
     @property
@@ -118,6 +137,7 @@ class Form(AbstractEmailForm):
 
 
 class Category(ChildListMixin, Page):
+    allow_search = True
     template = 'stopwatch/pages/category.html'
 
     class StyleChoices:
@@ -148,6 +168,36 @@ class Category(ChildListMixin, Page):
             return 100
         else:
             return 25
+
+    @django_cached('stopwatch.models.Category.tags', lambda category: category.get_parent().id)
+    def tags(self):
+        '''
+        Return all tags that apply to articles in this category
+        '''
+
+        all_tags = set()
+        for article in self.get_child_list_queryset().iterator():
+            for tag in article.tags.all():
+                all_tags.add(tag.id)
+
+        return list(Tag.objects.filter(id__in=all_tags))
+
+    def get_filters(self, request):
+        tag = request.GET.get('theme', None)
+        if tag is not None:
+            try:
+                return {
+                    'tags': Tag.objects.get(slug=tag)
+                }
+            except Tag.DoesNotExist:
+                pass
+
+    def get_filter_form(self, request):
+        from stopwatch.forms import CategoryFilterForm
+        return CategoryFilterForm(data=request.GET, tags=self.tags())
+
+    def get_child_list_queryset(self):
+        return get_children_of_type(self, Article).order_by('-first_published_at')
 
     @property
     def featured_items(self):

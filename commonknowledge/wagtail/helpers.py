@@ -9,4 +9,4 @@ def get_children_of_type(parent, *types):
         return t.objects.live().child_of(parent)
 
     content_types = tuple(ContentType.objects.get_for_model(t) for t in types)
-    return parent.get_children().filter(content_type__in=content_types)
+    return parent.get_children().live().filter(content_type__in=content_types)

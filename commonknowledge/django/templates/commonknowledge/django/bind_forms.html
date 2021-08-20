@@ -1,0 +1,13 @@
+<script>
+  Array.from(document.querySelectorAll('[data-filter-form]')).forEach(form => {
+    const submitForm = () => setTimeout(() => form.submit())
+
+    Array.from(form.querySelectorAll('button, input[type="radio"]')).forEach(button => {
+      button.addEventListener('click', submitForm)
+    })
+
+    Array.from(form.querySelectorAll('select')).forEach(button => {
+      button.addEventListener('change', submitForm)
+    })
+  })
+</script>

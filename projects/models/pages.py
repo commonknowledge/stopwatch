@@ -75,7 +75,7 @@ class ProjectEvents(ChildListMixin, ProjectPage):
 
     def get_filters(self, request):
         theme = request.GET.get('theme', None)
-        if theme is not None:
+        if theme:
             return {
                 'theme__slug': theme
             }
@@ -86,6 +86,10 @@ class ProjectEvents(ChildListMixin, ProjectPage):
     @property
     def themes(self):
         return self.project.themes
+
+    def get_filter_form(self, request):
+        from projects.forms import EventFilterForm
+        return EventFilterForm(data=request.GET, themes=self.themes)
 
 
 class EventTheme(ProjectPage):

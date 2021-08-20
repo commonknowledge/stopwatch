@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static ckbootstrap_tags ckdjango_tags wagtailembeds_tags wagtailimages_tags %}
+{% load django_bootstrap5 static ckbootstrap_tags ckdjango_tags wagtailembeds_tags wagtailimages_tags %}
 
 {% block content %}
 
@@ -10,6 +10,7 @@
   
   {% image self.photo height-600 class="img-fluid opacity-50 block-lg cover" %}
 </header>
+
 {% if self.newsflash %}
   <div class="bg-alert position-relative text-white text-bold py-4">
     <div class="position-absolute w-100 top-50 start-50 pt-1 translate-middle">
@@ -25,9 +26,29 @@
   </div>
 {% endif %}
 
-<main class="bg-white mt-2">
+<div class="container">
+  <main class="bg-white mt-2">
+    <form data-filter-form method="GET">
+      {% if self.tags %}
+        <div class="row">
+          <h3 class="microcopy">
+            Filters
+          </h3>
+
+          {% filter_toggles field=filter_form.theme %}
+        </div>
+      {% endif %}
+
+      <div class="row">
+        {% filter_menu field=filter_form.sort %}
+
+        <input class="form-control" name="query" aria-label="Search query" value="{{filter_form.query.value}}">
+      </div>
+    </form>
+  </div>
+
   {% if self.style == 'COMPACT' %}
-  <div class="containers square-grid" {% infinite_scroll_container item_selector='.card' %}>
+  <div class="container square-grid" {% infinite_scroll_container item_selector='.card' %}>
     {% for page in child_list_page %}
       <a class="card card-flush mx-2 mb-2 flex-shrink-0" href="{{page.url}}">
         <div class="ratio ratio-1x1">
@@ -37,10 +58,8 @@
         <div class="card-body mw-100">
           <h2 class="card-title heading-small pt-2">{{page.title}}</h2>
           <p class="card-text text-sm">
-            {% if page.description %}
-            {{page.description}}
-            {% else %}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem.
+            {% if page.intro_text %}
+            {{page.intro_text}}
             {% endif %}
           </p>
         </div>
@@ -60,6 +79,7 @@
 
 
 {% block extra_js %}
+{% bind_filter_form %}
 {% if self.newsflash %}
 <script
   src="https://cdn.jsdelivr.net/npm/dynamic-marquee@2"

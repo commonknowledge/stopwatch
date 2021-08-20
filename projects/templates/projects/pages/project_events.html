@@ -8,13 +8,11 @@
     <div class="col" {% infinite_scroll_container item_selector='.card' %}>
       <h2>Events</h2>
 
-      <div class="my-5">
+      <form data-filter-form class="my-5" method="GET">
         <h3 class="microcopy">Filters</h3>
 
-        {% for theme in self.themes %}
-          {% filter_toggle_link class="btn btn-outline-secondary" label=theme.title name="theme" value=theme.slug %}
-        {% endfor %}
-      </div>
+        {% filter_toggles field=filter_form.theme %}
+      </form>
 
       {% for event in child_list_page %}
         <article class="p-2 card card-flush mb-3">
@@ -58,3 +56,7 @@
 </main>
 
 {% endblock project_content %}
+
+{% block extra_js %}
+{% bind_filter_form %}
+{% endblock %}
