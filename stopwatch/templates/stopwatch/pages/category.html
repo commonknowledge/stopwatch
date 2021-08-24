@@ -12,22 +12,12 @@
 </header>
 
 {% if self.newsflash %}
-  <div class="bg-alert position-relative text-white text-bold py-4">
-    <div class="position-absolute w-100 top-50 start-50 pt-1 translate-middle">
-      <div id="news-ticker" class="d-none position-relative">
-        {% for item in self.featured_items %}
-  
-          <div class="d-inline-block">
-            {{ item.title }} •&nbsp;
-          </div>
-        {% endfor %}
-      </div>
-    </div>
+  <div id="news-ticker">
   </div>
 {% endif %}
 
 <div class="container">
-  <main class="bg-white mt-2">
+  <main class="mt-2">
     <form data-filter-form method="GET">
       {% if self.tags %}
         <div class="row">
@@ -47,32 +37,11 @@
     </form>
   </div>
 
-  {% if self.style == 'COMPACT' %}
-  <div class="container square-grid" {% infinite_scroll_container item_selector='.card' %}>
-    {% for page in child_list_page %}
-      <a class="card card-flush mx-2 mb-2 flex-shrink-0" href="{{page.url}}">
-        <div class="ratio ratio-1x1">
-          {% image page.photo width-600 class="card-img-top cover ratio" %}
-        </div>
-
-        <div class="card-body mw-100">
-          <h2 class="card-title heading-small pt-2">{{page.title}}</h2>
-          <p class="card-text text-sm">
-            {% if page.intro_text %}
-            {{page.intro_text}}
-            {% endif %}
-          </p>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
-  {% elif self.style == 'EXPANDED' %}
   <div class="containers bg-white mb-4" {% infinite_scroll_container item_selector='.card' %}>
     {% for page in child_list_page %}
       {% include "stopwatch/includes/article-list-item.html" with page=page %}
     {% endfor %}
   </div>
-  {% endif %}
 </main>
 
 {% endblock content %}
@@ -80,28 +49,9 @@
 
 {% block extra_js %}
 {% bind_filter_form %}
+
 {% if self.newsflash %}
-<script
-  src="https://cdn.jsdelivr.net/npm/dynamic-marquee@2"
-></script>
-<script>
-  (function initNewsTicker() {
-    const Marquee = dynamicMarquee.Marquee;
-    const loop = dynamicMarquee.loop;
-    const tickerEl = document.getElementById('news-ticker')
-
-    const tickerItems = Array.from(tickerEl.children)
-    tickerItems.forEach(child => {
-      child.remove()
-    })
-
-    const marquee = new Marquee(tickerEl, {
-      rate: -100,
-    });
-
-    tickerEl.classList.remove('d-none')
-    loop(marquee, tickerItems.map(item => () => item.cloneNode(true)))
-  })()
-</script>
+  {% include "stopwatch/includes/news_ticker_js.html" with id="news-ticker" items=self.featured_items only %}
 {% endif %}
+
 {% endblock %}

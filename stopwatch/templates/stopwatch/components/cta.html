@@ -1,24 +1,27 @@
 {% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags django_bootstrap5 %}
 
-{% image self.image height-200 class="img-fluid" %}
 
-<h2>
-  {{self.heading}}
-</h2>
+<section class="position-relative">
+  <h2 class="heading-medium mb-3">
+    {{self.heading}}
+  </h2>
+  
+  {{self.content|richtext}}
+  
+  {% image self.image height-200 class="img-fluid" %}
 
-{{self.content|richtext}}
-
-{% if form %}
-  <form action="{% pageurl self.target %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-
-    <button type="submit" class="btn btn-primary w-100">
+  {% if form %}
+    <form action="{% pageurl self.target %}" method="POST">
+      {% csrf_token %}
+      {% bootstrap_form form show_label=False %}
+  
+      <button type="submit" class="btn btn-primary w-100">
+        {{self.target.title}}
+      </button>
+    </form>
+  {% else %}
+    <a href="{{self.target.url}}" class="btn btn-primary d-block mt-3">
       {{self.target.title}}
-    </button>
-  </form>
-{% else %}
-  <a href="{{self.target.url}}" class="btn btn-primary d-block">
-    {{self.target.title}}
-  </a>
-{% endif %}
+    </a>
+  {% endif %}  
+</section>

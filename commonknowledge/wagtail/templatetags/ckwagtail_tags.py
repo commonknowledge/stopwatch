@@ -19,36 +19,67 @@ def menubar(context, **kwargs):
     return kwargs
 
 
+class MainMenuNode (template.Node):
+    def __init__(self, nodelist, flat=False):
+        self.nodelist = nodelist
+        self.flat = flat
+        self.max_depth = 2 if flat else 12
+
+    def get_children(self, qs, depth):
+        if depth >= self.max_depth:
+            return ()
+
+        children = tuple(
+            self.build_tree(child, index, depth + 1)
+            for index, child
+            in enumerate(qs)
+        )
+
+        if self.flat:
+            children = tuple(
+                inner_child
+                for child in children
+                for inner_child in ((child,) + child['children']())
+            )
+
+        return children
+
+    def build_tree(self, page, index=0, depth=0):
+        qs = page.get_children().in_menu()
+        return {
+            'index': index,
+            'first': index == 0,
+            'page': page,
+            'routable': getattr(page, 'is_routable', True),
+            'children': lambda: self.get_children(qs, depth),
+            'leaf': not qs.exists(),
+        }
+
+    def render(self, context):
+        site = Site.find_for_request(context.get('request'))
+        tree = self.build_tree(site.root_page)
+
+        if self.flat:
+            context['menu'] = tree['children']
+        else:
+            context['menu'] = tree
+
+        output = self.nodelist.render(context)
+        return output
+
+
 @register.tag
 def mainmenu(parser, token):
-    class MainMenuNode (template.Node):
-        def __init__(self, nodelist):
-            self.nodelist = nodelist
-
-        def build_tree(self, page, index=0, depth=0):
-            qs = page.get_children().in_menu()
-            return {
-                'index': index,
-                'first': index == 0,
-                'page': page,
-                'children': lambda: tuple(
-                    self.build_tree(child, index, depth + 1)
-                    for index, child
-                    in enumerate(qs)
-                ),
-                'leaf': not qs.exists(),
-            }
-
-        def render(self, context):
-            site = Site.find_for_request(context.get('request'))
-            context['menu'] = self.build_tree(site.root_page)
-
-            output = self.nodelist.render(context)
-            return output
-
     nodelist = parser.parse(('endmainmenu',))
     parser.delete_first_token()
     return MainMenuNode(nodelist)
+
+
+@register.tag
+def mainmenu_flat(parser, token):
+    nodelist = parser.parse(('endmainmenu',))
+    parser.delete_first_token()
+    return MainMenuNode(nodelist, flat=True)
 
 
 @register.inclusion_tag('ckwagtail/include/avatar.html')

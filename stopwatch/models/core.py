@@ -1,11 +1,14 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from wagtail.core.fields import RichTextField
+from django.db.models.fields import CharField, EmailField, TextField
+from wagtail.core.blocks.field_block import CharBlock, PageChooserBlock, URLBlock
+from wagtail.core.blocks.struct_block import StructBlock
+from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.documents.models import Document, AbstractDocument
 from wagtail.snippets.models import register_snippet
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PageChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PageChooserPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 
@@ -69,34 +72,17 @@ class Person(models.Model):
 
 @register_setting
 class SiteSettings(BaseSetting):
-    facebook = models.URLField(
-        null=True,
-        blank=True,
-        help_text='Your Facebook page URL')
-    instagram = models.CharField(
-        null=True,
-        blank=True,
-        max_length=255, help_text='Your Instagram username, without the @')
-    twitter = models.CharField(
-        null=True,
-        blank=True,
-        max_length=255, help_text='Your Twitter username, without the @')
-    youtube = models.URLField(
-        null=True,
-        blank=True,
-        help_text='Your YouTube channel or user account URL')
+    class BottomLink(StructBlock):
+        page = PageChooserBlock()
+        label = CharBlock(required=False)
+
+    bottom_page_links = StreamField(
+        [('link', BottomLink())], blank=True, min_num=0, max_num=4)
 
     standard_donation_request = RichTextField(
         default='We aim to address excess and disproportionate stop and search, promote best practice and ensure fair, effective policing for all.')
     standard_mailinglist_request = RichTextField(
         default='Regular updates on our activities, noteworthy articles, and how you can get involved in our work.')
-
-    donation_page = models.ForeignKey(
-        Page,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-    )
 
     tagline = RichTextField(
         default="",
@@ -105,18 +91,13 @@ class SiteSettings(BaseSetting):
         default="<strong>StopWatch</strong> is a coalition of legal experts, academics, citizens and civil liberties campaigners. We aim to address excess and disproportionate stop and search, promote best practice and ensure fair, effective policing for all.",
         help_text='Text displayed at the base of pages')
 
+    address = CharField(
+        default="2 Langley Lane London SW8 1GB", max_length=128)
+    phone_number = CharField(default="+44 (0)208 226 5737", max_length=64)
+    email_contact = EmailField(default="info@stop-watch.org")
+    end_matter = TextField(default='Registered Charity No: 1161908')
+
     panels = [
-        MultiFieldPanel([
-            FieldPanel('facebook'),
-            FieldPanel('instagram'),
-            FieldPanel('twitter'),
-            FieldPanel('youtube')
-        ], 'Social'),
-
-        MultiFieldPanel([
-            PageChooserPanel('donation_page'),
-        ], 'Special pages'),
-
         MultiFieldPanel([
             FieldPanel('tagline'),
             FieldPanel('tagline_long'),
@@ -126,6 +107,15 @@ class SiteSettings(BaseSetting):
             FieldPanel('standard_donation_request'),
             FieldPanel('standard_mailinglist_request'),
         ], 'Default CTAs'),
+
+        MultiFieldPanel([
+            FieldPanel('address'),
+            FieldPanel('phone_number'),
+            FieldPanel('email_contact'),
+            FieldPanel('end_matter'),
+        ], 'Organisation info'),
+
+        StreamFieldPanel('bottom_page_links'),
     ]
 
     @property

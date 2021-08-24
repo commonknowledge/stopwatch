@@ -1,0 +1,31 @@
+{% load wagtailimages_tags wagtailcore_tags ckwagtail_tags %}
+
+<div class="row mb-4">
+  <div class="col-12 py-3 bg-lightgrey">
+    <h3 class="heading-large mb-2">{{self.title}}</h3>
+    
+    <div class="paragraph-container  max-lines-6 mb-3">
+      {{self.short_description|richtext}}
+    </div>
+    
+    <div>
+      <a class="btn btn-outline-secondary" href="{{self.url}}">
+        {{self.cta}}
+      </a>
+    </div>
+  </div>
+  
+  {% if self.photo %}
+  <div class="col-12">
+    {% image self.photo height-500 class="img-fluid full-bleed mb-3" %}
+  </div>
+  {% endif %}
+  
+  {% if self.description %}
+    <div class="paragraph-container max-lines-6 col-12">
+      <h2 class="text-primary">{{ self.heading }}</h2>
+
+      {{self.description|richtext}}
+    </div>
+  {% endif %}
+</div>

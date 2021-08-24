@@ -1,14 +1,18 @@
+from django.db.models.fields.related import ForeignKey
+from wagtail.core.blocks.field_block import CharBlock, TextBlock
+from stopwatch.models.mixins import ListableMixin
 from django.db.models.fields import URLField
-from django.db.models.fields.related import RelatedField
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
+from wagtail.core.blocks import StructBlock, PageChooserBlock
+from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.models import Orderable, Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.core.fields import RichTextField, StreamField
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseNotFound, HttpResponseRedirect
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, PageChooserPanel, StreamFieldPanel
 from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from taggit.models import Tag, TaggedItemBase
@@ -28,16 +32,62 @@ class ArticleTag(TaggedItemBase):
 class LandingPage(Page):
     template = 'stopwatch/pages/landing.html'
 
-    page_description = models.CharField(max_length=512, default='')
-    landing_video = models.URLField(blank=True, null=True)
+    class Tab(StructBlock):
+        site_area = PageChooserBlock()
+        featured_page = PageChooserBlock(required=False)
+        title = CharBlock(required=False)
+        cta = CharBlock(required=False)
+
+    page_description = models.CharField(
+        max_length=128, default="Research and action fof fair and accountable policing")
+    photo = models.ForeignKey(
+        StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
+    newsflash_category = models.ForeignKey(
+        'stopwatch.Category', null=True, blank=True, on_delete=models.SET_NULL)
+
+    tabs = StreamField([
+        ('tab', Tab()),
+    ], max_num=4, blank=True)
 
     body = StreamField(LANDING_MODULES, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('page_description'),
-        FieldPanel('landing_video'),
+        ImageChooserPanel('photo'),
+        PageChooserPanel('newsflash_category'),
+        StreamFieldPanel('tabs'),
         StreamFieldPanel('body'),
     ]
+
+    @property
+    def tab_data(self):
+        if len(self.tabs.raw_data) == 0:
+            return
+
+        return [
+            {
+                'meta': self.get_landing_tab_data(**tab['value']),
+                'tab': self.tabs[idx]
+            }
+            for idx, tab in enumerate(self.tabs.raw_data)
+        ]
+
+    def get_landing_tab_data(self, site_area, featured_page, title, cta, **kwargs):
+        site_area = Page.objects.get(pk=site_area).specific
+        if featured_page:
+            featured_page = Page.objects.get(pk=featured_page).specific
+
+        elif hasattr(site_area, 'featured_items') and len(site_area.featured_items) > 0:
+            featured_page = site_area.featured_items[0]
+
+        return {
+            'title': title or site_area.title,
+            'url': site_area.url,
+            'photo': featured_page.photo if featured_page else site_area.photo,
+            'heading': featured_page.title if featured_page else None,
+            'cta': cta or site_area.title,
+            'description': featured_page.intro_text if featured_page else None,
+            'short_description': site_area.intro_text,
+        }
 
 
 class ArticleAuthor(Orderable, models.Model):
@@ -51,7 +101,7 @@ class ArticleAuthor(Orderable, models.Model):
     ]
 
 
-class Article(Page):
+class Article(ListableMixin, Page):
     template = 'stopwatch/pages/article.html'
 
     tags = ClusterTaggableManager(through=ArticleTag, blank=True)
@@ -60,7 +110,6 @@ class Article(Page):
     photo = models.ForeignKey(
         StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
 
-    intro_text = models.CharField(max_length=1024, default='', blank=True)
     summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
     body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
 
@@ -70,7 +119,6 @@ class Article(Page):
 
     content_panels = Page.content_panels + [
         ImageChooserPanel('photo'),
-        FieldPanel('intro_text'),
         StreamFieldPanel('summary'),
         StreamFieldPanel('body'),
 
@@ -111,10 +159,12 @@ class Article(Page):
         return list(get_children_of_type(self.get_parent(), Article)[:5])
 
 
-class Form(AbstractEmailForm):
+class Form(ListableMixin, AbstractEmailForm):
     template = 'stopwatch/pages/form.html'
     landing_page_template = 'stopwatch/pages/form_submitted.html'
 
+    photo = ForeignKey(StopwatchImage, null=True,
+                       blank=True, on_delete=models.SET_NULL)
     intro = RichTextField(blank=True)
     thank_you_page = StreamField(CONTENT_MODULES)
 
@@ -122,8 +172,13 @@ class Form(AbstractEmailForm):
         page = ParentalKey('Form', on_delete=models.CASCADE,
                            related_name='form_fields')
 
+    @property
+    def description(self):
+        return self.intro
+
     content_panels = AbstractEmailForm.content_panels + [
         FieldPanel('intro', classname="full"),
+        ImageChooserPanel('photo'),
         InlinePanel('form_fields', label="Form fields"),
         StreamFieldPanel('thank_you_page', classname="full"),
         MultiFieldPanel([
@@ -136,38 +191,48 @@ class Form(AbstractEmailForm):
     ]
 
 
-class Category(ChildListMixin, Page):
+class Category(ListableMixin, ChildListMixin, Page):
     allow_search = True
     template = 'stopwatch/pages/category.html'
 
     class StyleChoices:
         COMPACT = 'COMPACT'
         EXPANDED = 'EXPANDED'
+        HIDDEN = 'HIDDEN'
 
         options = (
             (COMPACT, 'Compact'),
-            (EXPANDED, 'Expanded')
+            (EXPANDED, 'Expanded'),
+            (HIDDEN, 'Non-navigable'),
         )
 
     photo = models.ForeignKey(
         StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
+    description = models.TextField(null=True, blank=True)
     searchable = models.BooleanField(default=False)
     newsflash = models.BooleanField(default=False)
-    style = models.CharField(choices=StyleChoices.options,
-                             max_length=128, default=StyleChoices.COMPACT)
+    navigable = models.BooleanField(default=True)
 
     content_panels = Page.content_panels + [
+        FieldPanel('description'),
         ImageChooserPanel('photo'),
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
-        FieldPanel('style'),
+        FieldPanel('navigable'),
     ]
 
+    def serve(self, request, *args, **kwargs):
+        if not self.navigable:
+            return HttpResponseNotFound()
+
+        return super().serve(request, *args, **kwargs)
+
+    @property
+    def is_routable(self):
+        return self.navigable
+
     def get_page_size(self):
-        if self.style == Category.StyleChoices.COMPACT:
-            return 100
-        else:
-            return 25
+        return 25
 
     @django_cached('stopwatch.models.Category.tags', lambda category: category.get_parent().id)
     def tags(self):
@@ -197,11 +262,11 @@ class Category(ChildListMixin, Page):
         return CategoryFilterForm(data=request.GET, tags=self.tags())
 
     def get_child_list_queryset(self):
-        return get_children_of_type(self, Article).order_by('-first_published_at')
+        return self.get_children().live().specific()
 
     @property
     def featured_items(self):
-        return get_children_of_type(self, Article).filter(photo__isnull=False).order_by('-first_published_at')[:10]
+        return self.get_children().live().order_by('-first_published_at').specific()[:10]
 
 
 class ExternalPage(Page):

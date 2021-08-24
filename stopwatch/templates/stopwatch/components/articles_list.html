@@ -1,35 +1,21 @@
-{% load wagtailimages_tags %}
+{% load wagtailimages_tags wagtailcore_tags %}
 
-<div class="bg-secondary full-bleed block-lg position-relative">
-  <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
-    <h2 class="m-3">
-      {{self.heading}}
-    </h2>
-  </div>
+<h2 class="microcopy text-primary my-5 text-center">
+  {{self.heading}}
+</h2>
 
-  {% image self.site_area.photo height-300 class="img-fluid opacity-50 cover block-lg" %}
-</div>
-
-<div class="full-bleed d-flex flex-direction-row overflow-auto mt-1 bg-white">
+<section class="row mb-3">
   {% for page in qs %}
-    <a class="card card-flush mx-2 mb-3 flex-shrink-0 block-md-square-container" href="{{page.url}}">
-      {% image page.photo width-320 class="card-img-top cover block-md-square" %}
-
-      <div class="card-body mw-100">
-        <h5 class="card-title">{{page.title}}</h5>
-
-        <p class="card-text text-sm">
-          {% if page.intro_text %}
-            {{page.intro_text}}
-          {% else %}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Velit dignissim sodales ut eu sem.
-          {% endif %}
-        </p>
+    <a class="col-12 link-reset " href="{{page.url}}">
+      <div class="bg-white p-3">
+        <h3>{{page.title}}</h3>
+        
+        <div>
+          {{page.intro_text|richtext}}
+        </div>
       </div>
+
+      {% image page.photo width-320 class="card-img-top cover" %}
     </a>
   {% endfor %}
-</div>
-
-<a class="btn d-block btn-primary mt-2" href="{{self.site_area.url}}">
-  View all {{self.site_area.title}}
-</a>
+</section>

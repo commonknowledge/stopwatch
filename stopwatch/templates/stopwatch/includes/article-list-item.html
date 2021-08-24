@@ -3,7 +3,7 @@
 <div class="card card-flush mb-5 flex-shrink-0">
   {% image page.photo width-600 class="card-img-top cover block-md" %}
 
-  <div class="card-body mw-100">
+  <div class="card-body">
     <h2 class="card-title pt-2 whitespace-wrap">{{page.title}}</h2>
     <p class="card-text">
       {% if summary %}
@@ -12,13 +12,6 @@
         {{page.summary}}
       {% elif page.intro_text %}
         {{page.intro_text}}
-      {% else %}
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Feugiat nisl pretium fusce id. Consectetur libero id faucibus nisl. Sagittis purus sit amet volutpat consequat mauris nunc. Congue eu consequat ac felis donec et odio.
-      </p>
-      <p>
-        Mauris rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque. Odio morbi quis commodo odio aenean sed adipiscing diam donec.
-      </p>
       {% endif %}
     </p>
 

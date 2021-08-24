@@ -4,18 +4,18 @@
   {% image self.image height-200 class="img-fluid" %}
 {% endif %}
 
-<h2>
+<h2 class="mb-3">
   {{self.heading}}
 </h2>
 
 {{self.content|richtext}}
 
-<form>
-  <div class="form-group mb-3">
+<form class="position-relative">
+  <div class="form-group mt-3">
     <input type="email" class="form-control" id="emailField" placeholder="Email address" aria-label="Email address">
   </div>
   
-  <button type="submit" class="btn w-100 btn-primary d-block">
-    Submit
+  <button type="submit" class="btn mt-3 w-100 btn-primary d-block">
+    Subscribe
   </button>
 </form>

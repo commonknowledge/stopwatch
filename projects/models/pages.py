@@ -1,3 +1,4 @@
+from stopwatch.models.mixins import ListableMixin
 from django.db.models.fields.related import ForeignKey
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
@@ -14,7 +15,7 @@ from commonknowledge.wagtail.models import ChildListMixin
 from commonknowledge.wagtail.helpers import get_children_of_type
 
 
-class Project(Page):
+class Project(ListableMixin, Page):
     template = 'projects/pages/project.html'
 
     photo = models.ForeignKey(
@@ -59,7 +60,7 @@ class ProjectPage(Page):
         return parent.project
 
 
-class ProjectArticle(ProjectPage):
+class ProjectArticle(ListableMixin, ProjectPage):
     template = 'projects/pages/article.html'
 
     parent_page_types = (Project,)
@@ -92,7 +93,7 @@ class ProjectEvents(ChildListMixin, ProjectPage):
         return EventFilterForm(data=request.GET, themes=self.themes)
 
 
-class EventTheme(ProjectPage):
+class EventTheme(ListableMixin, ProjectPage):
     template = 'projects/pages/article.html'
 
     parent_page_types = (Project,)
@@ -121,7 +122,7 @@ class EventSpeaker(Orderable, models.Model):
     ]
 
 
-class Event(ProjectPage):
+class Event(ListableMixin, ProjectPage):
     template = 'projects/pages/event.html'
     parent_page_types = (ProjectEvents,)
 

@@ -1,4 +1,4 @@
-{% load static wagtailuserbar ckdjango_tags ckwagtail_tags %}
+{% load static wagtailuserbar ckdjango_tags ckwagtail_tags wagtailcore_tags %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -34,7 +34,10 @@
 
         {% block body %}
         {% block header %}
-        <div class="position-sticky top-0 bg-white z-sticky border-2 border-bottom border-primary">
+        <div class="container-fluid microcopy pt-2">
+            {{settings.stopwatch.SiteSettings.tagline|richtext}}
+        </div>
+        <div class="position-sticky top-0 z-sticky border-1 border-bottom border-midgrey">
             <nav class="navbar p-2">
                 <a class="navbar-brand" href="/">
                     <img class="logo" src={% static 'img/logo.png' %} />
@@ -58,14 +61,20 @@
                 <ul class="nav nav-outline flex-column text-uppercase">
                     {% mainmenu %}
                         {% for item in menu.children %}
-                            {% if item.first and not item.leaf %}
+                            {% if not item.leaf %}
                                 {% for child in item.children %}
                                     <ul class="nav nav-item position-relative w-100">
                                         <li class="nav-item w-50">
                                             {% if child.first %}
-                                                <a href={{item.page.url}} class="nav-link text-dark">
-                                                    {{item.page.title}}
-                                                </a>
+                                                {% if child.routable %}
+                                                    <a href={{item.page.url}} class="nav-link text-dark">
+                                                        {{item.page.title}}
+                                                    </a>
+                                                {% else %}
+                                                    <div class="nav-link text-dark">
+                                                        {{item.page.title}}
+                                                    </div>
+                                                {% endif %}
                                             {% endif %}
                                         </li>
                                         <li class="nav-item w-50">
@@ -98,42 +107,51 @@
         {% endblock %}
         {% endblock %}
 
-        <footer class="container bg-panel py-5 fs-6 text">
-            <div class="row gx-2 mb-2">
-                <div class="col-auto">
-                    <a class="btn btn-secondary rounded-circle" aria-label="Facebook">
-                        <i class="bi-facebook"></i>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-secondary rounded-circle" aria-label="Instagram">
-                        <i class="bi-instagram"></i>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-secondary rounded-circle" aria-label="Twitter">
-                        <i class="bi-twitter"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-auto">
-                    <button class="btn btn-primary">
-                        Get in touch
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col d-flex flex-column flex-md-row align-items-start align-items-md-start justify-content-end">
+        {% with site_settings=settings.stopwatch.SiteSettings %}
+            <footer class="bg-dark text-white">
+                <div class="container my-5">
+                    <div class="row mb-2 g-4">
+                        <div class="col-12">
+                            <img class="logo-bottom" src={% static 'img/logo-mono.png' %} />
+                        </div>
 
-                    <div class="mb-3">
-                        <a class="d-block d-md-inline-block me-3" href="#">Terms & Conditions</a>
-                        <a class="d-block d-md-inline-block me-3" href="#">Accessibility</a>
-                        <a class="d-block d-md-inline-block me-3" href="#">Privacy policy</a>
+                        <div class="col-12 text-lg fw-bold">
+                            {% mainmenu_flat %}
+                                {% for item in menu %}
+                                    {% if item.routable %}
+                                        <a href="{{item.page.url}}" class="d-block mb-2">
+                                            {{item.page.title}}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endmainmenu %}
+                        </div>
+
+                        <div class="col-12 microcopy">
+                            <div class="mb-2">{{site_settings.address}}</div>
+                            <div class="mb-2">{{site_settings.phone_number}}</div>
+                            <a href="mailto:{{site_settings.email_contact}}" class="d-block mb-2">
+                                {{site_settings.email_contact}}
+                            </a>
+                        </div>
+
+                        <div class="col-12 microcopy">
+                            {% for link in site_settings.bottom_page_links %}
+                                <a href="{{link.value.page.url}}" class="d-block mb-2">
+                                    {{link.value.label|default:link.value.page.title}}
+                                </a>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12 microcopy">
+                            <div class="mb-2">© Stopwatch {% now "Y" %}</div>
+                            <div class="mb-2">{{site_settings.end_matter}}</div>
+                            <div class="mb-2">Site by <a href="https://commonknowledge.coop">Common Knowledge</a></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
+        {% endwith %}
 
         {% webpack_bundle 'main' %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>

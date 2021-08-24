@@ -25,6 +25,7 @@
 
 .full-bleed {
   width: 100vw;
+  max-width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
@@ -73,7 +74,9 @@
   background-color: $page-theme;
 }
 
-.link-reset {
+.link-reset,
+.link-reset:hover,
+.link-reset:focus {
   color: unset;
   text-decoration: unset;
 }

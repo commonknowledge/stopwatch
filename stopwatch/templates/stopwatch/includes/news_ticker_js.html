@@ -1,0 +1,41 @@
+
+<script
+src="https://cdn.jsdelivr.net/npm/dynamic-marquee@2"
+></script>
+
+<script type="html" id="news-ticker-content">
+  <div class="position-absolute w-100 top-50 start-50 pt-1 translate-middle">
+    <div class="d-none position-relative my-2">
+      {% for item in items %}
+
+        <div class="d-inline-block">
+          {{ item.title }} •&nbsp;
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</script>
+
+<script>
+  (function initNewsTicker() {
+    const Marquee = dynamicMarquee.Marquee;
+    const loop = dynamicMarquee.loop;
+
+    const wrapper = document.getElementById('news-ticker')
+    wrapper.classList.add("bg-dark", "position-relative", "text-white", "text-bold", "py-3", "overflow-hidden")
+    wrapper.innerHTML = document.getElementById('news-ticker-content').innerHTML
+    const innerTicker = wrapper.children[0].children[0]
+
+    const tickerItems = Array.from(innerTicker.children)
+    tickerItems.forEach(child => {
+      child.remove()
+    })
+
+    const marquee = new Marquee(innerTicker, {
+      rate: -100,
+    });
+
+    innerTicker.classList.remove('d-none')
+    loop(marquee, tickerItems.map(item => () => item.cloneNode(true)))
+  })()
+</script>
