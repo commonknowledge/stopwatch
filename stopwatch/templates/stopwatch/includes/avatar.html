@@ -1,9 +1,10 @@
 {% load ckwagtail_tags %}
 
-<div class="d-flex flex-row align-items-center mb-3">
+<div class="d-flex flex-row align-items-stretch mb-3">
   {% avatar_img image=person.photo name=person.name %}
-  <div class="ms-2">
-    <div>{{person.name}}</div>
-    <div class="text-muted">{{person.title}}</div>
+
+  <div class="ms-2 d-flex flex-column justify-content-between">
+    <div class="fw-bold pt-1">{{person.name}}</div>
+    <div class="microcopy pb-1">{{person.title}}</div>
   </div>
 </div>

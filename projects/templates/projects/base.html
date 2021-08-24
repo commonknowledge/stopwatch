@@ -14,24 +14,26 @@
     <header>
       {% image self.project.photo height-500 class="img-fluid" %}
 
-      <div class="bg-page-theme w-100 p-2 pt-4 d-flex flex-column  justify-content-end">
-        <h1>{{self.project.title}}</h1>
+      <div class="bg-page-theme w-100 p-3 pt-4 pb-5 d-flex flex-column justify-content-end streamfield-compact">
+        <h1 class="heading-medium mb-4">{{self.project.title}}</h1>
 
-        <div>
-          {{self.project.description|richtext}}
-        </div>
+        {{self.project.description|richtext}}
       </div>
     </header>
   {% endblock %}
 
   {% if self.project.pages.exists %}
-    <div>
-      {% bs_link class="nav-link" href=self.project.url label='Overview' %}
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        {% bs_link class="btn" href=self.project.url label='Overview' %}
+      </li>
 
       {% for page in self.project.pages %}
-        {% bs_link class="nav-link" href=page.url label=page.title %}
+        <li class="nav-item">
+          {% bs_link class="btn" href=page.url label=page.title %}
+        </li>
       {% endfor %}
-    </div>
+    </ul>
   {% endif %}
 
   {% block project_content %}

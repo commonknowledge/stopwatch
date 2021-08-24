@@ -3,35 +3,35 @@
 
 {% block project_content %}
 
-<main class="my-4 use-page-theme container streamfield">
+<main class="my-5 use-page-theme container streamfield">
   {% include_block self.body %}
 </main>
 
 {% if self.themes.exists %}
-<div class="microcopy text-center my-3">
-  Event themes
-</div>
-
-<div class="container-fluid">
-  <div class="row g-3">
-    {% for theme in self.themes %}
-      <div class="col-md-6">
-        <a href={{theme.url}} class="card">
-          <div class="microcopy card-body d-flex justify-content-between flex-row">
-            <span>{{theme.title}}</span>
-            <div>
-              <span class="color-circle" style="background-color: {{theme.color}};"></span>
-            </div>
-          </div>
-
-          <div class="card-body">
-            {{theme.description}}
-          </div>
-        </a>
-      </div>
-    {% endfor %}
+  <div class="microcopy text-center py-5 border-top border-1 border-midgrey">
+    Event themes
   </div>
-</div>
+
+  <div class="container-fluid mb-5">
+    <div class="row g-3">
+      {% for theme in self.themes %}
+        <div class="col-md-6">
+          <a href={{theme.url}} class="card">
+            <div class="microcopy card-body d-flex justify-content-between flex-row">
+              <span>{{theme.title}}</span>
+              <div>
+                <span class="color-circle" style="background-color: {{theme.color}};"></span>
+              </div>
+            </div>
+
+            <div class="card-body">
+              {{theme.description}}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endif %}
 
 {% endblock project_content %}

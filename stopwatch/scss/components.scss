@@ -19,7 +19,7 @@
 }
 
 .block-lg {
-  height: 20rem;
+  height: 500px;
 }
 
 .block-md {
@@ -45,6 +45,7 @@
 }
 
 .avatar {
+  filter: grayscale(0.9);
   border-radius: 100%;
   width: 3rem;
   height: 3rem;
@@ -69,6 +70,16 @@
 .streamfield {
   > * {
     margin-bottom: map-get($spacers, 5);
+  }
+  .block-text > * {
+    margin-bottom: map-get($spacers, 4);
+  }
+}
+
+.streamfield-compact {
+  > *,
+  .block-text > * {
+    margin-bottom: map-get($spacers, 4);
   }
 }
 

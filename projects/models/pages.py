@@ -129,7 +129,7 @@ class Event(ListableMixin, ProjectPage):
     photo = models.ForeignKey(
         'stopwatch.StopwatchImage', null=True, blank=True, on_delete=models.SET_NULL)
 
-    intro_text = RichTextField(max_length=1024, default='', blank=True)
+    summary = RichTextField(max_length=1024, default='', blank=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     theme = models.ForeignKey(
@@ -152,7 +152,7 @@ class Event(ListableMixin, ProjectPage):
             ImageChooserPanel('photo'),
             PageChooserPanel('theme'),
             RichTextFieldPanel('registration_page'),
-            RichTextFieldPanel('intro_text'),
+            RichTextFieldPanel('summary'),
         ], 'Basics'),
 
         MultiFieldPanel([
