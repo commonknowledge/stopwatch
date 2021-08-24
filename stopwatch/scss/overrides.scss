@@ -97,16 +97,6 @@ h4 {
   background-color: $light;
 }
 
-.text-sm {
-  font-size: 14px;
-  line-height: 140%;
-}
-
-.text-lg {
-  font-size: 18px;
-  line-height: 140%;
-}
-
 .nav-link {
   font-weight: bold;
   color: $secondary;
@@ -115,6 +105,16 @@ h4 {
   &.active {
     color: $dark;
   }
+}
+
+.text-sm {
+  font-size: 14px;
+  line-height: 140%;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 140%;
 }
 
 a.card {
@@ -147,19 +147,35 @@ a.card {
 }
 
 .nav-outline {
-  border-top: 2px solid $secondary;
-
+  button {
+    border: none;
+  }
   li {
+    border-top: 1px solid $midgrey;
+
     flex-grow: 0;
     flex-shrink: 0;
     line-height: 1rem;
-    border-bottom: 2px solid $secondary;
     padding: map-get($spacers, 2);
-
-    &:not(:last-child) {
-      border-right: 2px solid $secondary;
-    }
   }
+
+  li > [aria-expanded="false"] > .bi-chevron-down {
+    transform: rotate(180deg);
+  }
+
+  li .bi-chevron-down {
+    display: inline-block;
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: inherit;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
 }
 
 .use-page-theme {
@@ -199,4 +215,13 @@ a.card {
     color: $dark;
     font-weight: 500;
   }
+}
+
+input.btn-check + label.btn {
+  border: 1px solid $lightgrey;
+}
+
+input.btn-check:checked + label.btn {
+  background: $lightred;
+  border: 1px solid $primary;
 }

@@ -241,7 +241,7 @@ class Category(ListableMixin, ChildListMixin, Page):
         '''
 
         all_tags = set()
-        for article in self.get_child_list_queryset().iterator():
+        for article in get_children_of_type(self, Article).iterator():
             for tag in article.tags.all():
                 all_tags.add(tag.id)
 
@@ -261,8 +261,14 @@ class Category(ListableMixin, ChildListMixin, Page):
         from stopwatch.forms import CategoryFilterForm
         return CategoryFilterForm(data=request.GET, tags=self.tags())
 
-    def get_child_list_queryset(self):
-        return self.get_children().live().specific()
+    def get_child_list_queryset(self, request):
+        filters = self.get_filters(request)
+
+        if filters and 'tags' in filters:
+            # Only articles can be filtered by tag
+            return get_children_of_type(self, Article)
+        else:
+            return self.get_children().live().specific()
 
     @property
     def featured_items(self):

@@ -81,7 +81,7 @@ class ProjectEvents(ChildListMixin, ProjectPage):
                 'theme__slug': theme
             }
 
-    def get_child_list_queryset(self):
+    def get_child_list_queryset(self, request):
         return get_children_of_type(self, Event)
 
     @property

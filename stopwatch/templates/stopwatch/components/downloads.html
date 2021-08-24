@@ -4,11 +4,11 @@
   {% if value.title %}
   <h2>{{value.title}}</h2>
   {% else %}
-  <h2>Downloads</h2>
+  <h2 class="mb-3">Downloads</h2>
   {% endif %}
 
   {% for download in value.documents %}
-    <a href="{{download.url}}" download class="p-2 mt-2 d-block border border-midgrey link-reset microcopy">
+    <a href="{{download.url}}" download class="p-3 mt-2 d-block border border-midgrey link-reset microcopy text-truncate">
       {{download.title}}
     </a>
   {% endfor %}

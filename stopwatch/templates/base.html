@@ -57,36 +57,39 @@
                 <input name="query" class="form-control w-100" aria-label="Search">
             </form>
             
-            <div class="collapse" id="navbarToggleMenu">
-                <ul class="nav nav-outline flex-column text-uppercase">
+            <div class="collapse bg-light" id="navbarToggleMenu">
+                <ul class="nav nav-outline flex-column text-lg">
                     {% mainmenu %}
                         {% for item in menu.children %}
                             {% if not item.leaf %}
-                                {% for child in item.children %}
-                                    <ul class="nav nav-item position-relative w-100">
-                                        <li class="nav-item w-50">
-                                            {% if child.first %}
-                                                {% if child.routable %}
-                                                    <a href={{item.page.url}} class="nav-link text-dark">
-                                                        {{item.page.title}}
-                                                    </a>
-                                                {% else %}
-                                                    <div class="nav-link text-dark">
-                                                        {{item.page.title}}
-                                                    </div>
-                                                {% endif %}
-                                            {% endif %}
-                                        </li>
-                                        <li class="nav-item w-50">
-                                            <a class="nav-link text-sm text-muted" href="{{child.page.url}}">
+                                <li class="nav-item">
+                                    <a
+                                        href="#menu-{{item.page.url|slugify}}"
+                                        role="button"
+                                        class="nav-link navbar-toggler text-lg"
+                                        data-bs-toggle="collapse"
+                                        aria-controls="menu-{{item.page.url|slugify}}"
+                                        aria-expanded="false"
+                                        aria-label="Toggle {{item.page.title}}"
+                                    >
+                                        {{item.page.title}} <i class="ms-2 bi-chevron-down text-sm"></i>
+                                    </a>
+                                </li>
+                                <ul
+                                    class="collapse nav nav-item flex-column position-relative"
+                                    id="menu-{{item.page.url|slugify}}"
+                                >
+                                    {% for child in item.children %}
+                                        <li class="nav-item bg-white w-100">
+                                            <a class="nav-link text-sm text-muted text-lg" href="{{child.page.url}}">
                                                 {{child.page.title}}
                                             </a>
                                         </li>
-                                    </ul>
-                                {% endfor %}
+                                    {% endfor %}
+                                </ul>
                             {% else %}
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" href="{{item.page.url}}">
+                                    <a class="nav-link text-sm text-lg" href="{{item.page.url}}">
                                         {{item.page.title}}
                                     </a>
                                 </li>

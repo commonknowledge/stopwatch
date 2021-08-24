@@ -11,6 +11,7 @@ $lightgrey: #dbdbdb;
 $darkgrey: #505050;
 $primary-hover-light: $darkgrey;
 $alert: #ffb7b7;
+$lightred: #ffcccc;
 $brand1: #e10000;
 $midgrey: #a3a3a3;
 $page-theme: var(--page-theme, $brand1);
@@ -37,6 +38,8 @@ $font-size-sm: 0.75rem;
 // Buttons
 $input-btn-font-family: $font-family-monospace;
 $input-btn-font-size: 14px;
+$input-btn-padding-y: 0.5rem;
+$input-btn-padding-x: 1.25rem;
 $btn-font-weight: 500;
 
 // Card

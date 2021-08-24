@@ -6,9 +6,9 @@
   <h1 class="heading-medium">{{total_count}} results for “{{search_query}}’</h1>
 </header>
 
-<main class="container mb-4"  {% infinite_scroll_container item_selector='.card' %}>
+<main class="container mb-4"  {% infinite_scroll_container %}>
   {% for result in search_results %}
-    {% include "stopwatch/includes/article-list-item.html" with page=result.page.specific summary=result.page.specific.intro_text %}
+    {% include "stopwatch/includes/article_list_item.html" with page=result.page.specific summary=result.page.specific.intro_text %}
   {% endfor %}
 </main>
 {% endblock %}

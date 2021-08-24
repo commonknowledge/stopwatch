@@ -72,6 +72,25 @@
   }
 }
 
+.article-streamfield {
+  h2 {
+    @include heading-small;
+    color: $darkgrey;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    @include microcopy;
+  }
+
+  h2:not(:first-child),
+  h3:not(:first-child) {
+    margin-top: map-get($spacers, 5);
+  }
+}
+
 .color-circle {
   position: relative;
   top: -1px;
@@ -101,5 +120,12 @@
     &.active {
       background: $lightgrey;
     }
+  }
+}
+
+.form-unraised {
+  button,
+  select {
+    background-color: $light;
   }
 }

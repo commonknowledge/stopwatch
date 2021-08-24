@@ -79,6 +79,11 @@ class SiteSettings(BaseSetting):
     bottom_page_links = StreamField(
         [('link', BottomLink())], blank=True, min_num=0, max_num=4)
 
+    donate_page = models.ForeignKey(
+        Page, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    post_newsletter_page = models.ForeignKey(
+        Page, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+
     standard_donation_request = RichTextField(
         default='We aim to address excess and disproportionate stop and search, promote best practice and ensure fair, effective policing for all.')
     standard_mailinglist_request = RichTextField(
@@ -123,7 +128,7 @@ class SiteSettings(BaseSetting):
         return {
             'heading': 'Support our work',
             'content': self.standard_donation_request,
-            'target': self.donation_page,
+            'target': self.donate_page,
         }
 
     @property
@@ -131,6 +136,7 @@ class SiteSettings(BaseSetting):
         return {
             'heading': 'Sign up to our newsletter',
             'content': self.standard_mailinglist_request,
+            'target': self.post_newsletter_page
         }
 
 

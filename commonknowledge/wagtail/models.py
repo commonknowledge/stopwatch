@@ -43,7 +43,7 @@ class ChildListMixin:
             sort = self.get_sort(request)
             return qs.search(q, order_by_relevance=sort is None)
 
-    def get_child_list_queryset(self):
+    def get_child_list_queryset(self, request):
         return self.get_children().live().specific()
 
     def get_page_size(self):
@@ -57,7 +57,7 @@ class ChildListMixin:
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        qs = self.get_child_list_queryset()
+        qs = self.get_child_list_queryset(request)
         filter = self.get_filters(request)
         sort = self.get_sort(request)
 

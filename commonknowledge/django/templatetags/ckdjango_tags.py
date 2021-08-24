@@ -43,7 +43,7 @@ def infinite_scroll_container(context, item_selector='iscroll_item', page=None, 
 
 
 @register.simple_tag
-def filter_toggles(field, all_label='All', label_class="btn btn-outline-secondary", **kwargs):
+def filter_toggles(field, all_label='All', label_class="btn", **kwargs):
     classname = kwargs.pop('class', "btn-check")
 
     opts = format_html_join(

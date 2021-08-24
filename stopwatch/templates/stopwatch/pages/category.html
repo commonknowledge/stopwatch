@@ -3,44 +3,54 @@
 
 {% block content %}
 
-<header class="position-relative block-lg bg-panel border-2 border-primary">
-  <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
-    <h1 class="px-3 ">{{self.title}}</h1>
-  </div>
-  
-  {% image self.photo height-600 class="img-fluid opacity-50 block-lg cover" %}
-</header>
-
 {% if self.newsflash %}
-  <div id="news-ticker">
-  </div>
+<div id="news-ticker">
+</div>
 {% endif %}
+
+<header class="position-relative container">
+  {% if image %}
+    <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
+      <h1 class="px-3 ">{{self.title}}</h1>
+    </div>
+    
+    {% image self.photo height-600 class="img-fluid opacity-50 block-lg full-bleed cover" %}
+  {% else %}
+    <h1 class="mt-5 mb-3">{{self.title}}</h1>
+  {% endif %}
+
+  {% if self.description %}
+    <div class="heading-medium mb-5">
+      {{self.description}}
+    </div>
+  {% endif %}
+</header>
 
 <div class="container">
   <main class="mt-2">
-    <form data-filter-form method="GET">
-      {% if self.tags %}
-        <div class="row">
-          <h3 class="microcopy">
-            Filters
-          </h3>
+    <form data-filter-form method="GET" class="row g-3 form-unraised mb-3">
+      <div class="col-12">
+        {% filter_menu field=filter_form.sort %}
+        
+        {% if self.searchable %}
+          <input class="form-control" name="query" aria-label="Search query" value="{{filter_form.query.value|default:""}}">
+        {% endif %}
+      </div>
 
-          {% filter_toggles field=filter_form.theme %}
+      {% if self.tags %}
+        <div class="col-12 overflow-auto">
+          {% filter_toggles field=filter_form.theme label_class="btn me-2" %}
         </div>
       {% endif %}
-
-      <div class="row">
-        {% filter_menu field=filter_form.sort %}
-
-        <input class="form-control" name="query" aria-label="Search query" value="{{filter_form.query.value}}">
-      </div>
     </form>
   </div>
 
-  <div class="containers bg-white mb-4" {% infinite_scroll_container item_selector='.card' %}>
-    {% for page in child_list_page %}
-      {% include "stopwatch/includes/article-list-item.html" with page=page %}
-    {% endfor %}
+  <div class="container mb-4" {% infinite_scroll_container %}>
+    <div class="row g-3">
+      {% for page in child_list_page %}
+        {% include "stopwatch/includes/article_list_item.html" with page=page %}
+      {% endfor %}
+    </div>
   </div>
 </main>
 
