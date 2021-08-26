@@ -4,19 +4,22 @@
 {% block content %}
 
 {% if self.photo %}
-{% image self.photo height-500 class="img-fluid" %}
+{% image self.photo height-500 class="block-lg w-100 cover" %}
 {% endif %}
 
-<header class="container my-5">
-  <h1>{{self.title}}</h1>
+<header class="container container-outline py-5">
+  <div class="container-narrow">
+    <h1>{{self.title}}</h1>
 
-  <div class="heading-medium mt-4 text-darkgrey">
-    {{self.intro_text|richtext}}
+    <div class="heading-medium mt-4 text-darkgrey">
+      {{self.intro_text|richtext}}
+    </div>
   </div>
 </header>
 
-<main class="container streamfield article-streamfield">
-  {% include_block self.body %}
+<main class="container container-outline streamfield article-streamfield pb-5">
+  <div class="container-narrow">
+    {% include_block self.body %}
+  </div>
 </main>
-
 {% endblock content %}

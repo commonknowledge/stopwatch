@@ -8,7 +8,7 @@
 </div>
 {% endif %}
 
-<header class="position-relative container">
+<header class="position-relative container container-outline">
   {% if image %}
     <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
       <h1 class="px-3 ">{{self.title}}</h1>
@@ -26,7 +26,7 @@
   {% endif %}
 </header>
 
-<div class="container">
+<div class="container container-outline">
   <main class="mt-2">
     <form data-filter-form method="GET" class="row g-3 form-unraised mb-3">
       <div class="col-8">
@@ -45,8 +45,8 @@
     </form>
   </div>
 
-  <div class="container mb-4" {% infinite_scroll_container %}>
-    <div class="row g-3">
+  <div class="container container-outline pb-4">
+    <div class="row g-3" {% infinite_scroll_container %}>
       {% for page in child_list_page %}
         {% include "stopwatch/includes/article_list_item.html" with page=page %}
       {% endfor %}

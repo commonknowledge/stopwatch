@@ -3,8 +3,10 @@
 
 {% block project_content %}
 
-<main class="my-5 use-page-theme container streamfield">
-  {% include_block self.body %}
+<main class="py-5 project-theme container container-outline">
+  <div class="container-narrow streamfield">
+    {% include_block self.body %}
+  </div>
 </main>
 
 {% if self.themes.exists %}
@@ -15,7 +17,7 @@
   <div class="container-fluid mb-5">
     <div class="row g-3">
       {% for theme in self.themes %}
-        <div class="col-md-6">
+        <div class="col-8 col-md-4">
           <a href={{theme.url}} class="card">
             <div class="microcopy card-body d-flex justify-content-between flex-row">
               <span>{{theme.title}}</span>

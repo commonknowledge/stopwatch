@@ -3,7 +3,7 @@
 
 {% block project_content %}
 
-<main class="my-5 use-page-theme container streamfield">
+<main class="py-5 project-theme container container-outline streamfield">
   <div class="row">
     <div class="col" {% infinite_scroll_container %}>
       <h2>Events</h2>
@@ -17,7 +17,7 @@
       </form>
 
       {% for event in child_list_page %}
-        <article class="p-3 bg-white iscroll_item card-flush mb-3">
+        <article class="col-8 col-md-4 p-3 bg-white iscroll_item card-flush mb-3">
           <div class="mb-3 d-flex flex-direction-column justify-content-between microcopy">
             <div class="me-2 text-nowrap">
               <span class="color-circle me-1" style="background-color: {{event.theme.color}};"></span>

@@ -26,7 +26,7 @@ def webpack_bundle(name, type='js'):
 
 
 @register.simple_tag(takes_context=True)
-def infinite_scroll_container(context, item_selector='iscroll_item', page=None, **kwargs):
+def infinite_scroll_container(context, item_selector='.iscroll_item', page=None, **kwargs):
     request: HttpRequest = context.get('request')
 
     params = request.GET.dict()

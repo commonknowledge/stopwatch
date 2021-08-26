@@ -4,10 +4,10 @@
 {% block content %}
 
 {% if self.photo %}
-{% image self.photo height-500 class="img-fluid" %}
+{% image self.photo height-500 class="block-lg w-100 cover" %}
 {% endif %}
 
-<header class="container my-5">
+<header class="container container-outline py-5">
   <h1>{{self.title}}</h1>
 
   <div class="heading-medium mt-4 text-darkgrey">
@@ -15,12 +15,14 @@
   </div>
 </header>
 
-<main class="container streamfield article-streamfield">
-  {% include_block self.body %}
+<main class="container container-outline streamfield article-streamfield">
+  <div class="container-narrow">
+    {% include_block self.body %}
+  </div>
 </main>
 
 {% if self.authors %}
-  <div class="container mb-5">
+  <div class="container container-outline pb-5">
     <h2 class="microcopy text-darkgrey">About the author</h2>
   
     {% for author in self.authors %}
@@ -36,9 +38,9 @@
 {% endif %}
 
 {% if self.related_articles %}
-  <div class="container py-5 border-top border-1 border-midgrey">
+  <div class="container container-outline py-5 border-top border-1 border-midgrey">
     <h2 class="heading-small text-darkgrey mb-4 pb-3 border-bottom border-1 border-primary">More articles</h2>
-
+  
     <div class="row g-3">
       {% for article in self.related_articles %}
         {% include "stopwatch/includes/article_list_item.html" with page=article %}
@@ -49,11 +51,16 @@
 {% endif %}
 
 {% with site_settings=settings.stopwatch.SiteSettings %}
-  <div class="container mb-5">
-    {% include "stopwatch/components/cta.html" with self=site_settings.donate_block only %}
-  </div>
-  <div class="container mb-5">
-    {% include "stopwatch/components/newsletter_signup.html" with self=site_settings.mailing_list_block only %}
+  <div class="container container-outline pb-5">
+    <div class="row g-3">
+      <div class="col-8 col-md-4">
+        {% include "stopwatch/components/cta.html" with self=site_settings.donate_block only %}
+      </div>
+
+      <div class="col-8 col-md-4">
+        {% include "stopwatch/components/newsletter_signup.html" with self=site_settings.mailing_list_block only %}
+      </div>
+    </div>
   </div>
 {% endwith %}
 
