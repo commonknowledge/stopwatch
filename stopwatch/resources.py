@@ -78,7 +78,8 @@ class ArticleResource(resources.ModelResource):
                   'intro_text', 'body', 'photo', 'summary', 'slug', 'first_published_at')
         import_id_fields = ('import_ref',)
 
-    first_published_at = fields.Field(widget=TimestampWidget())
+    first_published_at = fields.Field(widget=TimestampWidget(
+    ), attribute='first_published_at', column_name='first_published_at')
 
     photo = fields.Field(widget=ImageWidget(),
                          attribute='photo', column_name='photo')
@@ -102,7 +103,7 @@ class ArticleResource(resources.ModelResource):
         super().after_import(dataset, result, *args, **kwargs)
 
     def before_save_instance(self, instance, *args, **kwargs):
-        if instance is not None:
+        if instance is not None and instance.get_parent() is None:
             self.parent.add_child(instance=instance)
 
     def import_field(self, field, obj, data, *args):
