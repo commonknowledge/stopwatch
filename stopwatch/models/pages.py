@@ -31,6 +31,7 @@ class ArticleTag(TaggedItemBase):
 
 class LandingPage(Page):
     template = 'stopwatch/pages/landing.html'
+    parent_page_types = ('wagtailcore.Page',)
 
     class Tab(StructBlock):
         site_area = PageChooserBlock()
@@ -275,8 +276,11 @@ class Category(ListableMixin, ChildListMixin, Page):
         return self.get_children().live().order_by('-first_published_at').specific()[:10]
 
 
-class ExternalPage(Page):
+class ExternalPage(ListableMixin, Page):
     target_url = URLField()
+    description = RichTextField(blank=True, null=True)
+    photo = models.ForeignKey(
+        StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
 
     content_panels = Page.content_panels + [
         FieldPanel('target_url'),

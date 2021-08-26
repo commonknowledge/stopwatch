@@ -17,6 +17,7 @@ from commonknowledge.wagtail.helpers import get_children_of_type
 
 class Project(ListableMixin, Page):
     template = 'projects/pages/project.html'
+    parent_page_types = ('stopwatch.Category',)
 
     photo = models.ForeignKey(
         'stopwatch.StopwatchImage', null=True, blank=True, on_delete=models.SET_NULL)
