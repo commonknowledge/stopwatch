@@ -19,7 +19,11 @@
 }
 
 .block-lg {
-  height: 500px;
+  height: 300px;
+
+  @include media-breakpoint-up(lg) {
+    height: 500px;
+  }
 }
 
 .block-md {
@@ -138,5 +142,37 @@
   button,
   select {
     background-color: $light;
+  }
+}
+
+.text-reset {
+  font-family: $font-family-sans-serif;
+  text-decoration: none;
+  text-align: start;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: normal;
+}
+
+.btn + .tab-active-state {
+  transition: $btn-transition;
+}
+
+.btn.active + .tab-active-state {
+  background-color: $lightgrey;
+}
+
+.block-cta,
+.block-newsletter_signup {
+  @include media-breakpoint-up(md) {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+
+.container-outline {
+  @include media-breakpoint-up(md) {
+    border: 0px solid $midgrey;
+    border-width: 0px 1px;
   }
 }

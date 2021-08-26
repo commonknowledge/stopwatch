@@ -7,42 +7,69 @@
   <div id="news-ticker"></div>
 {% endif %}
 
-<header class="position-relative bg-panel border-bottom border-1 border-midgrey">
-  <div class="position-absolute container-fluid py-3 z-2 text-white">
-    <h1>
-      {{self.page_description}}
-    </h1>
+<header class="position-relative bg-panel">
+  <div class="position-absolute w-100 py-3 py-md-5 z-2 text-white">
+    <div class="container">
+      <h1>
+        {{self.page_description}}
+      </h1>
+    </div>
   </div>
 
   <div>
     {% if self.photo %}
-      {% image self.photo height-500 class="img-fluid" %}
+      {% image self.photo width-1000 class="img-fluid block-lg w-100" %}
     {% endif %}
   </div>
 </header>
 
 {% if self.tab_data %}
-  <ul class="nav nav-tabs full-bleed" id="tabs" role="tablist">
+  <ul class="nav nav-tabs container container-outline" id="tabs" role="tablist">
     {% for item in self.tab_data %}
       <li class="nav-item" role="presentation">
-        <button class="btn {% if forloop.first %} active{% endif %}" id="{{item.meta.title|slugify}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.meta.title|slugify}}-content" type="button" role="tab" aria-controls="{{item.meta.title|slugify}}-content" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
-          {{item.meta.title}}
-        </button>
+        <a
+          class="btn{% if forloop.first %} active{% endif %}"
+          id="{{item.meta.title|slugify}}-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#{{item.meta.title|slugify}}-content"
+          type="button"
+          role="tab"
+          aria-controls="{{item.meta.title|slugify}}-content"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        >
+          <span class="d-md-none">
+            {{item.meta.title}}
+          </span>
+
+          <div class="d-none d-md-block text-reset">
+            <h2>{{item.meta.title}}</h2>
+
+            {{item.meta.short_description|richtext}}
+          </div>
+        </a>
+
+        <div class="d-none d-md-block tab-active-state p-3">
+          <a class="btn btn-outline-secondary" href="{{item.meta.url}}">
+            {{item.meta.cta}}
+          </a>
+        </div>
       </li>
     {% endfor %}
   </ul>
 
-  <div class="tab-content full-bleed border-bottom border-1 border-midgrey" id="content">
+  <div class="tab-content" id="content">
     {% for item in self.tab_data %}
-      <div class="tab-pane container fade show{% if forloop.first %} active{% endif %}" id="{{item.meta.title|slugify}}-content" role="tabpanel" aria-labelledby="{{item.meta.title|slugify}}-tab">
+      <div class="tab-pane container border-bottom border-1 border-midgrey container-outline fade show{% if forloop.first %} active{% endif %}" id="{{item.meta.title|slugify}}-content" role="tabpanel" aria-labelledby="{{item.meta.title|slugify}}-tab">
         {% include "stopwatch/includes/landing_tab.html" with self=item.meta only %}
       </div>
     {% endfor %}
   </div>
 {% endif %}
 
-<main class="container streamfield">
-  {% include_block self.body %}
+<main class="container container-outline mb-5">
+  <div class="row g-3 gx-md-4 gy-md-5">
+    {% include_block self.body %}
+  </div>
 </main>
 
 {% endblock content %}

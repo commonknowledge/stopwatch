@@ -11,11 +11,15 @@
 {{self.content|richtext}}
 
 <form class="position-relative">
-  <div class="form-group mt-3">
+  <div class="input-group mt-3">
     <input type="email" class="form-control" id="emailField" placeholder="Email address" aria-label="Email address">
+
+    <button type="submit" class="btn btn-secondary d-none d-md-inline-block">
+      Subscribe
+    </button>
   </div>
   
-  <button type="submit" class="btn mt-3 w-100 btn-primary d-block">
+  <button type="submit" class="btn mt-3 w-100 btn-primary d-block d-md-none">
     Subscribe
   </button>
 </form>

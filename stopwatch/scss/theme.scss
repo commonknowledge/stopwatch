@@ -25,6 +25,9 @@ $custom-colors: (
 );
 $dark: #333333;
 
+// Grid
+$grid-columns: 8 !default;
+
 // Fonts
 $font-family-sans-serif: "Public Sans", system-ui, -apple-system, "Segoe UI",
   Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,

@@ -35,6 +35,11 @@ p:last-child {
   font-weight: bold;
   line-height: 110%;
   font-size: 36px;
+  letter-spacing: -0.05em;
+
+  @include media-breakpoint-up(md) {
+    font-size: 72px;
+  }
 }
 
 @mixin heading-medium {
@@ -188,6 +193,12 @@ a.card {
 .btn,
 .form-control {
   text-transform: uppercase;
+}
+
+.btn {
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .embed {

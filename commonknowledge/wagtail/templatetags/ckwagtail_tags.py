@@ -45,7 +45,7 @@ class MainMenuNode (template.Node):
         return children
 
     def build_tree(self, page, index=0, depth=0):
-        qs = page.get_children().in_menu()
+        qs = page.get_children().in_menu().specific()
         return {
             'index': index,
             'first': index == 0,

@@ -80,3 +80,9 @@
   color: unset;
   text-decoration: unset;
 }
+
+.position-md-static {
+  @include media-breakpoint-up(md) {
+    position: static !important;
+  }
+}

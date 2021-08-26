@@ -1,4 +1,4 @@
-{% load static wagtailuserbar ckdjango_tags ckwagtail_tags wagtailcore_tags %}
+{% load static wagtailuserbar ckdjango_tags ckwagtail_tags ckbootstrap_tags wagtailcore_tags %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -34,21 +34,47 @@
 
         {% block body %}
         {% block header %}
-        <div class="container-fluid microcopy pt-2">
+        <div class="container container-outline microcopy pt-2">
             {{settings.stopwatch.SiteSettings.tagline|richtext}}
         </div>
-        <div class="position-sticky top-0 z-sticky border-1 border-bottom border-midgrey">
-            <nav class="navbar p-2">
+
+        <div class="position-sticky position-md-static container container-outline top-0 z-sticky">
+            <nav class="navbar">
                 <a class="navbar-brand" href="/">
                     <img class="logo" src={% static 'img/logo.png' %} />
                 </a>
 
                 <span class="flex-grow-1"></span>
 
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#searchToggle" aria-controls="searchToggle" aria-expanded="false" aria-label="Toggle search">
+                <div class="flex-row d-none d-md-flex">
+                    {% mainmenu %}
+                        {% for item in menu.children %}
+                            {% if not item.leaf %}
+                                <div class="nav-item dropdown">
+                                    <a class="fw-bold dropdown-toggle ms-4" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{item.page.title}}</a>
+
+                                    <ul class="dropdown-menu">
+                                        {% for child in item.children %}
+                                            <li>
+                                                {% bs_link class="dropdown-item fw-bold" href=child.page.url label=child.page.title %}
+                                            </li>
+
+                                        {% endfor %}
+                                    </div>
+                                </li>
+                            {% else %}
+                                {% bs_link class="nav-item ms-4 fw-bold" href=item.page.url label=item.page.title %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endmainmenu %}
+
+                </div>
+
+              <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#searchToggle" aria-controls="searchToggle" aria-expanded="false" aria-label="Toggle search">
                 <i class="bi bi-search"></i>
               </button>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleMenu" aria-controls="navbarToggleMenu" aria-expanded="false" aria-label="Toggle navigation">
+
+              <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleMenu" aria-controls="navbarToggleMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list"></i>
               </button>
             </nav>
@@ -57,7 +83,7 @@
                 <input name="query" class="form-control w-100" aria-label="Search">
             </form>
             
-            <div class="collapse bg-light" id="navbarToggleMenu">
+            <div class="collapse bg-light d-md-none" id="navbarToggleMenu">
                 <ul class="nav nav-outline flex-column text-lg">
                     {% mainmenu %}
                         {% for item in menu.children %}
@@ -113,24 +139,35 @@
         {% with site_settings=settings.stopwatch.SiteSettings %}
             <footer class="bg-dark text-white">
                 <div class="container my-5">
-                    <div class="row mb-2 g-4">
-                        <div class="col-12">
+                    <div class="row mb-4 g-4">
+                        <div class="col-8 col-md-4">
                             <img class="logo-bottom" src={% static 'img/logo-mono.png' %} />
                         </div>
 
-                        <div class="col-12 text-lg fw-bold">
-                            {% mainmenu_flat %}
-                                {% for item in menu %}
+                        {% mainmenu_flat %}
+                            <div class="col-8 col-md-2 text-lg fw-bold">
+                                {% for item in menu|splitgroup:"2,0" %}
                                     {% if item.routable %}
                                         <a href="{{item.page.url}}" class="d-block mb-2">
                                             {{item.page.title}}
                                         </a>
                                     {% endif %}
                                 {% endfor %}
-                            {% endmainmenu %}
-                        </div>
+                            </div>
+                            <div class="col-8 col-md-2 text-lg fw-bold">
+                                {% for item in menu|splitgroup:"2,1" %}
+                                    {% if item.routable %}
+                                        <a href="{{item.page.url}}" class="d-block mb-2">
+                                            {{item.page.title}}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endmainmenu %}
+                    </div>
 
-                        <div class="col-12 microcopy">
+                    <div class="row mb-2 g-4">
+                        <div class="col-8 col-md-4 microcopy">
                             <div class="mb-2">{{site_settings.address}}</div>
                             <div class="mb-2">{{site_settings.phone_number}}</div>
                             <a href="mailto:{{site_settings.email_contact}}" class="d-block mb-2">
@@ -138,7 +175,7 @@
                             </a>
                         </div>
 
-                        <div class="col-12 microcopy">
+                        <div class="col-8 col-md-2 microcopy">
                             {% for link in site_settings.bottom_page_links %}
                                 <a href="{{link.value.page.url}}" class="d-block mb-2">
                                     {{link.value.label|default:link.value.page.title}}
@@ -146,7 +183,7 @@
                             {% endfor %}
                         </div>
 
-                        <div class="col-12 microcopy">
+                        <div class="col-8 col-md-2 microcopy">
                             <div class="mb-2">© Stopwatch {% now "Y" %}</div>
                             <div class="mb-2">{{site_settings.end_matter}}</div>
                             <div class="mb-2">Site by <a href="https://commonknowledge.coop">Common Knowledge</a></div>

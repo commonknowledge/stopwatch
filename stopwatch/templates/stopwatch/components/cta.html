@@ -15,12 +15,12 @@
       {% csrf_token %}
       {% bootstrap_form form show_label=False %}
   
-      <button type="submit" class="btn btn-primary w-100">
+      <button type="submit" class="btn btn-primary w-100 w-md-auto">
         {{self.target.title}}
       </button>
     </form>
   {% else %}
-    <a href="{{self.target.url}}" class="btn btn-primary d-block mt-3">
+    <a href="{{self.target.url}}" class="btn btn-primary d-block d-md-inline-block mt-3">
       {{self.target.title}}
     </a>
   {% endif %}  

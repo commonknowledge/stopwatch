@@ -1,5 +1,6 @@
 import json
 from urllib import parse
+from math import ceil
 
 from django import template
 from django.conf import settings
@@ -117,16 +118,15 @@ def bind_filter_form(**kwargs):
     return kwargs
 
 
-def _href_with_qs(context, params=None):
-    if params is None:
-        query = {}
-        params = context
-    else:
-        request: HttpRequest = context.get('request')
-        query = request.GET.dict()
+@register.filter
+def splitgroup(value, arg):
+    count, i = map(int, arg.split(','))
+    group_size = ceil(len(value) / count)
 
-    query.update(params)
-    return _qs_suffix(query)
+    if i == count - 1:
+        return value[group_size * i:]
+    else:
+        return value[group_size * i:group_size * (i + 1)]
 
 
 def _qs_suffix(query):
