@@ -7,12 +7,16 @@
 {% image self.photo height-500 class="img-fluid" %}
 {% endif %}
 
-<header class="container my-4">
-  <h1>{{self.title}}</h1>
+<header class="container container-outline pt-5">
+  <div class="container-mid">
+    <h1>{{self.title}}</h1>
+  </div>
 </header>
 
-<main class="container streamfield">
-  {% include_block self.thank_you_page %}
+<main class="container container-outline py-5">
+  <div class="container-narrow">
+    {% include_block self.thank_you_page %}
+  </div>
 </main>
 
 {% endblock content %}

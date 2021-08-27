@@ -16,16 +16,20 @@
   </div>
   
   {% if self.photo %}
-    <div class="col-8 col-md-4 pe-md-0">
+    <a href="{{self.page.url}}" class="col-8 col-md-4 pe-md-0">
       {% image self.photo height-500 class="img-fit mb-3 mb-md-0" %}
-    </div>
+    </a>
   {% endif %}
   
   {% if self.description %}
-    <div class="paragraph-container max-lines-6 col-8 col-md-4 order-md-first mt-md-5 mb-4 mb-md-5">
+    <a href="{{self.page.url}}" class="link-reset paragraph-container max-lines-6 col-8 col-md-4 order-md-first mt-md-5 mb-4 mb-md-5 px-md-4">
+      <div class="mb-3">
+        {% include "stopwatch/includes/article_metadata.html" with page=self.page only %}
+      </div>
+
       <h2 class="text-primary">{{ self.heading }}</h2>
 
       {{self.description|richtext}}
-    </div>
+    </a>
   {% endif %}
 </div>

@@ -26,19 +26,6 @@
   }
 }
 
-.block-md {
-  height: 15rem;
-}
-
-.block-md-square {
-  height: 15rem;
-  width: 15rem;
-}
-
-.block-md-square-container {
-  width: 15rem;
-}
-
 .card-hintscroll {
   max-width: 15rem;
   width: 80vw;
@@ -175,6 +162,11 @@
     border: 0px solid $midgrey;
     border-width: 0px 1px;
   }
+}
+
+.container-mid {
+  max-width: 970px;
+  margin: auto;
 }
 
 .container-narrow {

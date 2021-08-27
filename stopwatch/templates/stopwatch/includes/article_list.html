@@ -1,0 +1,46 @@
+{% load static ckbootstrap_tags ckdjango_tags wagtailcore_tags wagtailimages_tags %}
+
+{% if style == 'GRID' %}
+  <section class="card-grid {{class}}">
+    {% for page in pages %}
+      <a class="link-reset iscroll_item bg-white d-flex flex-column" href="{{page.url}}">
+        <div class="p-3 flex-grow-1">
+          <h3>{{page.title}}</h3>
+          
+          <div>
+            {{page.intro_text|richtext}}
+          </div>
+        </div>
+    
+        <div class="img-card">
+          {% image page.photo width-320 %}
+        </div>
+      </a>
+    {% endfor %}  </section>
+{% else %}
+  <section class="{{class}}">
+    {% for page in pages %}
+      <a class="row g-0 link-reset iscroll_item border-top border-1 border-primary" href="{{page.url}}">
+        {% if page.photo %}
+          <div class="col-8 col-md-3 pe-md-0 py-3">
+            <div class="img-list">
+              {% image page.photo width-320 %}
+            </div>
+          </div>
+        {% endif %}
+    
+        <div class="col order-md-first py-3">
+          <h3 class="heading-medium mb-4">{{page.title}}</h3>
+        
+          <div class="mb-4">
+            {{page.intro_text|richtext}}
+          </div>
+    
+          <div>
+            {% include "stopwatch/includes/article_metadata.html" %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </section>
+{% endif %}

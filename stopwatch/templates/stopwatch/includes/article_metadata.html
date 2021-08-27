@@ -1,0 +1,17 @@
+<div class="d-inline-flex flex-row microcopy text-darkgrey {{class}}">
+  {% if category %}
+    <div class="pe-3 link-reset">
+      {{category.title}}
+    </div>
+  {% endif %}
+
+  {% if page.tags.first %}
+    <div class="pe-3">
+      {{tag.title}}
+    </div>
+  {% endif %}
+
+  <div class="pe-3">
+    {{page.first_published_at|date:"d.m.Y"}}
+  </div>
+</div>

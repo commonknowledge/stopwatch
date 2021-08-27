@@ -96,9 +96,28 @@
 .img-card {
   @extend .ratio;
   --bs-aspect-ratio: 47%;
+  position: relative;
 
   > * {
     object-fit: cover;
     width: 100%;
+  }
+}
+
+.img-list {
+  @extend .ratio;
+  --bs-aspect-ratio: 56%;
+  > * {
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-gap: map-get($spacers, 3);
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

@@ -2,13 +2,11 @@
 {% load static ckbootstrap_tags ckdjango_tags wagtailembeds_tags wagtailimages_tags %}
 
 {% block content %}
-<header class="container my-4">
+<header class="container container-outline py-4">
   <h1 class="heading-medium">{{total_count}} results for “{{search_query}}’</h1>
 </header>
 
-<main class="container mb-4"  {% infinite_scroll_container %}>
-  {% for result in search_results %}
-    {% include "stopwatch/includes/article_list_item.html" with page=result.page.specific summary=result.page.specific.intro_text %}
-  {% endfor %}
+<main class="container container-outline b-4" {% infinite_scroll_container %}>
+  {% include "stopwatch/includes/article_list.html" with class="container-mid" pages=pages style="ROWS" only %}
 </main>
 {% endblock %}

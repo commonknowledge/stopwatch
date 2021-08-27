@@ -4,8 +4,4 @@
   {{self.heading}}
 </h2>
 
-<section class="row g-3">
-  {% for page in qs %}
-    {% include "stopwatch/includes/article_list_item.html" with page=page only %}
-  {% endfor %}
-</section>
+{% include "stopwatch/includes/article_list.html" with pages=qs style=self.style only %}

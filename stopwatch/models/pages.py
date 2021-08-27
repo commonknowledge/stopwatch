@@ -21,7 +21,7 @@ from commonknowledge.wagtail.models import ChildListMixin
 from commonknowledge.django.cache import django_cached
 
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
-from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES
+from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock
 
 
 class ArticleTag(TaggedItemBase):
@@ -83,6 +83,7 @@ class LandingPage(Page):
         return {
             'title': title or site_area.title,
             'url': site_area.url,
+            'page': featured_page,
             'photo': featured_page.photo if featured_page else site_area.photo,
             'heading': featured_page.title if featured_page else None,
             'cta': cta or site_area.title,
@@ -196,27 +197,21 @@ class Category(ListableMixin, ChildListMixin, Page):
     allow_search = True
     template = 'stopwatch/pages/category.html'
 
-    class StyleChoices:
-        COMPACT = 'COMPACT'
-        EXPANDED = 'EXPANDED'
-        HIDDEN = 'HIDDEN'
-
-        options = (
-            (COMPACT, 'Compact'),
-            (EXPANDED, 'Expanded'),
-            (HIDDEN, 'Non-navigable'),
-        )
-
     photo = models.ForeignKey(
         StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True, blank=True)
     searchable = models.BooleanField(default=False)
     newsflash = models.BooleanField(default=False)
     navigable = models.BooleanField(default=True)
+    style = models.CharField(
+        max_length=128,
+        choices=ArticlesListBlock.StyleChoices.options,
+        default=ArticlesListBlock.StyleChoices.GRID)
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
         ImageChooserPanel('photo'),
+        FieldPanel('style'),
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
         FieldPanel('navigable'),

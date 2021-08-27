@@ -4,20 +4,28 @@
 {% block content %}
 
 {% if self.newsflash %}
-<div id="news-ticker">
+<div class="container container-outline" id="news-ticker">
 </div>
 {% endif %}
 
-<header class="position-relative container container-outline">
-  {% if image %}
-    <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
-      <h1 class="px-3 ">{{self.title}}</h1>
+<header class="position-relative container container-outline pb-2 pb-md-3">
+  <div class="row">
+    {% if self.style == 'ROWS' %}
+      <div class="col-md-2"></div>
+    {% endif %}
+
+    <div class="col flex-column flex-md-row">
+      {% if image %}
+        <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
+          <h1 class="px-3 ">{{self.title}}</h1>
+        </div>
+        
+        {% image self.photo height-600 class="img-fluid opacity-50 block-lg full-bleed cover" %}
+      {% else %}
+        <h1 class="mt-5 mb-3">{{self.title}}</h1>
+      {% endif %}
     </div>
-    
-    {% image self.photo height-600 class="img-fluid opacity-50 block-lg full-bleed cover" %}
-  {% else %}
-    <h1 class="mt-5 mb-3">{{self.title}}</h1>
-  {% endif %}
+  </div>
 
   {% if self.description %}
     <div class="heading-medium mb-5">
@@ -26,32 +34,32 @@
   {% endif %}
 </header>
 
-<div class="container container-outline">
-  <main class="mt-2">
-    <form data-filter-form method="GET" class="row g-3 form-unraised mb-3">
-      <div class="col-8">
-        {% filter_menu field=filter_form.sort %}
-        
-        {% if self.searchable %}
-          <input class="form-control" name="query" aria-label="Search query" value="{{filter_form.query.value|default:""}}">
-        {% endif %}
-      </div>
+<main class="container container-outline pb-5">
+    <div class="row">
+        <form
+          data-filter-form
+          method="GET"
+          class="col-8 {% if self.style == 'ROWS' %}col-md-2{% endif %} form-unraised"
+        >
+          <div>
+            {% if self.tags %}
+              <div class="overflow-auto mb-3 mb-md-4">
+                {% filter_toggles field=filter_form.theme label_class="btn me-2 mb-2" %}
+              </div>
+            {% endif %}
 
-      {% if self.tags %}
-        <div class="col-8 overflow-auto">
-          {% filter_toggles field=filter_form.theme label_class="btn me-2" %}
+            {% filter_menu field=filter_form.sort class="form-select mb-3 mb-md-4" %}
+            
+            {% if self.searchable %}
+              <input class="form-control mb-3 mb-md-4 text-capitalize" name="query" aria-label="Search" placeholder="Search" value="{{filter_form.query.value|default:""}}">
+            {% endif %}
+          </div>
+        </form>
+
+        <div class="col" {% infinite_scroll_container %}>
+          {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=self.style only %}
         </div>
-      {% endif %}
-    </form>
-  </div>
-
-  <div class="container container-outline pb-4">
-    <div class="row g-3" {% infinite_scroll_container %}>
-      {% for page in child_list_page %}
-        {% include "stopwatch/includes/article_list_item.html" with page=page %}
-      {% endfor %}
     </div>
-  </div>
 </main>
 
 {% endblock content %}

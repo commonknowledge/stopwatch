@@ -8,21 +8,25 @@
 {% endif %}
 
 <header class="container container-outline py-5">
-  <h1>{{self.title}}</h1>
+  <div class="container-mid mx-md-5">
+    {% include "stopwatch/includes/article_metadata.html" with class="mt-3" %}
 
-  <div class="heading-medium mt-4 text-darkgrey">
-    {{self.intro_text|richtext}}
+    <h1 class="mt-3">{{self.title}}</h1>
+
+    {% include "stopwatch/includes/article_metadata.html" with class="mt-3" %}
+
+    <div class="heading-medium mt-4 text-darkgrey">
+      {{self.intro_text|richtext}}
+    </div>
   </div>
 </header>
 
-<main class="container container-outline streamfield article-streamfield">
-  <div class="container-narrow">
+<main class="container container-outline streamfield article-streamfield pb-5">
+  <div class="container-narrow pb-md-5">
     {% include_block self.body %}
   </div>
-</main>
 
-{% if self.authors %}
-  <div class="container container-outline pb-5">
+  {% if self.authors %}
     <h2 class="microcopy text-darkgrey">About the author</h2>
   
     {% for author in self.authors %}
@@ -34,19 +38,17 @@
         </div>
       </div>
     {% endfor %}
-  </div>
-{% endif %}
+  {% endif %}
+</main>
+
 
 {% if self.related_articles %}
   <div class="container container-outline py-5 border-top border-1 border-midgrey">
-    <h2 class="heading-small text-darkgrey mb-4 pb-3 border-bottom border-1 border-primary">More articles</h2>
-  
-    <div class="row g-3">
-      {% for article in self.related_articles %}
-        {% include "stopwatch/includes/article_list_item.html" with page=article %}
-      {% endfor %}
+    <div class="container-mid">
+      <h2 class="heading-small text-darkgrey mb-4 pb-3">More articles</h2>
+      
+      {% include "stopwatch/includes/article_list.html" with class="container-mid" pages=self.related_articles style="ROWS" only %}
     </div>
-
   </div>
 {% endif %}
 

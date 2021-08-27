@@ -1,7 +1,7 @@
 
 from stopwatch.models.core import Person
 from django.utils.html import format_html
-from wagtail.core.blocks.field_block import BooleanBlock, EmailBlock, TextBlock, URLBlock
+from wagtail.core.blocks.field_block import BooleanBlock, ChoiceBlock, EmailBlock, MultipleChoiceBlock, TextBlock, URLBlock
 from wagtail.core.blocks.list_block import ListBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.blocks import StructBlock, RichTextBlock, CharBlock, PageChooserBlock
@@ -85,8 +85,20 @@ class ArticlesListBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/articles_list.html'
 
+    class StyleChoices:
+        GRID = 'GRID'
+        ROWS = 'ROWS'
+
+        options = (
+            (GRID, 'Grid'),
+            (ROWS, 'Rows'),
+        )
+
     heading = CharBlock()
     site_area = PageChooserBlock(page_type='stopwatch.Category')
+    style = ChoiceBlock(
+        choices=StyleChoices.options,
+        default=StyleChoices.ROWS)
 
     def get_context(self, value, *args, **kwargs):
         context = super().get_context(value, *args, **kwargs)
