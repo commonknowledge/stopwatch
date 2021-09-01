@@ -40,7 +40,7 @@ class LandingPage(Page):
         cta = CharBlock(required=False)
 
     page_description = models.CharField(
-        max_length=128, default="Research and action fof fair and accountable policing")
+        max_length=128, default="Research and action for fair and accountable policing")
     photo = models.ForeignKey(
         StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
     newsflash_category = models.ForeignKey(
