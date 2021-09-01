@@ -24,11 +24,11 @@
 </header>
 
 {% if self.tab_data %}
-  <ul class="nav nav-tabs container container-outline" id="tabs" role="tablist">
+  <ul class="nav nav-tabs container container-outline px-0" id="tabs" role="tablist">
     {% for item in self.tab_data %}
       <li class="nav-item" role="presentation">
         <a
-          class="btn{% if forloop.first %} active{% endif %} p-md-4"
+          class="btn{% if forloop.first %} active{% endif %} p-md-3 pt-md-4"
           id="{{item.meta.title|slugify}}-tab"
           data-bs-toggle="tab"
           data-bs-target="#{{item.meta.title|slugify}}-content"
@@ -48,7 +48,7 @@
           </div>
         </a>
 
-        <div class="d-none d-md-block tab-active-state p-3 p-md-4 pt-md-0">
+        <div class="d-none d-md-block tab-active-state p-3 p-md-3 pt-md-0">
           <a class="btn btn-outline-secondary" href="{{item.meta.url}}">
             {{item.meta.cta}}
           </a>
@@ -67,7 +67,7 @@
 {% endif %}
 
 <main class="container container-outline pb-5">
-  <div class="row g-3 gx-md-4 gy-md-5">
+  <div class="row g-3 gx-md-4 gy-md-5 streamfield-flow">
     {% include_block self.body %}
   </div>
 </main>

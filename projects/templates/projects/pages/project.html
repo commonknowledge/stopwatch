@@ -4,33 +4,31 @@
 {% block project_content %}
 
 <main class="py-5 project-theme container container-outline">
-  <div class="container-narrow streamfield">
+  <div class="container-narrow streamfield py-7">
     {% include_block self.body %}
   </div>
 </main>
 
 {% if self.themes.exists %}
-  <div class="microcopy text-center py-5 border-top border-1 border-midgrey">
+  <div class="microcopy text-center py-7 border-top border-1 border-midgrey">
     Event themes
   </div>
 
-  <div class="container-fluid mb-5">
-    <div class="row g-3">
+  <div class="container mb-7">
+    <div class="card-grid">
       {% for theme in self.themes %}
-        <div class="col-8 col-md-4">
-          <a href={{theme.url}} class="card">
-            <div class="microcopy card-body d-flex justify-content-between flex-row">
-              <span>{{theme.title}}</span>
-              <div>
-                <span class="color-circle" style="background-color: {{theme.color}};"></span>
-              </div>
+        <a href={{theme.url}} class="card p-3 pb-4 d-inline-block bg-white">
+          <div class="microcopy d-flex justify-content-between flex-row pb-2">
+            <span>{{theme.title}}</span>
+            <div>
+              <span class="color-circle" style="background-color: {{theme.color}};"></span>
             </div>
+          </div>
 
-            <div class="card-body">
-              {{theme.description}}
-            </div>
-          </a>
-        </div>
+          <div class="">
+            {{theme.description}}
+          </div>
+        </a>
       {% endfor %}
     </div>
   </div>

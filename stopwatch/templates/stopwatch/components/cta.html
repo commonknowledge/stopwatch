@@ -1,27 +1,39 @@
 {% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags django_bootstrap5 %}
 
 
-<section class="position-relative">
-  <h2 class="heading-medium mb-3">
-    {{self.heading}}
-  </h2>
-  
-  {{self.content|richtext}}
-  
-  {% image self.image height-200 class="img-fluid" %}
-
-  {% if form %}
-    <form action="{% pageurl self.target %}" method="POST">
-      {% csrf_token %}
-      {% bootstrap_form form show_label=False %}
-  
-      <button type="submit" class="btn btn-primary w-100 w-md-auto">
-        {{self.target.title}}
-      </button>
-    </form>
-  {% else %}
-    <a href="{{self.target.url}}" class="btn btn-primary d-block d-md-inline-block mt-3">
+{% if self.target and not self.content and not self.heading and not self.image %}
+  <section class="text-center">
+    <a href="{{self.target.url}}" class="btn btn-primary d-block d-md-inline-block btn-wide">
       {{self.target.title}}
     </a>
-  {% endif %}  
-</section>
+  </section>
+{% else %}
+  <section class="position-relative">
+    {% if self.heading %}
+      <h2 class="heading-large mb-3">
+        {{self.heading}}
+      </h2>
+    {% endif %}
+    
+    {% if self.content %}
+      {{self.content|richtext}}
+    {% endif %}
+    
+    {% image self.image height-200 class="img-fluid" %}
+
+    {% if form %}
+      <form action="{% pageurl self.target %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form show_label=False %}
+    
+        <button type="submit" class="btn btn-primary w-100 w-md-auto">
+          {{self.target.title}}
+        </button>
+      </form>
+    {% else %}
+      <a href="{{self.target.url}}" class="btn btn-primary d-block d-md-inline-block mt-3">
+        {{self.target.title}}
+      </a>
+    {% endif %}  
+  </section>
+{% endif %}

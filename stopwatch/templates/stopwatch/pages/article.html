@@ -7,22 +7,22 @@
 {% image self.photo height-500 class="block-lg w-100 cover" %}
 {% endif %}
 
-<header class="container container-outline py-5">
-  <div class="container-mid mx-md-5">
-    {% include "stopwatch/includes/article_metadata.html" with class="mt-3" %}
+<header class="container container-outline py-7 container-outline-top">
+  <div class="container-mid">
+    {% include "stopwatch/includes/article_metadata.html" %}
 
     <h1 class="mt-3">{{self.title}}</h1>
 
     {% include "stopwatch/includes/article_metadata.html" with class="mt-3" %}
 
-    <div class="heading-medium mt-4 text-darkgrey">
+    <div class="heading-large mt-5 text-darkgrey">
       {{self.intro_text|richtext}}
     </div>
   </div>
 </header>
 
-<main class="container container-outline streamfield article-streamfield pb-5">
-  <div class="container-narrow pb-md-5">
+<main class="container container-outline">
+  <div class="container-narrow pb-5 pb-md-7 streamfield article-streamfield">
     {% include_block self.body %}
   </div>
 

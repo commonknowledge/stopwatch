@@ -8,9 +8,9 @@ src="https://cdn.jsdelivr.net/npm/dynamic-marquee@2"
     <div class="d-none position-relative my-2">
       {% for item in items %}
 
-        <div class="d-inline-block">
+        <a href="{{item.url}}" class="d-inline-block">
           {{ item.title }} •&nbsp;
-        </div>
+        </a>
       {% endfor %}
     </div>
   </div>
@@ -34,6 +34,14 @@ src="https://cdn.jsdelivr.net/npm/dynamic-marquee@2"
     const marquee = new Marquee(innerTicker, {
       rate: -100,
     });
+
+    wrapper.addEventListener('mouseenter', () => {
+      marquee.setRate(0)
+    })
+
+    wrapper.addEventListener('mouseleave', () => {
+      marquee.setRate(-100)
+    })
 
     innerTicker.classList.remove('d-none')
     loop(marquee, tickerItems.map(item => () => item.cloneNode(true)))

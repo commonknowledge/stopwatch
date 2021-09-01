@@ -38,17 +38,30 @@ $font-family-monospace: "IBM Plex Sans", SFMono-Regular, Menlo, Monaco, Consolas
 // Font sizes:
 $font-size-sm: 0.75rem;
 
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: 5px,
+  2: 10px,
+  3: 20px,
+  4: 30px,
+  5: 40px,
+  6: 50px,
+  7: 80px,
+);
+
 // Buttons
 $input-btn-font-family: $font-family-monospace;
 $input-btn-font-size: 14px;
-$input-btn-padding-y: 0.5rem;
-$input-btn-padding-x: 1.25rem;
+$input-btn-padding-y: 10px;
+$input-btn-padding-x: 20px;
 $btn-font-weight: 500;
 
 // Card
 $card-border-width: 0;
 
 // Forms
+$input-padding-x: 10px;
 $form-label-font-size: 18px;
 $form-label-font-weight: bold;
 $form-label-margin-bottom: 0;
@@ -70,12 +83,13 @@ $list-group-hover-bg: $primary-hover-light;
 
 // Layout
 $container-max-widths: (
-  sm: 540px,
-  md: 755px,
-  lg: 755px,
-  xl: 1126px,
-  xxl: 1126px,
+  sm: 1300px,
+  md: 1300px,
+  lg: 1300px,
+  xl: 1300px,
+  xxl: 1300px,
 );
+$grid-gutter-width: 20px;
 
 // Merge with bootstrap
 @import "~bootstrap/scss/functions";

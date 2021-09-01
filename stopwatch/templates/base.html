@@ -34,13 +34,13 @@
 
         {% block body %}
         {% block header %}
-        <div class="container container-outline microcopy pt-2">
+        <div class="container container-outline microcopy pt-3 mt-1">
             {{settings.stopwatch.SiteSettings.tagline|richtext}}
         </div>
 
         <div class="position-sticky position-md-static container container-outline top-0 z-sticky">
-            <nav class="navbar">
-                <a class="navbar-brand" href="/">
+            <nav class="navbar py-3">
+                <a class="navbar-brand p-0" href="/">
                     <img class="logo" src={% static 'img/logo.png' %} />
                 </a>
 

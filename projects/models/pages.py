@@ -13,6 +13,7 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from stopwatch.models import CONTENT_MODULES
 from commonknowledge.wagtail.models import ChildListMixin
 from commonknowledge.wagtail.helpers import get_children_of_type
+from colour import Color
 
 
 class Project(ListableMixin, Page):
@@ -44,6 +45,14 @@ class Project(ListableMixin, Page):
     @property
     def project(self):
         return self
+
+    @property
+    def contrast_color(self):
+        col = Color(self.color)
+        if col.luminance < 0.5:
+            return '#FFF'
+        else:
+            return '#000'
 
 
 class ProjectPage(Page):

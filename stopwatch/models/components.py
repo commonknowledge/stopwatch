@@ -178,7 +178,7 @@ CONTENT_MODULES = TEXT_MODULES + (
     ('links', LinksBlock()),
     ('newsletter_signup', NewsletterSignupBlock()),
     ('person_listing', PersonListBlock()),
-    ('alert', AlertBlock())
+    ('alert', AlertBlock()),
 )
 
 LANDING_MODULES = CONTENT_MODULES + (

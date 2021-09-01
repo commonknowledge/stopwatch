@@ -5,6 +5,7 @@
 <style>
   :root {
     --page-theme: {{self.project.color}};
+    --page-theme-contrast: {{self.project.contrast_color}}
   }
 </style>
 {% endblock %}
@@ -17,8 +18,9 @@
           {% image self.project.photo height-500 class="img-fit" %}
         </div>
   
-        <div class="col-8 col-md-4 order-md-first bg-page-theme p-3 pt-4 pb-5 d-flex flex-column justify-content-end streamfield-compact">
-          <h1 class="heading-medium mb-4">{{self.project.title}}</h1>
+        <div class="col-8 col-md-4 order-md-first bg-page-theme p-3 pt-7 pb-7 streamfield-compact text-page-contrast">
+          <div class="microcopy">Project</div>
+          <h1 class="heading-xlarge">{{self.project.title}}</h1>
   
           {{self.project.description|richtext}}
         </div>

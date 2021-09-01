@@ -74,6 +74,14 @@
   background-color: $page-theme;
 }
 
+.text-page-theme {
+  color: var(--page-theme, #000);
+}
+
+.text-page-contrast {
+  color: var(--page-theme-contrast, #000);
+}
+
 .link-reset,
 .link-reset:hover,
 .link-reset:focus {

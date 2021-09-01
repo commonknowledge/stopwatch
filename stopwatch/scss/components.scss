@@ -59,18 +59,30 @@
 }
 
 .streamfield {
-  > * {
-    margin-bottom: map-get($spacers, 5);
-  }
-  .block-text > * {
+  > *:not(:last-child) {
     margin-bottom: map-get($spacers, 4);
+  }
+  .block-text > *:not(:last-child) {
+    margin-bottom: map-get($spacers, 3);
+  }
+}
+
+.streamfield-flow {
+  .block-cta,
+  .block-newsletter_signup {
+    @include media-breakpoint-up(md) {
+      flex: 0 0 auto;
+      width: 50%;
+    }
   }
 }
 
 .streamfield-compact {
-  > *,
-  .block-text > * {
-    margin-bottom: map-get($spacers, 4);
+  > *:not(:last-child) {
+    margin-bottom: map-get($spacers, 3);
+  }
+  .block-text > *:not(:last-child) {
+    margin-bottom: map-get($spacers, 2);
   }
 }
 
@@ -87,9 +99,14 @@
     @include microcopy;
   }
 
-  h2:not(:first-child),
-  h3:not(:first-child) {
-    margin-top: map-get($spacers, 5);
+  & + h2:not(:first-child),
+  & + h3:not(:first-child) {
+    margin-bottom: map-get($spacers, 5);
+  }
+
+  .block-quote,
+  .richtext-image {
+    margin-bottom: map-get($spacers, 6);
   }
 }
 
@@ -122,6 +139,10 @@
     &.active {
       background: $lightgrey;
     }
+
+    @include media-breakpoint-up(md) {
+      width: auto;
+    }
   }
 }
 
@@ -149,18 +170,29 @@
   background-color: $lightgrey;
 }
 
-.block-cta,
-.block-newsletter_signup {
+.btn-wide {
   @include media-breakpoint-up(md) {
-    flex: 0 0 auto;
-    width: 50%;
+    padding-left: 113px;
+    padding-right: 113px;
   }
+}
+
+.container {
+  padding-left: map-get($spacers, 3);
+  padding-right: map-get($spacers, 3);
 }
 
 .container-outline {
   @include media-breakpoint-up(md) {
+    border-color: $midgrey;
     border: 0px solid $midgrey;
     border-width: 0px 1px;
+  }
+}
+
+.container-outline-top {
+  @include media-breakpoint-up(md) {
+    border-top-width: 1px;
   }
 }
 
