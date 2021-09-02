@@ -16,6 +16,8 @@
           {% image page.photo width-320 %}
         </div>
       </a>
+    {% empty %}
+      {% include "stopwatch/includes/article_list_no_results.html" %}
     {% endfor %}  </section>
 {% else %}
   <section class="{{class}}">
@@ -41,6 +43,8 @@
           </div>
         </div>
       </a>
+    {% empty %}
+      {% include "stopwatch/includes/article_list_no_results.html" %}
     {% endfor %}
   </section>
 {% endif %}

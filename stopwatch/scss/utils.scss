@@ -141,3 +141,23 @@
 .img-cover {
   object-fit: cover !important;
 }
+
+.width-md-auto {
+  @include media-breakpoint-up(md) {
+    width: auto;
+  }
+}
+
+.text-naturalcase {
+  text-transform: none;
+}
+
+.red-shadow {
+  box-shadow: 0px 0px 10px #e10000 !important;
+}
+
+.nooutline {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
