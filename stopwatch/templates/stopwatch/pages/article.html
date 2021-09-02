@@ -13,7 +13,9 @@
 
     <h1 class="mt-3">{{self.title}}</h1>
 
-    {% include "stopwatch/includes/article_metadata.html" with class="mt-3" %}
+    {% if self.authors %}
+      {% include "stopwatch/includes/author_metadata.html" %}
+    {% endif %}
 
     <div class="heading-large mt-5 text-darkgrey">
       {{self.intro_text|richtext}}
