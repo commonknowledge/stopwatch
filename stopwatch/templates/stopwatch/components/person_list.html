@@ -3,29 +3,33 @@
 <div class="row g-4 {{value.heading|slugify}}">
   <h2>{{value.heading}}</h2>
 
-  {% for person in self.people %}
-    <div>
-      <div class="d-flex flex-row">
-        <div class="flex-grow-1">
-          <div class="text-lg fw-bold">
-            {{person.name}}
+  <div class="container-fluid">
+    <div class="row">
+      {% for person in self.people %}
+      <div class="col-4 d-flex flex-column align-items-start mb-5">
+        <div class="d-flex flex-row">
+          <div class="flex-grow-1 mb-3">
+            <div class="text-lg fw-bold">
+              {{person.name}}
+            </div>
+            <div class="text-midgrey microcopy">
+              {{person.title}}
+            </div>
           </div>
-          <div class="text-midgrey microcopy">
-            {{person.title}}
-          </div>
+          {% if person.photo %}
+            <div>
+              {% avatar_img image=person.photo name=person.name %}  
+            </div>
+          {% endif %}
         </div>
-        {% if person.photo %}
-          <div>
-            {% avatar_img image=person.photo name=person.name %}  
-          </div>
-        {% endif %}
-      </div>
 
-      <div class="text-sm">
-        {{person.name}} is {{person.bio}}
-      </div>
+        <div class="text-sm">
+          {{person.name}} is {{person.bio}}
+        </div>
 
-      {% include "stopwatch/includes/person-contact-details.html" with person=person only %}
+        {% include "stopwatch/includes/person-contact-details.html" with person=person only %}
+      </div>
+      {% endfor %}
     </div>
-  {% endfor %}
+  </div>
 </div>

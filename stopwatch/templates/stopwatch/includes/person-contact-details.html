@@ -1,7 +1,7 @@
 {% load static ckbootstrap_tags wagtailcore_tags wagtailimages_tags %}
 
 {% if person.twitter or person.email or person.website %}
-  <div class="{{self.class|default:"mt-1"}}">
+  <div class="{{self.class|default:"mt-1 mt-auto"}}">
     {% if person.twitter %}
       <a class="d-block microcopy border-bottom border-primary no-hover-text-decoration-change" href="https://twitter.com/{{person.twitter}}">@{{person.twitter}}</a>
     {% endif %}
