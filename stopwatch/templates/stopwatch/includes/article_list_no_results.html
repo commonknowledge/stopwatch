@@ -1,0 +1,22 @@
+{% if search_query %}
+  <p>
+    Sorry, there are no results for “<strong>{{search_query}}</strong>”.
+  </p>
+  <p>
+    Please try:
+  </p>
+  <ul>
+    <li>Searching again using different words.</li>
+    <li>Make sure that all words are spelled correctly.</li>
+    {% if reset_url %}
+      <li>Removing your filters.</li>
+    {% endif %}
+  </ul>
+  {% if reset_url %}
+  <p>
+    <a class="inline-link" href="./">
+      Remove all search and filter terms
+    </a>
+  </p>
+  {% endif %}
+{% endif %}

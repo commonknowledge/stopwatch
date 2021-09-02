@@ -105,7 +105,8 @@ def filter_menu(field, **kwargs):
     )
 
     return format_html(
-        '<select name="{}" {} aria-label="{}">{}</select>',
+        '<select {} name="{}" {} aria-label="{}">{}</select>',
+        f'id="{kwargs["id"]}"' if 'id' in kwargs else '',
         field.name,
         mark_safe(f'class="{classname}"') if classname else '',
         field.label,

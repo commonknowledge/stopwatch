@@ -77,6 +77,11 @@
   }
 }
 
+.block-text a,
+.inline-link {
+  text-decoration: underline;
+}
+
 .streamfield-compact {
   > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
