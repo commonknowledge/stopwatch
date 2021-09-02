@@ -1,3 +1,4 @@
+from django.http.response import HttpResponseRedirect
 from stopwatch.models.mixins import ListableMixin
 from django.db.models.fields.related import ForeignKey
 from django.utils.functional import cached_property
@@ -104,8 +105,6 @@ class ProjectEvents(ChildListMixin, ProjectPage):
 
 
 class EventTheme(ListableMixin, ProjectPage):
-    template = 'projects/pages/article.html'
-
     parent_page_types = (Project,)
     photo = models.ForeignKey(
         'stopwatch.StopwatchImage', null=True, blank=True, on_delete=models.SET_NULL)
@@ -119,6 +118,13 @@ class EventTheme(ListableMixin, ProjectPage):
         FieldPanel('color'),
         StreamFieldPanel('body'),
     ]
+
+    def serve(self, request, *args, **kwargs):
+        events_page = get_children_of_type(self.project, ProjectEvents).first()
+        if events_page is None:
+            return HttpResponseRedirect(self.project.url)
+
+        return HttpResponseRedirect(f'{events_page.url}?theme={self.slug}')
 
 
 class EventSpeaker(Orderable, models.Model):
