@@ -129,3 +129,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.no-hover-color-change:hover {
+  color: inherit;
+}

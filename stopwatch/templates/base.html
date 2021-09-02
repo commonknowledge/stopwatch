@@ -153,7 +153,7 @@
                             <div class="col-8 col-md-2 text-lg fw-bold">
                                 {% for item in menu|splitgroup:"2,0" %}
                                     {% if item.routable %}
-                                        <a href="{{item.page.url}}" class="d-block mb-2">
+                                        <a href="{{item.page.url}}" class="d-block mb-2 no-hover-color-change">
                                             {{item.page.title}}
                                         </a>
                                     {% endif %}
@@ -162,7 +162,7 @@
                             <div class="col-8 col-md-2 text-lg fw-bold">
                                 {% for item in menu|splitgroup:"2,1" %}
                                     {% if item.routable %}
-                                        <a href="{{item.page.url}}" class="d-block mb-2">
+                                        <a href="{{item.page.url}}" class="d-block mb-2 no-hover-color-change">
                                             {{item.page.title}}
                                         </a>
                                     {% endif %}
@@ -175,14 +175,14 @@
                         <div class="col-8 col-md-4 microcopy">
                             <div class="mb-2">{{site_settings.address}}</div>
                             <div class="mb-2">{{site_settings.phone_number}}</div>
-                            <a href="mailto:{{site_settings.email_contact}}" class="d-block mb-2">
+                            <a href="mailto:{{site_settings.email_contact}}" class="d-block mb-2 no-hover-color-change">
                                 {{site_settings.email_contact}}
                             </a>
                         </div>
 
                         <div class="col-8 col-md-2 microcopy">
                             {% for link in site_settings.bottom_page_links %}
-                                <a href="{{link.value.page.url}}" class="d-block mb-2">
+                                <a href="{{link.value.page.url}}" class="d-block mb-2 no-hover-color-change">
                                     {{link.value.label|default:link.value.page.title}}
                                 </a>
                             {% endfor %}
@@ -191,7 +191,7 @@
                         <div class="col-8 col-md-2 microcopy">
                             <div class="mb-2">© Stopwatch {% now "Y" %}</div>
                             <div class="mb-2">{{site_settings.end_matter}}</div>
-                            <div class="mb-2">Site by <a href="https://commonknowledge.coop">Common Knowledge</a></div>
+                            <div class="mb-2">Site by <a href="https://commonknowledge.coop" class="no-hover-color-change">Common Knowledge</a></div>
                         </div>
                     </div>
                 </div>
