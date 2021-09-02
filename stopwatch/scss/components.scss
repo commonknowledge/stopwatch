@@ -69,6 +69,12 @@
 
 .streamfield-flow {
   .block-cta,
+  .block-form,
+  .block-links,
+  .block-newsletter_signup,
+  .block-person_listing,
+  .block-organisation_listing,
+  .block-alert,
   .block-newsletter_signup {
     @include media-breakpoint-up(md) {
       flex: 0 0 auto;
