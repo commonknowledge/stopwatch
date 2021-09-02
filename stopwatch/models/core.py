@@ -70,6 +70,29 @@ class Person(models.Model):
         return self.name
 
 
+@register_snippet
+class Organisation(models.Model):
+    name = models.CharField(max_length=1024)
+    description = models.TextField(null=True)
+    website = models.URLField(null=True)
+    website_text = models.CharField(max_length=1024)
+
+    def save(self, *args, **kwargs) -> None:
+        if self.twitter is not None:
+            self.twitter = self.twitter.lstrip('@').strip()
+        return super().save(*args, **kwargs)
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('description'),
+        FieldPanel('website'),
+        FieldPanel('website_text')
+    ]
+
+    def __str__(self):
+        return self.name
+
+
 @register_setting
 class SiteSettings(BaseSetting):
     class BottomLink(StructBlock):
