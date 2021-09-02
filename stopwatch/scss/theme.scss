@@ -9,6 +9,7 @@ $secondary: $dark;
 $panel: #f7f9fa;
 $lightgrey: #dbdbdb;
 $darkgrey: #505050;
+$muteddarkgrey: #727272;
 $primary-hover-light: $darkgrey;
 $alert: #ffb7b7;
 $lightred: #ffcccc;
@@ -19,6 +20,7 @@ $custom-colors: (
   "light": $light,
   "lightgrey": $lightgrey,
   "darkgrey": $darkgrey,
+  "muteddarkgrey", $muteddarkgrey,
   "midgrey": $midgrey,
   "panel": $panel,
   "alert": $alert,
