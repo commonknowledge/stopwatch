@@ -1,0 +1,22 @@
+{% load static wagtailcore_tags ckwagtail_tags wagtailembeds_tags %}
+
+<div class="row g-4">
+  <h2>{{value.heading}}</h2>
+
+  {% for organisation in self.organisations %}
+    <div>
+      <div class="d-flex flex-row">
+        <div class="flex-grow-1">
+          <div>
+            {{organisation.name}}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        {{organisation.description}}
+      </div>
+
+    </div>
+  {% endfor %}
+</div>

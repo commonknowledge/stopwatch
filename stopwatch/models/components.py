@@ -1,5 +1,5 @@
 
-from stopwatch.models.core import Person
+from stopwatch.models.core import Organisation, Person
 from django.utils.html import format_html
 from wagtail.core.blocks.field_block import BooleanBlock, ChoiceBlock, EmailBlock, MultipleChoiceBlock, TextBlock, URLBlock
 from wagtail.core.blocks.list_block import ListBlock
@@ -161,6 +161,14 @@ class PersonListBlock(StructBlock):
     people = ListBlock(SnippetChooserBlock(Person))
 
 
+class OrganisationListBlock(StructBlock):
+    class Meta:
+        template = 'stopwatch/components/organisation_list.html'
+
+    heading = CharBlock()
+    organisations = ListBlock(SnippetChooserBlock(Organisation))
+
+
 class NewsletterSignupBlock(CtaBlock):
     class Meta:
         template = 'stopwatch/components/newsletter_signup.html'
@@ -178,6 +186,7 @@ CONTENT_MODULES = TEXT_MODULES + (
     ('links', LinksBlock()),
     ('newsletter_signup', NewsletterSignupBlock()),
     ('person_listing', PersonListBlock()),
+    ('organisation_listing', OrganisationListBlock()),
     ('alert', AlertBlock()),
 )
 
