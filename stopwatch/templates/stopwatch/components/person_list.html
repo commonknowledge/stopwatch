@@ -10,13 +10,15 @@
           <div class="text-lg fw-bold">
             {{person.name}}
           </div>
-          <div class="text-midgrey text-sm">
+          <div class="text-midgrey microcopy">
             {{person.title}}
           </div>
         </div>
-        <div>
-          {% avatar_img image=person.photo name=person.name %}  
-        </div>
+        {% if person.photo %}
+          <div>
+            {% avatar_img image=person.photo name=person.name %}  
+          </div>
+        {% endif %}
       </div>
 
       <div class="text-sm">

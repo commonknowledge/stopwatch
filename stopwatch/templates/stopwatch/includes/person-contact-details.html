@@ -3,13 +3,13 @@
 {% if person.twitter or person.email or person.website %}
   <div class="{{self.class|default:"mt-1"}}">
     {% if person.twitter %}
-      <a class="d-block font-monospace text-sm" href="https://twitter.com/{{person.twitter}}">@{{person.twitter}}</a>
+      <a class="d-block microcopy border-bottom border-primary no-hover-text-decoration-change" href="https://twitter.com/{{person.twitter}}">@{{person.twitter}}</a>
     {% endif %}
     {% if person.email %}
-      <a class="d-block font-monospace text-sm" href="mailto:{{person.email}}">{{person.email}}</a>
+      <a class="d-block microcopy border-bottom border-primary no-hover-text-decoration-change" href="mailto:{{person.email}}">{{person.email}}</a>
     {% endif %}
     {% if person.website %}
-      <a class="d-block font-monospace text-sm" href="{{person.website}}">{{person.website}}</a>
+      <a class="d-block microcopy border-bottom border-primary no-hover-text-decoration-change" href="{{person.website}}">{{person.website}}</a>
     {% endif %}
   </div>
 {% endif %}
