@@ -1,6 +1,6 @@
 {% load static wagtailcore_tags ckbootstrap_tags wagtailembeds_tags %}
 
-<div class="row g-4">
+<div class="row g-4 {{value.heading|slugify}}">
   <h2>{{value.heading}}</h2>
 
   {% for link_block in self.links %}
