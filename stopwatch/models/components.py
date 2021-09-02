@@ -174,6 +174,13 @@ class NewsletterSignupBlock(CtaBlock):
         template = 'stopwatch/components/newsletter_signup.html'
 
 
+class FormBlock(CtaBlock):
+    class Meta:
+        template = 'stopwatch/components/form.html'
+
+    target = PageChooserBlock('stopwatch.Form', required=True)
+
+
 TEXT_MODULES = (
     ('text', RichTextBlock()),
     ('quote', PullQuoteBlock()),
@@ -183,6 +190,7 @@ TEXT_MODULES = (
 
 CONTENT_MODULES = TEXT_MODULES + (
     ('cta', CtaBlock()),
+    ('form', FormBlock()),
     ('links', LinksBlock()),
     ('newsletter_signup', NewsletterSignupBlock()),
     ('person_listing', PersonListBlock()),
