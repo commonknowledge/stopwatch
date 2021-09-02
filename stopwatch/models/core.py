@@ -77,11 +77,6 @@ class Organisation(models.Model):
     website = models.URLField(null=True)
     website_text = models.CharField(max_length=1024)
 
-    def save(self, *args, **kwargs) -> None:
-        if self.twitter is not None:
-            self.twitter = self.twitter.lstrip('@').strip()
-        return super().save(*args, **kwargs)
-
     panels = [
         FieldPanel('name'),
         FieldPanel('description'),
