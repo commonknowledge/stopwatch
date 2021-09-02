@@ -201,6 +201,16 @@
   }
 }
 
+.container-outline-btm {
+  @include media-breakpoint-up(md) {
+    border-bottom-width: 1px;
+  }
+}
+
+.border-btm {
+  border-bottom: 1px solid $midgrey;
+}
+
 .container-mid {
   max-width: 970px;
   margin: auto;
@@ -209,4 +219,10 @@
 .container-narrow {
   max-width: 640px;
   margin: auto;
+}
+
+.subheading-maxwidth {
+  @include media-breakpoint-up(md) {
+    max-width: 500px;
+  }
 }

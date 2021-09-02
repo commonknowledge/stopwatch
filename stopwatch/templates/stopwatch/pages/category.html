@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load django_bootstrap5 static ckbootstrap_tags ckdjango_tags wagtailembeds_tags wagtailimages_tags %}
+{% load django_bootstrap5 static ckbootstrap_tags wagtailcore_tags ckdjango_tags wagtailembeds_tags wagtailimages_tags %}
 
 {% block content %}
 
@@ -8,33 +8,36 @@
 </div>
 {% endif %}
 
-<header class="position-relative container container-outline pb-2 pb-md-3">
-  <div class="row">
+<header class="position-relative container container-outline container-outline-btm p-0">
+  <div class="row gx-0">
     {% if self.style == 'ROWS' %}
       <div class="col-md-2"></div>
     {% endif %}
 
-    <div class="col flex-column flex-md-row">
-      {% if image %}
-        <div class="position-absolute z-2 h-100 w-100 d-flex flex-column justify-content-end">
-          <h1 class="px-3 ">{{self.title}}</h1>
-        </div>
+    {% if self.photo and self.style == 'GRID' %}
+      <div class="col-8 col-md-4">
+        {% image self.photo height-500 class="img-fit" %}
+      </div>
+      
+      <div class="col-8 col-md-4 order-md-first py-3 py-md-7 px-3 streamfield-compact">
+        <h1 class="heading-xlarge">{{self.title}}</h1>
         
-        {% image self.photo height-600 class="img-fluid opacity-50 block-lg full-bleed cover" %}
-      {% else %}
+        {{self.description|richtext}}
+      </div>
+    {% else %}
+      <div class="col flex-column flex-md-row p-3">
         <h1 class="mt-5 mb-3">{{self.title}}</h1>
-      {% endif %}
-    </div>
+        {% if self.description %}
+          <div class="heading-medium mb-5 subheading-maxwidth">
+            {{self.description}}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
-
-  {% if self.description %}
-    <div class="heading-medium mb-5">
-      {{self.description}}
-    </div>
-  {% endif %}
 </header>
 
-<main class="container container-outline pb-5">
+<main class="container container-outline pb-5 pt-3">
     <div class="row">
         <form
           data-filter-form
