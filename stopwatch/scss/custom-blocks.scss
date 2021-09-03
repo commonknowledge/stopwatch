@@ -5,3 +5,22 @@
 .contact-us h2 {
   @include heading-xxlarge;
 }
+
+.contact-us .linkblock-link h3 {
+  font-size: 18px;
+  line-height: 140%;
+  text-transform: none;
+}
+
+.contact-us .linkblock-link div {
+  font-size: 14px;
+}
+
+.contact-us .linkblock-link a {
+  @include microcopy;
+  border-bottom: 1px solid $primary;
+}
+
+.contact-us .linkblock-link a:hover {
+  text-decoration: none;
+}
