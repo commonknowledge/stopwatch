@@ -17,7 +17,7 @@
       </form>
 
       {% for event in child_list_page %}
-        <article class="col-8 col-md-4 p-3 iscroll_item card-flush mb-3" style="background-color: {{event.theme.background_color}};">
+        <article class="col-8 col-md-4 p-3 iscroll_item card-flush mb-3" style="background-color: {{event.theme.background_color}};" onmouseover="this.style.border ='1px solid {{event.theme.color}}'" onmouseout="this.style.border ='1px solid transparent'">
           <div class="mb-3 d-flex flex-direction-column justify-content-between microcopy">
             <div class="me-2 text-nowrap">
               <span class="color-circle me-1" style="background-color: {{event.theme.color}};"></span>
