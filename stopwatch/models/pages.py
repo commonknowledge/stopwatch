@@ -115,6 +115,9 @@ class Article(ListableMixin, Page):
     summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
     body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
 
+    hide_related_articles = models.BooleanField(default=False)
+    hide_date = models.BooleanField(default=False)
+
     search_fields = Page.search_fields + [
         index.FilterField('tag_id')
     ]
@@ -127,6 +130,8 @@ class Article(ListableMixin, Page):
         MultiFieldPanel([
             InlinePanel('article_authors'),
         ], 'Authors'),
+        FieldPanel('hide_related_articles'),
+        FieldPanel('hide_date'),
     ]
 
     promote_panels = Page.promote_panels + [

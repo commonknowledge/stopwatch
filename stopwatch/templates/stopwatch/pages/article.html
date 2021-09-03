@@ -9,8 +9,10 @@
 
 <header class="container container-outline py-7">
   <div class="container-mid">
-    {% include "stopwatch/includes/article_metadata.html" %}
-
+    {% if self.hide_date is False %}
+      {% include "stopwatch/includes/article_metadata.html" %}
+    {% endif %}
+    
     <h1 class="mt-3">{{self.title}}</h1>
 
     {% if self.authors %}
@@ -44,7 +46,7 @@
 </main>
 
 
-{% if self.related_articles %}
+{% if self.related_articles and self.hide_related_articles is False %}
   <div class="container container-outline py-5 border-top border-1 border-midgrey">
     <div class="container-mid">
       <h2 class="heading-small text-darkgrey mb-4 pb-3">More articles</h2>
