@@ -191,6 +191,10 @@
   font-weight: normal;
 }
 
+.btn {
+  -webkit-appearance: unset;
+}
+
 .btn + .tab-active-state {
   transition: $btn-transition;
 }
