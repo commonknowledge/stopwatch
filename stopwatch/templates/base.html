@@ -30,6 +30,21 @@
     </head>
 
     <body class="min-vh-100 d-flex flex-column {% block body_class %}{% endblock %}">
+        <form class="modal fade" id="searchToggle" method="GET" action="/search/" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body bg-darkgrey red-shadow">
+                        <div class="input-group">
+                            <div class="heading-small bg-white d-flex align-items-center justify-content-center p-3">
+                                <i class="bi-search"></i>
+                            </div>
+                            <input name="query" tabindex="1" autofocus class="p-2 ps-0 form-control nooutline heading-large text-naturalcase" autocapitalize="off" aria-label="Search">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         {% wagtailuserbar %}
 
         {% block body %}
@@ -197,24 +212,8 @@
             </footer>
         {% endwith %}
 
-
-        <form class="modal fade" id="searchToggle" method="GET" action="/search/" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body bg-darkgrey red-shadow">
-                        <div class="input-group">
-                            <div class="heading-small bg-white d-flex align-items-center justify-content-center p-3">
-                                <i class="bi-search"></i>
-                            </div>
-                            <input name="query" tabindex="1" autofocus class="p-2 ps-0 form-control nooutline heading-large text-naturalcase" autocapitalize="off" aria-label="Search">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-
         {% webpack_bundle 'main' %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
         <script src="https://public.flourish.studio/resources/embed.js"></script>
