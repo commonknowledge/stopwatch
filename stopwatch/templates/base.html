@@ -56,9 +56,9 @@
         <div class="container container-outline microcopy pt-3 mt-1 d-flex flex-row align-items-center justify-content-between">
             {{settings.stopwatch.SiteSettings.tagline|richtext}}
             <div class="d-none d-md-block">
-              <a class="btn text-muteddarkgrey" href="/about-stopwatch">About</a>
-              <a class="btn text-muteddarkgrey" href="https://twitter.com/StopWatchUK" target="_blank" rel="noopener noreferrer">Twitter</a>
-              <a class="btn btn-primary">Donate</a>
+                <a class="btn text-muteddarkgrey" href="/about-stopwatch">About</a>
+                <a class="btn text-muteddarkgrey" href="https://twitter.com/StopWatchUK" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="{{settings.stopwatch.SiteSettings.donate_page.url}}" class="btn btn-primary">Donate</a>
             </div>
         </div>
 
@@ -105,8 +105,9 @@
                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                 </svg>
               </button>
+            </nav>
             
-            <div class="collapse bg-light d-md-none" id="navbarToggleMenu">
+            <div class="collapse bg-light d-md-none full-bleed" id="navbarToggleMenu">
                 <ul class="nav nav-outline flex-column text-lg">
                     {% mainmenu %}
                         {% for item in menu.children %}
@@ -115,7 +116,7 @@
                                     <a
                                         href="#menu-{{item.page.url|slugify}}"
                                         role="button"
-                                        class="nav-link navbar-toggler text-lg"
+                                        class="nav-link navbar-toggler px-3 py-2"
                                         data-bs-toggle="collapse"
                                         aria-controls="menu-{{item.page.url|slugify}}"
                                         aria-expanded="false"
@@ -130,7 +131,7 @@
                                 >
                                     {% for child in item.children %}
                                         <li class="nav-item bg-white w-100">
-                                            <a class="nav-link text-sm text-muted text-lg" href="{{child.page.url}}">
+                                            <a class="nav-link px-3 py-2 text-muted" href="{{child.page.url}}">
                                                 {{child.page.title}}
                                             </a>
                                         </li>
@@ -138,12 +139,22 @@
                                 </ul>
                             {% else %}
                                 <li class="nav-item">
-                                    <a class="nav-link text-sm text-lg" href="{{item.page.url}}">
+                                    <a class="nav-link px-3 py-2" href="{{item.page.url}}">
                                         {{item.page.title}}
                                     </a>
                                 </li>
                             {% endif %}
                         {% endfor %}
+
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2" href="/about-stopwatch">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-2 " href="https://twitter.com/StopWatchUK" target="_blank" rel="noopener noreferrer">Twitter</a>
+                        </li>
+                        <li class="nav-item bg-primary">
+                            <a href="{{settings.stopwatch.SiteSettings.donate_page.url}}" class="px-3 py-2 nav-link text-white">Donate</a>
+                        </ul>
                     
                     {% endmainmenu %}
                 </ul>
