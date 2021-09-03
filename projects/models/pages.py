@@ -109,6 +109,7 @@ class EventTheme(ListableMixin, ProjectPage):
     photo = models.ForeignKey(
         'stopwatch.StopwatchImage', null=True, blank=True, on_delete=models.SET_NULL)
     color = ColorField()
+    background_color = ColorField()
     description = models.TextField()
     body = StreamField(CONTENT_MODULES)
 
@@ -116,6 +117,7 @@ class EventTheme(ListableMixin, ProjectPage):
         ImageChooserPanel('photo'),
         RichTextFieldPanel('description'),
         FieldPanel('color'),
+        FieldPanel('background_color'),
         StreamFieldPanel('body'),
     ]
 
