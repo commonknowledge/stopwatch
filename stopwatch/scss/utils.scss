@@ -177,3 +177,11 @@
 .h-200px {
   height: 200px;
 }
+
+.hover-invert {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  &:hover {
+    color: white;
+    background-color: $dark !important;
+  }
+}
