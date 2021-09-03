@@ -3,9 +3,11 @@
 <div class="row g-4 {{value.heading|slugify}}">
   <h2>{{value.heading}}</h2>
 
-  <div class="linkblock-links-list">
-    {% for link_block in self.links %}
-      {% include_block link_block %}
-    {% endfor %}
+  <div class="linkblock-links-container">
+    <div class="linkblock-links-list">
+      {% for link_block in self.links %}
+        {% include_block link_block %}
+      {% endfor %}
+    </div>
   </div>
 </div>

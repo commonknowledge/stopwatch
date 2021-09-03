@@ -4,6 +4,24 @@
 
 .contact-us h2 {
   @include heading-xxlarge;
+  @extend .mb-5;
+}
+
+.contact-us .linkblock-links-container {
+  @extend .container-fluid;
+}
+
+.contact-us .linkblock-links-list {
+  @extend .row;
+}
+
+.contact-us .linkblock-links-list:first-child {
+  @extend .col-8;
+  @extend .mb-5;
+}
+
+.contact-us .linkblock-link {
+  @extend .col-4;
 }
 
 .contact-us .linkblock-link h3 {
