@@ -14,7 +14,7 @@
 }
 
 .contact-us .linkblock-link div {
-  font-size: 14px;
+  @extend .text-sm;
 }
 
 .contact-us .linkblock-link a {
