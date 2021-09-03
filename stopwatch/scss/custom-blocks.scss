@@ -7,11 +7,10 @@
 }
 
 .contact-us .linkblock-link h3 {
+  @extend .text-lg;
   font-family: $font-family-sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 18px;
-  line-height: 140%;
 }
 
 .contact-us .linkblock-link div {
