@@ -129,6 +129,8 @@ class SiteSettings(BaseSetting):
         MultiFieldPanel([
             FieldPanel('standard_donation_request'),
             FieldPanel('standard_mailinglist_request'),
+            PageChooserPanel('donate_page'),
+            PageChooserPanel('post_newsletter_page'),
         ], 'Default CTAs'),
 
         MultiFieldPanel([

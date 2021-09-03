@@ -59,15 +59,18 @@
 }
 
 .streamfield {
-  > *:not(:last-child) {
-    margin-bottom: map-get($spacers, 4);
-  }
+  --bs-gutter-x: map-get($spacers, 3);
+  --bs-gutter-y: map-get($spacers, 7);
+
   .block-text > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
   }
 }
 
 .streamfield-flow {
+  --bs-gutter-x: #{map-get($spacers, 3)};
+  --bs-gutter-y: #{map-get($spacers, 7)};
+
   .block-cta,
   .block-form,
   .block-links,
@@ -76,14 +79,12 @@
   .block-organisation_listing,
   .block-alert,
   .block-newsletter_signup {
-    @include media-breakpoint-up(md) {
-      flex: 0 0 auto;
-      width: 50%;
-    }
+    @extend .col-8;
+    @extend .col-md-4;
   }
 }
 
-.block-text a,
+.full .block-text a,
 .inline-link {
   text-decoration: underline;
 }
@@ -98,26 +99,29 @@
 }
 
 .article-streamfield {
-  h2 {
-    @include heading-small;
-    color: $darkgrey;
-  }
+  .block-text {
+    h2 {
+      @include heading-small;
+      color: $darkgrey;
+    }
 
-  h3,
-  h4,
-  h5,
-  h6 {
-    @include microcopy;
-  }
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include microcopy;
+    }
 
-  & + h2:not(:first-child),
-  & + h3:not(:first-child) {
-    margin-bottom: map-get($spacers, 5);
+    > h2:not(:first-child),
+    > h3:not(:first-child) {
+      margin-top: map-get($spacers, 5);
+    }
   }
 
   .block-quote,
   .richtext-image {
-    margin-bottom: map-get($spacers, 6);
+    margin-bottom: map-get($spacers, 4);
+    margin-top: map-get($spacers, 4);
   }
 }
 

@@ -59,7 +59,7 @@
 
   <div class="tab-content" id="content">
     {% for item in self.tab_data %}
-      <div class="tab-pane container border-bottom border-1 border-midgrey container-outline fade show{% if forloop.first %} active{% endif %}" id="{{item.meta.title|slugify}}-content" role="tabpanel" aria-labelledby="{{item.meta.title|slugify}}-tab">
+      <div class="tab-pane container-md border-bottom border-1 border-midgrey container-outline fade show{% if forloop.first %} active{% endif %}" id="{{item.meta.title|slugify}}-content" role="tabpanel" aria-labelledby="{{item.meta.title|slugify}}-tab">
         {% include "stopwatch/includes/landing_tab.html" with self=item.meta only %}
       </div>
     {% endfor %}
@@ -67,7 +67,7 @@
 {% endif %}
 
 <main class="container container-outline pb-5">
-  <div class="row g-3 gx-md-4 gy-md-5 streamfield-flow">
+  <div class="row streamfield-flow">
     {% include_block self.body %}
   </div>
 </main>
