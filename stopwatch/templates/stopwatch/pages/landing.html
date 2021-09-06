@@ -85,8 +85,9 @@
 
 <script>
   (function tabAutoplay() {
+    const isScrolledTop = () => window.scrollY < 400
     const DURATION = 10000
-    let active = true
+    let active = isScrolledTop()
 
     const tabs = Array.from(document.querySelectorAll('#tabs a[role="tab"]'))
     const progressEl = document.getElementById('progress')
@@ -94,8 +95,7 @@
 
     tabs.forEach(tab => {
       tab.addEventListener('click', (event) => {
-        progressEl.style.opacity = 0
-        active = false
+        setActive(false)
         
         setTimeout(() => {
           tabs.forEach(t => {
@@ -125,6 +125,23 @@
         requestAnimationFrame(frameTick)
       }
     }
+
+    const setActive = newActive => {
+      if (newActive && !active) {
+        requestAnimationFrame(frameTick)
+        progressEl.style.opacity = 1
+      }
+
+      if (!newActive && active) {
+        progressEl.style.opacity = 0
+      }
+
+      active = newActive
+    }
+
+    window.addEventListener('scroll', () => {
+      setActive(isScrolledTop())
+    })
 
     requestAnimationFrame(frameTick)
   })()
