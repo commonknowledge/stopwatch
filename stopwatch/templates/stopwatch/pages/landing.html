@@ -7,7 +7,7 @@
   <div id="news-ticker"></div>
 {% endif %}
 
-<header class="position-relative bg-panel">
+<header class="position-relative bg-panel" data-tabanimate="on">
   <div class="position-absolute w-100 py-3 py-md-5 z-2 text-white">
     <div class="container">
       <h1>
@@ -24,11 +24,11 @@
 </header>
 
 {% if self.tab_data %}
-  <ul class="nav nav-tabs container container-outline px-0 position-relative" id="tabs" role="tablist">
+  <ul class="nav nav-tabs container container-outline px-0 position-relative" id="tabs" role="tablist" data-tabanimate="on">
     {% for item in self.tab_data %}
       <li class="nav-item d-flex flex-column" role="presentation">
         <a
-          class="btn{% if forloop.first %} active{% endif %} p-md-3 pt-md-4 flex-grow-1"
+          class="btn{% if forloop.first %} active{% endif %} p-md-3 pt-md-4 flex-grow-1 border-bottom-0"
           id="{{item.meta.title|slugify}}-tab"
           data-bs-toggle="tab"
           data-bs-target="#{{item.meta.title|slugify}}-content"
@@ -59,7 +59,7 @@
     <div id="progress" class="progress-bar"></div>
   </ul>
 
-  <div class="tab-content mb-3 mb-md-0" id="content">
+  <div class="tab-content mb-3 mb-md-0" id="content" data-tabanimate="on">
     {% for item in self.tab_data %}
       <div class="tab-pane container-md border-bottom border-1 border-midgrey container-outline fade show{% if forloop.first %} active{% endif %}" id="{{item.meta.title|slugify}}-content" role="tabpanel" aria-labelledby="{{item.meta.title|slugify}}-tab">
         {% include "stopwatch/includes/landing_tab.html" with self=item.meta only %}
@@ -68,7 +68,7 @@
   </div>
 {% endif %}
 
-<main class="container container-outline pb-5">
+<main id="main" class="container container-outline pb-5" data-tabanimate="off">
   <div class="row streamfield-flow">
     {% include_block self.body %}
   </div>

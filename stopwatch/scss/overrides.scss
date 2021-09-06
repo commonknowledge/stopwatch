@@ -127,7 +127,7 @@ h4 {
 .nav-link {
   font-weight: bold;
   color: $secondary;
-  padding: 0 !important;
+  padding: 0;
 
   &.active {
     color: $dark;
@@ -198,6 +198,10 @@ a.card {
 .nav-link:hover,
 .nav-link:focus {
   color: inherit;
+}
+
+.navbar-toggler {
+  font-size: inherit;
 }
 
 .navbar-toggler:focus {
