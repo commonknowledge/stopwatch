@@ -18,16 +18,14 @@ Staging: https://stopwatch.commonknowledge.dev/
 ### Easy mode: VSCode Dev Container
 
 - Make sure you have Docker, VSCode, and the Remote Development extension installed.
-- Open the repository in VSCode
-- You should get a notification asking if you want to 'reopen in container'. Say yes.
-  - If you don't get one, you should be able to 'reopen in container' via the command pallette
-  - If you can't see an option to do that, make sure you have the Remote Development extension installed
+- Once installed run the command "Clone Repository in Container Volume" in VSCode selecting this repository. This methodology makes for a slightly faster site.
 - Wait for the dev container to build.
 - Check your terminal and respond to any setup prompts it asks for
-- Search for stopwatch/settings/local.py on lastpass and paste its contents into the corresponding local file
-- Use vscode's 'run' command (usually aliased to F5) to run the app.
-  - Make sure you use the 'App' configuration, which will start both the django app and the frontend build pipeline.
-- Go to localhost:8000/admin
+- Search for `stopwatch/settings/local.py` on LastPass and paste its contents into the corresponding local file
+- Use VSCodes' 'run' command (usually aliased to F5) to run the app.
+  - Make sure you use the 'App' configuration, which will start both the Djagno app and the frontend Webpack build pipeline.
+  - You may need to go to View > Run to look at this configuration.
+- Go to [localhost:8000/admin](localhost:8000/admin)
 - Use the 'import' option on the left to seed the archive with content from the staging site.
 
 ### Hard mode: Using Dockerfiles
