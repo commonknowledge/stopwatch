@@ -35,7 +35,7 @@
   
     {% for author in self.authors %}
       <div class="mt-2">
-        <span class="fw-bold">{{author.name}}</span> is {{author.bio}}
+        <span class="fw-bold">{{author.name}}</span>. {{author.bio}}
       
         <div class="mt-1">
           {% include "stopwatch/includes/person-contact-details.html" with person=author only %}

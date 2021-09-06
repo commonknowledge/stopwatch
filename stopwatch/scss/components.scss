@@ -75,9 +75,6 @@
   }
 }
 
-.card-grid {
-}
-
 .streamfield-flow {
   --bs-gutter-x: #{map-get($spacers, 3)};
   --bs-gutter-y: #{map-get($spacers, 7)};
@@ -95,9 +92,19 @@
   }
 }
 
-.full .block-text a,
+.block-text a,
 .inline-link {
   text-decoration: underline;
+}
+
+.block-text {
+  ul {
+    list-style-image: url(./bullet.svg);
+  }
+
+  li {
+    margin-bottom: map-get($spacers, 1);
+  }
 }
 
 .streamfield-compact {

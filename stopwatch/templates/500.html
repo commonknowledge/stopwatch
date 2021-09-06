@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html class="no-js">
-    <head>
-        <meta charset="utf-8" />
-        <title>Internal server error</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-    </head>
-    <body>
-        <h1>Internal server error</h1>
+{% extends "base.html" %}
+{% load static wagtailuserbar ckdjango_tags ckwagtail_tags ckbootstrap_tags wagtailcore_tags wagtailmetadata_tags %}
 
-        <h2>Sorry, there seems to be an error. Please try again soon.</h2>
-    </body>
-</html>
+{% block content %}
+    <div class="container py-5 py-md-7 container-outline">
+        <div class="container-narrow block-text">
+            <p>
+                Sorry, we're having some technical difficulties.
+            </p>
+            <p>
+            Try again in a few minutes. If this keeps happening, please <a href="mailto:{{settings.stopwatch.SiteSettings.email_contact}}">let us know</a>.
+        </div>
+    </div>
+
+{% endblock %}

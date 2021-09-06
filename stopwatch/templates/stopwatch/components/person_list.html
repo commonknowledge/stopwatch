@@ -8,6 +8,12 @@
       {% for person in self.people %}
       <div class="col-4 d-flex flex-column align-items-start mb-5">
         <div class="d-flex flex-row">
+          {% if person.photo %}
+            <div class="me-2">
+              {% avatar_img image=person.photo name=person.name %}  
+            </div>
+          {% endif %}
+
           <div class="flex-grow-1 mb-3">
             <div class="text-lg fw-bold">
               {{person.name}}
@@ -16,15 +22,10 @@
               {{person.title}}
             </div>
           </div>
-          {% if person.photo %}
-            <div>
-              {% avatar_img image=person.photo name=person.name %}  
-            </div>
-          {% endif %}
         </div>
 
         <div class="text-sm mb-3">
-          {{person.name}} is {{person.bio}}
+          {{person.bio}}
         </div>
 
         {% include "stopwatch/includes/person-contact-details.html" with person=person only %}

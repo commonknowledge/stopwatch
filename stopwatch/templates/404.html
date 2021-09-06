@@ -1,9 +1,37 @@
 {% extends "base.html" %}
-
-{% block body_class %}template-404{% endblock %}
+{% load static wagtailuserbar ckdjango_tags ckwagtail_tags ckbootstrap_tags wagtailcore_tags wagtailmetadata_tags %}
 
 {% block content %}
-    <h1>Page not found</h1>
+    <div class="container py-5 py-md-7 container-outline">
+        <h1 class="mb-5 container-mid mb-md-7">Page not found</h1>
 
-    <h2>Sorry, this page could not be found.</h2>
+        <div class="container-narrow block-text">
+            <p>
+                Sorry, this page could not be found. You might have mistyped a link, or it may have been moved or deleted.
+            </p>
+            <p>
+                You might want to try:
+            </p>
+            <ul>
+                <li>
+                    <a data-bs-toggle="modal"  href="#searchToggle">
+                        Searching
+                    </a> for the page.
+                </li>
+
+                <li>
+                    Visiting the <a href="/">
+                        homepage
+                    </a>.
+                </li>
+
+                <li>
+                    Or alternatively, you can <a href="mailto:{{settings.stopwatch.SiteSettings.email_contact}}">
+                        contact us via email.
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 {% endblock %}
