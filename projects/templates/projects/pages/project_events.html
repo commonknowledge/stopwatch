@@ -4,58 +4,58 @@
 {% block project_content %}
 
 <main class="py-5 project-theme container container-outline streamfield">
+  <h2 class="mb-4 d-md-none">Events</h2>
+
   <div class="row">
-    <div class="col" {% infinite_scroll_container %}>
-      <h2>Events</h2>
+    {% include "stopwatch/includes/filters.html" with style='ROWS' tags=filter_form.theme only %}
 
-      <form data-filter-form class="mt-5 mb-3" method="GET">
-        <h3 class="microcopy">Filters</h3>
+    <div class="col container-fluid" {% infinite_scroll_container %}>
+      <h2 class="mb-4 d-none d-md-block">Events</h2>
 
-        <div class="col-8 overflow-auto text-nowrap">
-          {% filter_toggles field=filter_form.theme label_class="btn me-2" %}
-        </div>
-      </form>
-
-      {% for event in child_list_page %}
-        <article class="col-8 col-md-4 p-3 bg-white iscroll_item card-flush mb-3">
-          <div class="mb-3 d-flex flex-direction-column justify-content-between microcopy">
-            <div class="me-2 text-nowrap">
-              <span class="color-circle me-1" style="background-color: {{event.theme.color}};"></span>
-
-              {{event.theme.title}}
-            </div>
-
-            <div class="text-end">
-              <div class="d-inline-block me-2 text-nowrap">
-                {{event.start_time|date:"l"}}
+      <div class="row g-3">
+        {% for event in child_list_page %}
+          <div class="col-8 col-lg-4">
+            <article class="p-3 bg-white iscroll_item">
+              <div class="mb-3 d-flex flex-direction-column justify-content-between microcopy">
+                <div class="me-2 text-nowrap">
+                  <span class="color-circle me-1" style="background-color: {{event.theme.color}};"></span>
+    
+                  {{event.theme.title}}
+                </div>
+    
+                <div class="text-end">
+                  <div class="d-inline-block me-2 text-nowrap">
+                    {{event.start_time|date:"l"}}
+                  </div>
+                  <div class="d-inline-block me-2 text-nowrap">
+                    {{event.start_time|date:"H:i"}}–{{event.end_time|date:"H:i"}}
+                  </div>
+                </div>
               </div>
-              <div class="d-inline-block me-2 text-nowrap">
-                {{event.start_time|date:"H:i"}}–{{event.end_time|date:"H:i"}}
+    
+              <div class="mb-4">
+                <h3 class="my-3">
+                  {{event.title}}
+                </h3>
+    
+                {{event.intro_text|richtext}}
               </div>
-            </div>
+    
+              <div class="mb-1">
+                {% for speaker in event.speakers %}
+                  {% include "stopwatch/includes/avatar.html" with person=speaker %}
+                {% endfor %}
+              </div>
+    
+              <div>
+                <a href="{{event.registration_page}}" class="btn btn-outline-secondary w-100">
+                  Register
+                </a>
+              </div>
+            </article>
           </div>
-
-          <div class="mb-4">
-            <h3 class="my-3">
-              {{event.title}}
-            </h3>
-
-            {{event.intro_text|richtext}}
-          </div>
-
-          <div class="mb-1">
-            {% for speaker in event.speakers %}
-              {% include "stopwatch/includes/avatar.html" with person=speaker %}
-            {% endfor %}
-          </div>
-
-          <div>
-            <a href="{{event.registration_page}}" class="btn btn-outline-secondary w-100">
-              Register
-            </a>
-          </div>
-        </article>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
   </div>
 </main>

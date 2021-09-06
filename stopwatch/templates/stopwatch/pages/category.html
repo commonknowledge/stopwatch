@@ -11,7 +11,7 @@
 <header class="position-relative container container-outline container-outline-btm p-0">
   <div class="row gx-0">
     {% if self.style == 'ROWS' %}
-      <div class="col-md-2"></div>
+      <div class="col-md-3 col-lg-2"></div>
     {% endif %}
 
     {% if self.photo and self.style == 'GRID' %}
@@ -39,26 +39,7 @@
 
 <main class="container container-outline pb-5 pt-3">
     <div class="row">
-        <form
-          data-filter-form
-          method="GET"
-          class="col-8 {% if self.style == 'ROWS' %}col-md-2{% endif %} form-unraised d-flex flex-column align-items-md-start"
-        >
-          {% if self.tags %}
-            <label class="microcopy mb-1 d-none d-md-block" for="tag_filter">Filter</label>
-            <div id="tag_filter" role="radiogroup" class="overflow-auto mb-3 d-flex flex-md-column align-items-start">
-              {% filter_toggles field=filter_form.theme label_class="btn me-2 mb-2" %}
-            </div>
-          {% endif %}
-
-          <label class="microcopy mb-1 d-none d-md-block" for="sort-menu">Order</label>
-          {% filter_menu id="sort-menu" field=filter_form.sort class="form-select width-md-auto mb-3" %}
-          
-          {% if self.searchable %}
-            <label class="microcopy mb-1 d-none d-md-block" for="search">Search</label>
-            <input class="form-control width-md-auto mb-3 mb-md-4 text-naturalcase" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">
-          {% endif %}
-        </form>
+        {% include "stopwatch/includes/filters.html" with style=self.style tags=filter_form.theme sort=filter_form.sort searchable=self.searchable only %}
 
         <div class="col" {% infinite_scroll_container %}>
           {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=self.style search_query=filter_form.query.value reset_url=self.url only %}

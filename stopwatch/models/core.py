@@ -155,7 +155,6 @@ class SiteSettings(BaseSetting):
         return {
             'heading': 'Sign up to our newsletter',
             'content': self.standard_mailinglist_request,
-            'target': self.post_newsletter_page
         }
 
 

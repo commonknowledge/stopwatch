@@ -8,7 +8,7 @@
   {{self.heading}}
 </h2>
 
-{{self.content|default:settings.stopwatch.SiteSettings.standard_mailinglist_request|richtext}}
+{{self.content|richtext}}
 
 <form class="position-relative" method="POST" action="{{settings.stopwatch.SiteSettings.email_list_url}}">
   <div class="input-group mt-3">

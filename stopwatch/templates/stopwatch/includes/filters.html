@@ -1,0 +1,24 @@
+{% load static wagtailcore_tags wagtailimages_tags ckdjango_tags ckbootstrap_tags wagtailembeds_tags %}
+
+<form
+  data-filter-form
+  method="GET"
+  class="col-8 {% if style == 'ROWS' %}col-md-3 col-lg-2{% endif %} form-unraised d-flex flex-column align-items-md-start"
+>
+  {% if tags %}
+    <label class="microcopy mb-1 d-none d-md-block" for="tag_filter">Filter</label>
+    <div id="tag_filter" role="radiogroup" class="overflow-auto mb-3 d-flex flex-md-column align-items-start">
+      {% filter_toggles field=tags label_class="btn me-2 mb-2" %}
+    </div>
+  {% endif %}
+
+  {% if sort %}
+    <label class="microcopy mb-1 d-none d-md-block" for="sort-menu">Order</label>
+    {% filter_menu id="sort-menu" field=sort class="form-select width-md-auto mb-3" %}
+  {% endif %}
+  
+  {% if searchable %}
+    <label class="microcopy mb-1 d-none d-md-block" for="search">Search</label>
+    <input class="form-control width-md-auto mb-3 mb-md-4 text-naturalcase" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">
+  {% endif %}
+</form>

@@ -28,9 +28,9 @@
 
 .img-homepage-hero {
   height: 300px;
-  
+
   @include media-breakpoint-up(lg) {
-    height: 400px
+    height: 400px;
   }
 }
 
@@ -73,6 +73,9 @@
   .block-text > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
   }
+}
+
+.card-grid {
 }
 
 .streamfield-flow {
