@@ -1,4 +1,4 @@
-{% load static wagtailuserbar ckdjango_tags ckwagtail_tags ckbootstrap_tags wagtailcore_tags %}
+{% load static wagtailuserbar ckdjango_tags ckwagtail_tags ckbootstrap_tags wagtailcore_tags wagtailmetadata_tags %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -21,6 +21,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {% webpack_bundle 'main' 'css' %}
+        
+        {% meta_tags %}
 
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@300&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">

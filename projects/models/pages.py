@@ -16,8 +16,10 @@ from commonknowledge.wagtail.models import ChildListMixin
 from commonknowledge.wagtail.helpers import get_children_of_type
 from colour import Color
 
+from wagtailmetadata.models import MetadataPageMixin
 
-class Project(ListableMixin, Page):
+
+class Project(MetadataPageMixin, ListableMixin, Page):
     template = 'projects/pages/project.html'
     parent_page_types = ('stopwatch.Category',)
 
@@ -56,7 +58,7 @@ class Project(ListableMixin, Page):
             return '#000'
 
 
-class ProjectPage(Page):
+class ProjectPage(MetadataPageMixin, Page):
     show_in_menus_default = True
 
     class Meta:
