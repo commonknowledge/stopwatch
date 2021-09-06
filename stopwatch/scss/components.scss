@@ -26,6 +26,14 @@
   }
 }
 
+.img-homepage-hero {
+  height: 300px;
+  
+  @include media-breakpoint-up(lg) {
+    height: 400px
+  }
+}
+
 .card-hintscroll {
   max-width: 15rem;
   width: 80vw;
