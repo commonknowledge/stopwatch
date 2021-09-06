@@ -20,6 +20,8 @@ from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin
 from commonknowledge.django.cache import django_cached
 
+from wagtailmetadata.models import MetadataPageMixin
+
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
 from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock
 
@@ -29,7 +31,7 @@ class ArticleTag(TaggedItemBase):
         'Article', on_delete=models.CASCADE, related_name='tagged_items')
 
 
-class LandingPage(Page):
+class LandingPage(MetadataPageMixin, Page):
     template = 'stopwatch/pages/landing.html'
     parent_page_types = ('wagtailcore.Page',)
 
@@ -103,7 +105,7 @@ class ArticleAuthor(Orderable, models.Model):
     ]
 
 
-class Article(ListableMixin, Page):
+class Article(MetadataPageMixin, ListableMixin, Page):
     template = 'stopwatch/pages/article.html'
 
     tags = ClusterTaggableManager(through=ArticleTag, blank=True)
@@ -198,7 +200,7 @@ class Form(ListableMixin, AbstractEmailForm):
     ]
 
 
-class Category(ListableMixin, ChildListMixin, Page):
+class Category(MetadataPageMixin, ListableMixin, ChildListMixin, Page):
     allow_search = True
     template = 'stopwatch/pages/category.html'
 

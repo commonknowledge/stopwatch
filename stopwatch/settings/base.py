@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'wagtail.core',
     'wagtail.contrib.postgres_search',
     'wagtail_transfer',
+    'wagtailmetadata',
 
     'modelcluster',
     'taggit',
