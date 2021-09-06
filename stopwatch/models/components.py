@@ -141,17 +141,6 @@ class CtaBlock(StructBlock):
     content = RichTextBlock(required=False)
     target = PageChooserBlock(required=True)
 
-    def get_context(self, value, *args, **kwargs):
-        from stopwatch.models.pages import Form
-
-        context = super().get_context(value, *args, **kwargs)
-        target = value.get('target', None)
-
-        if target and issubclass(target.specific_class, Form):
-            context['form'] = target.specific.get_form(page=self, user=None)
-
-        return context
-
 
 class PersonListBlock(StructBlock):
     class Meta:
@@ -173,12 +162,27 @@ class NewsletterSignupBlock(CtaBlock):
     class Meta:
         template = 'stopwatch/components/newsletter_signup.html'
 
+    heading = CharBlock(required=False)
+    image = ImageChooserBlock(required=False)
+    content = RichTextBlock(required=False)
+
 
 class FormBlock(CtaBlock):
     class Meta:
         template = 'stopwatch/components/form.html'
 
     target = PageChooserBlock('stopwatch.Form', required=True)
+
+    def get_context(self, value, *args, **kwargs):
+        from stopwatch.models.pages import Form
+
+        context = super().get_context(value, *args, **kwargs)
+        target = value.get('target', None)
+
+        if target and issubclass(target.specific_class, Form):
+            context['form'] = target.specific.get_form(page=self, user=None)
+
+        return context
 
 
 TEXT_MODULES = (

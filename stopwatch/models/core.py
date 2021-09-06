@@ -99,8 +99,7 @@ class SiteSettings(BaseSetting):
 
     donate_page = models.ForeignKey(
         Page, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    post_newsletter_page = models.ForeignKey(
-        Page, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    email_list_url = models.URLField(blank=True, null=True)
 
     standard_donation_request = RichTextField(
         default='We aim to address excess and disproportionate stop and search, promote best practice and ensure fair, effective policing for all.')
@@ -130,7 +129,7 @@ class SiteSettings(BaseSetting):
             FieldPanel('standard_donation_request'),
             FieldPanel('standard_mailinglist_request'),
             PageChooserPanel('donate_page'),
-            PageChooserPanel('post_newsletter_page'),
+            FieldPanel('email_list_url'),
         ], 'Default CTAs'),
 
         MultiFieldPanel([

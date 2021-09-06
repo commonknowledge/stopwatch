@@ -8,11 +8,11 @@
   {{self.heading}}
 </h2>
 
-{{self.content|richtext}}
+{{self.content|default:settings.stopwatch.SiteSettings.standard_mailinglist_request|richtext}}
 
-<form class="position-relative">
+<form class="position-relative" method="POST" action="{{settings.stopwatch.SiteSettings.email_list_url}}">
   <div class="input-group mt-3">
-    <input type="email" class="form-control" id="emailField" placeholder="Email address" aria-label="Email address">
+    <input type="email" name="EMAIL" class="form-control" id="emailField" placeholder="Email address" aria-label="Email address">
 
     <button type="submit" class="btn btn-secondary d-none d-md-inline-block">
       Subscribe
