@@ -85,12 +85,13 @@
 
 <script>
   (function tabAutoplay() {
+    const DURATION_PER_TAB = 5000
     const isScrolledTop = () => window.scrollY < 400
-    const DURATION = 10000
     let active = isScrolledTop()
 
     const tabs = Array.from(document.querySelectorAll('#tabs a[role="tab"]'))
     const progressEl = document.getElementById('progress')
+    const duration = DURATION_PER_TAB * tabs.length
     let lastTime = 0
 
     tabs.forEach(tab => {
@@ -109,21 +110,22 @@
     })
 
     function frameTick(timestamp) {
+      if (!active) {
+        return
+      }
+
       timeElapsed = lastTime ? lastTime + (timestamp - lastTime) : 0
       lastTime = timestamp
 
-      const cycleTime = timeElapsed % DURATION
-      const percentComplete = cycleTime / DURATION
+      const cycleTime = timeElapsed % duration
+      const percentComplete = cycleTime / duration
       const tabIndex = Math.floor(percentComplete * tabs.length)
 
       progressEl.style.transform = `scale(${percentComplete}, 1)`
       const tab = bootstrap.Tab.getOrCreateInstance(tabs[tabIndex])
 
       tab.show()
-      
-      if (active) {
-        requestAnimationFrame(frameTick)
-      }
+      requestAnimationFrame(frameTick)
     }
 
     const setActive = newActive => {
@@ -140,7 +142,9 @@
     }
 
     window.addEventListener('scroll', () => {
-      setActive(isScrolledTop())
+      if (!isScrolledTop()) {
+        setActive(false)
+      }
     })
 
     requestAnimationFrame(frameTick)
