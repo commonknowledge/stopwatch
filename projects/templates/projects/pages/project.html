@@ -3,14 +3,14 @@
 
 {% block project_content %}
 
-<main class="py-5 project-theme container container-outline">
-  <div class="container-narrow streamfield py-7">
+<main class="py-5 py-md-7 project-theme container container-outline">
+  <div class="container-narrow streamfield">
     {% include_block self.body %}
   </div>
 </main>
 
 {% if self.themes.exists %}
-  <div class="microcopy text-center py-7 border-top border-1 border-midgrey">
+  <div class="microcopy text-center py-5 py-md-7 border-top border-1 border-midgrey">
     Event themes
   </div>
 

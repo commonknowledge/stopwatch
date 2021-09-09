@@ -21,7 +21,7 @@ class SortOption(NamedTuple):
 class ChildListMixin:
     allow_search = False
     sort_options = (
-        SortOption('Most Recent', 'most_recent', '-first_published_at'),
+        SortOption('Newest', 'most_recent', '-first_published_at'),
         SortOption('Oldest', 'oldest', 'first_published_at'),
     )
 

@@ -3,22 +3,33 @@
 <form
   data-filter-form
   method="GET"
-  class="col-8 {% if style == 'ROWS' %}col-md-3 col-lg-2{% endif %} form-unraised d-flex flex-column align-items-md-start"
+  class="col-8 form-unraised d-flex flex-row align-items-md-start {% if style == 'ROWS' %}col-md-3 col-lg-2 flex-column{% endif %} {{class}}"
 >
-  {% if tags %}
-    <label class="microcopy mb-1 d-none d-md-block" for="tag_filter">Filter</label>
-    <div id="tag_filter" role="radiogroup" class="overflow-auto mb-3 d-flex flex-md-column align-items-start">
-      {% filter_toggles field=tags label_class="btn me-2 mb-2" %}
+  {% if tags.choices %}
+    <div class="me-2 mb-2mb-md-4">
+      <label class="microcopy mb-1" for="tag_filter">Filter</label>
+      <div id="tag_filter" role="radiogroup" class="overflow-auto-md-column align-items-start">
+        {% filter_toggles field=tags label_class="btn filter-ctl" %}
+      </div>
     </div>
   {% endif %}
 
-  {% if sort %}
-    <label class="microcopy mb-1 d-none d-md-block" for="sort-menu">Order</label>
-    {% filter_menu id="sort-menu" field=sort class="form-select width-md-auto mb-3" %}
+  {% if style == 'GRID' %}
+  <span class="flex-grow-1 d-none d-md-block"></span>
   {% endif %}
-  
-  {% if searchable %}
-    <label class="microcopy mb-1 d-none d-md-block" for="search">Search</label>
-    <input class="form-control width-md-auto mb-3 mb-md-4 text-naturalcase" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">
-  {% endif %}
+
+  <div class="d-flex flex-shrink-0 flex-row flex-md-column w-100 w-md-auto">
+    {% if sort %}
+      <div class="me-2 mb-2 mb-md-4 flex-grow-1 flex-grow-md-0">
+        <label class="microcopy mb-1" for="sort-menu">Order</label>
+        {% filter_menu id="sort-menu" field=sort class="form-select width-md-auto filter-ctl" %}
+      </div>
+    {% endif %}
+    
+    {% if searchable %}
+      <div class="me-2 mb-2 mb-md-4 flex-grow-1 flex-grow-md-0">
+        <input class="form-control width-md-auto text-naturalcase filter-ctl" aria-label="Search" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">    
+      </div>
+    {% endif %}
+  </div>
 </form>

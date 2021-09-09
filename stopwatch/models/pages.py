@@ -33,7 +33,7 @@ class ArticleTag(TaggedItemBase):
         'Article', on_delete=models.CASCADE, related_name='tagged_items')
 
 
-class StopwatchPage(Page):
+class StopwatchPage(MetadataPageMixin, Page):
     class Meta:
         abstract = True
 
@@ -43,6 +43,10 @@ class StopwatchPage(Page):
         StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
 
     show_header_image = models.BooleanField(default=True)
+
+    @property
+    def category(self):
+        return Category.objects.ancestor_of(self, inclusive=True).last()
 
     @classmethod
     def get_display_options(cls):
@@ -57,7 +61,7 @@ class StopwatchPage(Page):
         ]
 
 
-class LandingPage(MetadataPageMixin, StopwatchPage):
+class LandingPage(StopwatchPage):
     template = 'stopwatch/pages/landing.html'
     parent_page_types = ('wagtailcore.Page',)
 
@@ -148,7 +152,7 @@ class ArticleAuthor(Orderable, models.Model):
     ]
 
 
-class Article(MetadataPageMixin, ListableMixin, StopwatchPage):
+class Article(ListableMixin, StopwatchPage):
     template = 'stopwatch/pages/article.html'
 
     tags = ClusterTaggableManager(through=ArticleTag, blank=True)
@@ -158,8 +162,23 @@ class Article(MetadataPageMixin, ListableMixin, StopwatchPage):
     summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
     body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
 
-    hide_related_articles = models.BooleanField(default=False)
-    hide_date = models.BooleanField(default=False)
+    @property
+    def hide_related_articles(self):
+        category = self.category
+        if category:
+            return self.category.hide_related_articles
+
+        else:
+            return True
+
+    @property
+    def hide_date(self):
+        category = self.category
+        if category:
+            return self.category.hide_dates
+
+        else:
+            return True
 
     search_fields = Page.search_fields + [
         index.FilterField('tag_id')
@@ -178,13 +197,6 @@ class Article(MetadataPageMixin, ListableMixin, StopwatchPage):
     promote_panels = Page.promote_panels + [
         FieldPanel('tags'),
     ]
-
-    @classmethod
-    def get_display_options(cls):
-        return super().get_display_options() + [
-            FieldPanel('hide_related_articles'),
-            FieldPanel('hide_date'),
-        ]
 
     @property
     def authors(self):
@@ -211,7 +223,7 @@ class Article(MetadataPageMixin, ListableMixin, StopwatchPage):
     @property
     def related_articles(self):
         # TODO: Use tags to determine this once we have tags.
-        return list(get_children_of_type(self.get_parent(), Article)[:5])
+        return list(get_children_of_type(self.get_parent(), Article).exclude(pk=self.id)[:5])
 
 
 class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
@@ -243,7 +255,7 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
     ]
 
 
-class Category(MetadataPageMixin, ListableMixin, ChildListMixin, StopwatchPage):
+class Category(ListableMixin, ChildListMixin, StopwatchPage):
     allow_search = True
     template = 'stopwatch/pages/category.html'
 
@@ -256,6 +268,9 @@ class Category(MetadataPageMixin, ListableMixin, ChildListMixin, StopwatchPage):
         choices=ArticlesListBlock.StyleChoices.options,
         default=ArticlesListBlock.StyleChoices.GRID)
 
+    hide_related_articles = models.BooleanField(default=True)
+    hide_dates = models.BooleanField(default=True)
+
     content_panels = Page.content_panels + [
         FieldPanel('description'),
         ImageChooserPanel('photo'),
@@ -264,6 +279,13 @@ class Category(MetadataPageMixin, ListableMixin, ChildListMixin, StopwatchPage):
         FieldPanel('newsflash'),
         FieldPanel('navigable'),
     ]
+
+    @classmethod
+    def get_display_options(cls):
+        return super().get_display_options() + [
+            FieldPanel('hide_related_articles'),
+            FieldPanel('hide_dates'),
+        ]
 
     def serve(self, request, *args, **kwargs):
         if not self.navigable:

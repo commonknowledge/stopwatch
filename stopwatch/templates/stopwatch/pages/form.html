@@ -10,7 +10,12 @@
 <header class="container container-outline pt-5">
   <div class="container-mid">
     <h1>{{self.title}}</h1>
-    {{self.intro|richtext}}
+
+    {% if self.intro %}
+    <div class="pt-3 text-compact">
+        {{self.intro|richtext}}
+      </div>
+    {% endif %}
   </div>
 </header>
 

@@ -58,7 +58,7 @@
 
         {% block body %}
         {% block header %}
-        <div class="container container-outline microcopy pt-3 mt-1 d-flex flex-row align-items-center justify-content-between">
+        <div class="container container-outline microcopy pt-2 pt-md-3 d-flex flex-row align-items-center justify-content-between">
             {{settings.stopwatch.SiteSettings.tagline|richtext}}
             <div class="d-none d-md-block">
                 <a class="btn text-muteddarkgrey" href="/about-stopwatch">About</a>
@@ -68,7 +68,7 @@
         </div>
 
         <div class="position-sticky position-md-static container container-outline border-btm top-0 z-sticky bg-light">
-            <nav class="navbar py-3">
+            <nav class="navbar py-2 py-md-3">
                 <a class="navbar-brand p-0" href="/">
                     <img class="logo" src={% static 'img/logo.png' %} />
                 </a>
@@ -99,13 +99,13 @@
 
                 </div>
 
-              <button class="navbar-toggler ms-3" type="button" data-bs-toggle="modal" data-bs-target="#searchToggle" aria-controls="searchToggle" aria-expanded="false" aria-label="Toggle search">
+              <button class="navbar-toggler p-0 ms-5" type="button" data-bs-toggle="modal" data-bs-target="#searchToggle" aria-controls="searchToggle" aria-expanded="false" aria-label="Toggle search">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="25px" width="25px" fill="currentColor">
                     <path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                 </svg>
               </button>
 
-              <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleMenu" aria-controls="navbarToggleMenu" aria-expanded="false" aria-label="Toggle navigation">
+              <button class="navbar-toggler p-0 d-md-none ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleMenu" aria-controls="navbarToggleMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                 </svg>

@@ -7,7 +7,7 @@
 }
 
 .logo-bottom {
-  height: 80px;
+  height: 60px;
 
   @include media-breakpoint-up(md) {
     height: 103px;
@@ -19,10 +19,10 @@
 }
 
 .block-lg {
-  height: 300px;
+  height: 250px;
 
   @include media-breakpoint-up(lg) {
-    height: 500px;
+    height: 400px;
   }
 }
 
@@ -70,6 +70,33 @@
   --bs-gutter-x: map-get($spacers, 3);
   --bs-gutter-y: map-get($spacers, 7);
 
+  .block-text {
+    h2 {
+      @include heading-small;
+      color: $darkgrey;
+    }
+
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include microcopy;
+    }
+
+    > h2:not(:first-child),
+    > h3:not(:first-child) {
+      margin-top: map-get($spacers, 5);
+    }
+  }
+
+  > :not(.block-text):not(:first-child) {
+    margin-top: map-get($spacers, 4);
+
+    @include media-breakpoint-up(md) {
+      margin-top: map-get($spacers, 6);
+    }
+  }
+
   .block-text > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
   }
@@ -85,7 +112,6 @@
   .block-newsletter_signup,
   .block-person_listing,
   .block-organisation_listing,
-  .block-alert,
   .block-newsletter_signup {
     @extend .col-8;
     @extend .col-md-4;
@@ -107,39 +133,20 @@
   }
 }
 
+.text-compact > *:not(:last-child) {
+  margin-bottom: map-get($spacers, 2);
+
+  @include media-breakpoint-down(md) {
+    margin-bottom: map-get($spacers, 1);
+  }
+}
+
 .streamfield-compact {
   > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
   }
-  .block-text > *:not(:last-child) {
-    margin-bottom: map-get($spacers, 2);
-  }
-}
-
-.article-streamfield {
   .block-text {
-    h2 {
-      @include heading-small;
-      color: $darkgrey;
-    }
-
-    h3,
-    h4,
-    h5,
-    h6 {
-      @include microcopy;
-    }
-
-    > h2:not(:first-child),
-    > h3:not(:first-child) {
-      margin-top: map-get($spacers, 5);
-    }
-  }
-
-  .block-quote,
-  .richtext-image {
-    margin-bottom: map-get($spacers, 4);
-    margin-top: map-get($spacers, 4);
+    @extend .text-compact;
   }
 }
 
@@ -283,4 +290,15 @@
   will-change: transform;
   transform: scale(0, 1);
   transform-origin: 0% 50%;
+}
+
+.article-listitem:not(:last-child) {
+  border-bottom: 1px solid $primary;
+}
+
+.filter-ctl {
+  @include media-breakpoint-down(md) {
+    padding: $btn-padding-x-sm $btn-padding-y-sm;
+    font-size: $btn-font-size-sm;
+  }
 }

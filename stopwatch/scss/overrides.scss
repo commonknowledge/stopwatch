@@ -17,6 +17,10 @@ body {
   overflow-x: hidden;
 }
 
+p {
+  margin-bottom: 0;
+}
+
 *:hover,
 *:focus {
   outline: none;
@@ -76,10 +80,14 @@ p:last-child {
 @mixin microcopy {
   font-family: $font-family-monospace;
   font-weight: 500;
-  font-size: 14px;
   line-height: 140%;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+
+  @include media-breakpoint-up(md) {
+    font-size: 14px;
+  }
 }
 
 a {

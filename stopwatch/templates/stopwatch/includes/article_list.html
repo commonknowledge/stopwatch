@@ -22,19 +22,23 @@
 {% else %}
   <section class="{{class}}">
     {% for page in pages %}
-      <a class="row g-0 link-reset iscroll_item border-bottom border-1 border-primary" href="{{page.url}}">
+      <a class="row g-0 link-reset iscroll_item article-listitem" href="{{page.url}}">
         {% if page.photo %}
-          <div class="col-8 col-md-3 pe-md-0 py-3">
+          <div class="col-8 col-md-3 pe-md-0 pt-3 pb-md-3">
             <div class="img-list">
-              {% image page.photo width-320 %}
+              {% image page.photo width-500 %}
             </div>
+          </div>
+        {% else %}
+          <div class="col-3 d-none d-md-block">
+
           </div>
         {% endif %}
     
-        <div class="col order-md-first py-3">
-          <h3 class="heading-medium mb-4">{{page.title}}</h3>
+        <div class="col order-md-first py-3 me-md-3">
+          <h3 class="heading-medium mb-3 mb-md-4">{{page.title}}</h3>
         
-          <div class="mb-4">
+          <div class="mb-3 mb-md-4">
             {{page.intro_text|richtext}}
           </div>
     
