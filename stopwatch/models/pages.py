@@ -1,5 +1,6 @@
 from django.db.models.fields.related import ForeignKey
 from wagtail.core.blocks.field_block import CharBlock, TextBlock
+from wagtail.images.blocks import ImageChooserBlock
 from stopwatch.models.mixins import ListableMixin
 from django.db.models.fields import URLField
 from modelcluster.fields import ParentalKey
@@ -19,6 +20,7 @@ from taggit.models import Tag, TaggedItemBase
 from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin
 from commonknowledge.django.cache import django_cached
+from commonknowledge.helpers import classproperty
 
 from wagtailmetadata.models import MetadataPageMixin
 
@@ -31,20 +33,45 @@ class ArticleTag(TaggedItemBase):
         'Article', on_delete=models.CASCADE, related_name='tagged_items')
 
 
-class LandingPage(MetadataPageMixin, Page):
+class StopwatchPage(Page):
+    class Meta:
+        abstract = True
+
+    hide_date = True
+
+    photo = models.ForeignKey(
+        StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
+
+    show_header_image = models.BooleanField(default=True)
+
+    @classmethod
+    def get_display_options(cls):
+        return [
+            FieldPanel('show_header_image')
+        ]
+
+    @classproperty
+    def settings_panels(cls):
+        return Page.settings_panels + [
+            MultiFieldPanel(cls.get_display_options(), 'Display Options')
+        ]
+
+
+class LandingPage(MetadataPageMixin, StopwatchPage):
     template = 'stopwatch/pages/landing.html'
     parent_page_types = ('wagtailcore.Page',)
 
     class Tab(StructBlock):
         site_area = PageChooserBlock()
         featured_page = PageChooserBlock(required=False)
+        image = ImageChooserBlock(required=False)
         title = CharBlock(required=False)
-        cta = CharBlock(required=False)
+        heading = CharBlock(required=False, label='Detail heading')
+        description = TextBlock(required=False, label='Detail description')
+        cta = CharBlock(required=False, label='Call to action text')
 
     page_description = models.CharField(
         max_length=128, default="Research and action for fair and accountable policing")
-    photo = models.ForeignKey(
-        StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
     newsflash_category = models.ForeignKey(
         'stopwatch.Category', null=True, blank=True, on_delete=models.SET_NULL)
 
@@ -74,7 +101,7 @@ class LandingPage(MetadataPageMixin, Page):
             for idx, tab in enumerate(self.tabs.raw_data)
         ]
 
-    def get_landing_tab_data(self, site_area, featured_page, title, cta, **kwargs):
+    def get_landing_tab_data(self, site_area, featured_page, title, cta, heading=None, description=None, image=None, **kwargs):
         site_area = Page.objects.get(pk=site_area).specific
         if featured_page:
             featured_page = Page.objects.get(pk=featured_page).specific
@@ -82,14 +109,30 @@ class LandingPage(MetadataPageMixin, Page):
         elif hasattr(site_area, 'featured_items') and len(site_area.featured_items) > 0:
             featured_page = site_area.featured_items[0]
 
+        if description is None:
+            if featured_page is not None:
+                description = featured_page.intro_text
+
+        if image is None:
+            if featured_page is not None:
+                image = featured_page.photo
+            else:
+                image = site_area.photo
+        elif isinstance(image, int):
+            image = StopwatchImage.objects.filter(pk=image).first()
+
+        if heading is None:
+            if featured_page:
+                heading = featured_page.title
+
         return {
             'title': title or site_area.title,
             'url': site_area.url,
             'page': featured_page,
-            'photo': featured_page.photo if featured_page else site_area.photo,
-            'heading': featured_page.title if featured_page else None,
+            'photo': image,
+            'heading': heading,
             'cta': cta or site_area.title,
-            'description': featured_page.intro_text if featured_page else None,
+            'description': description,
             'short_description': site_area.intro_text,
         }
 
@@ -105,14 +148,12 @@ class ArticleAuthor(Orderable, models.Model):
     ]
 
 
-class Article(MetadataPageMixin, ListableMixin, Page):
+class Article(MetadataPageMixin, ListableMixin, StopwatchPage):
     template = 'stopwatch/pages/article.html'
 
     tags = ClusterTaggableManager(through=ArticleTag, blank=True)
 
     import_ref = models.IntegerField(null=True, blank=True)
-    photo = models.ForeignKey(
-        StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
 
     summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
     body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
@@ -132,13 +173,18 @@ class Article(MetadataPageMixin, ListableMixin, Page):
         MultiFieldPanel([
             InlinePanel('article_authors'),
         ], 'Authors'),
-        FieldPanel('hide_related_articles'),
-        FieldPanel('hide_date'),
     ]
 
     promote_panels = Page.promote_panels + [
         FieldPanel('tags'),
     ]
+
+    @classmethod
+    def get_display_options(cls):
+        return super().get_display_options() + [
+            FieldPanel('hide_related_articles'),
+            FieldPanel('hide_date'),
+        ]
 
     @property
     def authors(self):
@@ -168,12 +214,9 @@ class Article(MetadataPageMixin, ListableMixin, Page):
         return list(get_children_of_type(self.get_parent(), Article)[:5])
 
 
-class Form(ListableMixin, AbstractEmailForm):
+class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
     template = 'stopwatch/pages/form.html'
     landing_page_template = 'stopwatch/pages/form_submitted.html'
-
-    photo = ForeignKey(StopwatchImage, null=True,
-                       blank=True, on_delete=models.SET_NULL)
     intro = RichTextField(blank=True)
     thank_you_page = StreamField(CONTENT_MODULES)
 
@@ -200,12 +243,10 @@ class Form(ListableMixin, AbstractEmailForm):
     ]
 
 
-class Category(MetadataPageMixin, ListableMixin, ChildListMixin, Page):
+class Category(MetadataPageMixin, ListableMixin, ChildListMixin, StopwatchPage):
     allow_search = True
     template = 'stopwatch/pages/category.html'
 
-    photo = models.ForeignKey(
-        StopwatchImage, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True, blank=True)
     searchable = models.BooleanField(default=False)
     newsflash = models.BooleanField(default=False)
@@ -278,7 +319,7 @@ class Category(MetadataPageMixin, ListableMixin, ChildListMixin, Page):
         return self.get_children().live().order_by('-first_published_at').specific()[:10]
 
 
-class ExternalPage(ListableMixin, Page):
+class ExternalPage(ListableMixin, StopwatchPage):
     target_url = URLField()
     description = RichTextField(blank=True, null=True)
     photo = models.ForeignKey(

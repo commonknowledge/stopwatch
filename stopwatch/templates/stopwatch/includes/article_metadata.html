@@ -11,7 +11,9 @@
     </div>
   {% endif %}
 
-  <div class="pe-3">
-    {{page.first_published_at|date:"d.m.Y"}}
-  </div>
+  {% if not page.hide_date %}
+    <div class="pe-3">
+      {{page.first_published_at|date:"d.m.Y"}}
+    </div>
+  {% endif %}
 </div>

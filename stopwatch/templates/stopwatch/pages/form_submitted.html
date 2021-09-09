@@ -3,7 +3,7 @@
 
 {% block content %}
 
-{% if self.photo %}
+{% if self.photo and self.show_header_image %}
 {% image self.photo height-500 class="img-fluid" %}
 {% endif %}
 

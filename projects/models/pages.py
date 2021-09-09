@@ -1,3 +1,4 @@
+from stopwatch.models.pages import StopwatchPage
 from django.http.response import HttpResponseRedirect
 from stopwatch.models.mixins import ListableMixin
 from django.db.models.fields.related import ForeignKey
@@ -19,7 +20,7 @@ from colour import Color
 from wagtailmetadata.models import MetadataPageMixin
 
 
-class Project(MetadataPageMixin, ListableMixin, Page):
+class Project(MetadataPageMixin, ListableMixin, StopwatchPage):
     template = 'projects/pages/project.html'
     parent_page_types = ('stopwatch.Category',)
 
@@ -58,9 +59,7 @@ class Project(MetadataPageMixin, ListableMixin, Page):
             return '#000'
 
 
-class ProjectPage(MetadataPageMixin, Page):
-    show_in_menus_default = True
-
+class ProjectPage(MetadataPageMixin, StopwatchPage):
     class Meta:
         abstract = True
 
