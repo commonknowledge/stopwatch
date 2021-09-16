@@ -3,9 +3,25 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
+        {% with site_settings=settings.stopwatch.SiteSettings %}
+            {% if site_settings.google_analytics_ua %}
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+                <script async src="https://www.googletagmanager.com/gtag/js?id={{site_settings.google_analytics_ua}}"></script>
+                <script>
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', '{{site_settings.google_analytics_ua}}');
+                </script>
+            {% else %}
+                <!-- Google Analytics disabled -->
+            {% endif %}
+        {% endwith %}
         <script>
             document.documentElement.classList.remove('no-js')
         </script>
+         
         <meta charset="utf-8" />
         <title>
             {% block title %}

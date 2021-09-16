@@ -119,6 +119,9 @@ class SiteSettings(BaseSetting):
     email_contact = EmailField(default="info@stop-watch.org")
     end_matter = TextField(default='Registered Charity No: 1161908')
 
+    google_analytics_ua = TextField(verbose_name="Google Analytics UA",
+                                    null=True, blank=True, help_text="Google Analytics UA, to allow setting up Google Analytics")
+
     panels = [
         MultiFieldPanel([
             FieldPanel('tagline'),
@@ -138,6 +141,10 @@ class SiteSettings(BaseSetting):
             FieldPanel('email_contact'),
             FieldPanel('end_matter'),
         ], 'Organisation info'),
+
+        MultiFieldPanel([
+            FieldPanel('google_analytics_ua'),
+        ], 'Analytics'),
 
         StreamFieldPanel('bottom_page_links'),
     ]
