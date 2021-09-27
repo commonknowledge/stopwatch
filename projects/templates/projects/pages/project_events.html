@@ -7,7 +7,13 @@
   <h2 class="mb-4 d-md-none">Events</h2>
 
   <div class="row">
-    {% include "stopwatch/includes/filters.html" with style='ROWS' tags=filter_form.theme only %}
+    <form data-filter-form class="mt-5 mb-3" method="GET">
+      <h3 class="microcopy">Filters</h3>
+
+      <div class="col-8 overflow-auto text-nowrap">
+        {% filter_toggles field=filter_form.theme label_class="btn me-2" %}
+      </div>
+    </form>
 
     <div class="col container-fluid" {% infinite_scroll_container %}>
       <h2 class="mb-4 d-none d-md-block">Events</h2>
