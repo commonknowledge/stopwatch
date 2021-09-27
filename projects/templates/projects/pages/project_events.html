@@ -7,14 +7,24 @@
   <h2 class="mb-4 d-md-none">Events</h2>
 
   <div class="row">
-    {% include "stopwatch/includes/filters.html" with style='ROWS' tags=filter_form.theme only %}
+    <form
+      data-filter-form
+      method="GET"
+      class="col-8 form-unraised d-flex flex-row align-items-md-start col-md-3 col-lg-2 flex-column"
+    >
+      <h3 class="microcopy">Filters</h3>
+
+      <div class="col-8 overflow-auto text-nowrap flex-column d-flex">
+        {% filter_toggles field=filter_form.theme label_class="btn me-2 mb-2" %}
+      </div>
+    </form>
 
     <div class="col container-fluid" {% infinite_scroll_container %}>
       <h2 class="mb-4 d-none d-md-block">Events</h2>
 
       <div class="row g-3">
         {% for event in child_list_page %}
-          <div class="col-8 col-lg-4">
+          <div class="col-8">
             <article class="p-3 bg-white iscroll_item">
               <div class="mb-3 d-flex flex-direction-column justify-content-between microcopy">
                 <div class="me-2 text-nowrap">
