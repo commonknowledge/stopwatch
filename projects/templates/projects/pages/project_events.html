@@ -7,11 +7,15 @@
   <h2 class="mb-4 d-md-none">Events</h2>
 
   <div class="row">
-    <form data-filter-form class="mt-5 mb-3" method="GET">
+    <form
+      data-filter-form
+      method="GET"
+      class="col-8 form-unraised d-flex flex-row align-items-md-start col-md-3 col-lg-2 flex-column"
+    >
       <h3 class="microcopy">Filters</h3>
 
-      <div class="col-8 overflow-auto text-nowrap">
-        {% filter_toggles field=filter_form.theme label_class="btn me-2" %}
+      <div class="col-8 overflow-auto text-nowrap flex-column d-flex">
+        {% filter_toggles field=filter_form.theme label_class="btn me-2 mb-2" %}
       </div>
     </form>
 
