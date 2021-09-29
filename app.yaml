@@ -27,6 +27,9 @@ envs:
 - key: AWS_STORAGE_BUCKET_NAME
   scope: RUN_AND_BUILD_TIME
   value: stopwatch
+- key: AWS_S3_CUSTOM_DOMAIN
+  scope: RUN_AND_BUILD_TIME
+  value: https://stopwatch.ams3.cdn.digitaloceanspaces.com
 - key: AWS_S3_ENDPOINT_URL
   scope: RUN_AND_BUILD_TIME
   value: https://ams3.digitaloceanspaces.com
