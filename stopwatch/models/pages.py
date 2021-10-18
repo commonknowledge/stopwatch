@@ -188,6 +188,7 @@ class Article(ListableMixin, StopwatchPage):
         ImageChooserPanel('photo'),
         StreamFieldPanel('summary'),
         StreamFieldPanel('body'),
+        FieldPanel('first_published_at'),
 
         MultiFieldPanel([
             InlinePanel('article_authors'),
