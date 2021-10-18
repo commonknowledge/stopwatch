@@ -8,8 +8,9 @@
   {% endif %}
 
   {% for download in value.documents %}
-    <a href="{{download.url}}" download class="p-3 mt-2 d-block border border-midgrey link-reset microcopy text-truncate">
-      {{download.title}}
+    <a href="{{download.url}}" download class="p-3 mt-2 d-block border border-midgrey link-reset microcopy text-truncate d-flex justify-content-between">
+      <span>{{download.title}}</span>
+      <span class="text-darkgrey">{{download.file_extension}}</span>
     </a>
   {% endfor %}
 </div>
