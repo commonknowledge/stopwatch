@@ -1,5 +1,7 @@
 import re
 from html.parser import HTMLParser
+from urllib.parse import urlparse
+
 
 from wagtail.embeds.finders.base import EmbedFinder
 import requests
@@ -7,7 +9,7 @@ import requests
 
 class FlourishFinder(EmbedFinder):
     FLOURISH_URL_PATTERN = re.compile(
-        r'https://public.flourish.studio/visualisation/(\d+)/?')
+        r'https://public.flourish.studio/(visualisation|story)/(\d+)/?')
 
     def accept(self, url):
         """
@@ -28,7 +30,12 @@ class FlourishFinder(EmbedFinder):
         if match is None:
             return None
 
-        slug = match.group(1)
+        url_parts = urlparse(url)
+
+        parts = url_parts.path.strip('/').split('/')
+
+        type = parts[0]
+        slug = parts[1]
 
         return {
             'title': "Title of the content",
@@ -38,7 +45,7 @@ class FlourishFinder(EmbedFinder):
             'width': max_width,
             'height': None,
             'thumbnail_url': _ThumbnailExtract.from_page_url(url),
-            'html': f'<div class="flourish-embed flourish-table" data-src="visualisation/{slug}"></div>',
+            'html': f'<div class="flourish-embed flourish-table" data-src="{type}/{slug}"></div>',
         }
 
 
