@@ -121,7 +121,7 @@ class EmbedBlock(StructBlock):
         template = 'stopwatch/components/embed.html'
 
     embed_url = URLBlock()
-    fullscreen = BooleanBlock(default=False)
+    fullscreen = BooleanBlock(default=False, required=False)
 
 
 class DownloadsBlock(StructBlock):
