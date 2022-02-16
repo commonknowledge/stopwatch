@@ -1,6 +1,7 @@
 from django.template.exceptions import TemplateSyntaxError
 from wagtail.core.models import Site
 from django import template
+from wagtail.core.rich_text import get_text_for_indexing
 from django.utils.html import format_html, format_html_join
 
 register = template.Library()
@@ -111,3 +112,8 @@ def breadcrumbs(context, page, **kwargs):
     )
 
     return format_html('<ol class="{}">{}</ol>', classname, inner_html)
+
+
+@register.filter
+def plaintext(text):
+    return get_text_for_indexing(str(text))

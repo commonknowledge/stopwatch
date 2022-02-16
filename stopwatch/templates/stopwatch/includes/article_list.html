@@ -1,4 +1,4 @@
-{% load static ckbootstrap_tags ckdjango_tags wagtailcore_tags wagtailimages_tags %}
+{% load static ckbootstrap_tags ckwagtail_tags ckdjango_tags wagtailcore_tags wagtailimages_tags %}
 
 {% if style == 'GRID' %}
   <section class="card-grid {{class}}">
@@ -8,7 +8,7 @@
           <h3 class="heading-large mb-3">{{page.title}}</h3>
           
           <div>
-            {{page.intro_text|richtext}}
+            {{page.intro_text|plaintext}}
           </div>
         </div>
     
@@ -18,7 +18,8 @@
       </a>
     {% empty %}
       {% include "stopwatch/includes/article_list_no_results.html" %}
-    {% endfor %}  </section>
+    {% endfor %}
+</section>
 {% else %}
   <section class="{{class}}">
     {% for page in pages %}
@@ -39,7 +40,7 @@
           <h3 class="heading-medium mb-3 mb-md-4">{{page.title}}</h3>
         
           <div class="mb-3 mb-md-4">
-            {{page.intro_text|richtext}}
+            {{page.intro_text|plaintext}}
           </div>
     
           <div>

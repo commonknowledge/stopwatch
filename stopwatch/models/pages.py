@@ -113,7 +113,10 @@ class LandingPage(StopwatchPage):
         elif hasattr(site_area, 'featured_items') and len(site_area.featured_items) > 0:
             featured_page = site_area.featured_items[0]
 
-        if description is None:
+        else:
+            featured_page = site_area.get_children().specific().first()
+
+        if description is None or description == '':
             if featured_page is not None:
                 description = featured_page.intro_text
 
@@ -125,7 +128,7 @@ class LandingPage(StopwatchPage):
         elif isinstance(image, int):
             image = StopwatchImage.objects.filter(pk=image).first()
 
-        if heading is None:
+        if heading is None or heading == '':
             if featured_page:
                 heading = featured_page.title
 
