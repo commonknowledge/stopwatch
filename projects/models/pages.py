@@ -144,8 +144,6 @@ class EventSpeaker(Orderable, models.Model):
 
 
 class Event(ListableMixin, ProjectPage):
-    ordering = ['start_time']
-
     template = 'projects/pages/event.html'
     parent_page_types = (ProjectEvents,)
 
