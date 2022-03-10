@@ -13,7 +13,7 @@ from django.db import models
 from colorfield.fields import ColorField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from stopwatch.models import CONTENT_MODULES
-from commonknowledge.wagtail.models import ChildListMixin
+from commonknowledge.wagtail.models import ChildListMixin, SortOption
 from commonknowledge.wagtail.helpers import get_children_of_type
 from colour import Color
 
@@ -91,6 +91,9 @@ class ProjectEvents(ChildListMixin, ProjectPage):
                 'theme__slug': theme
             }
 
+    def get_sort(self, request):
+        return SortOption('Newest', 'newest', 'start_time')
+
     def get_child_list_queryset(self, request):
         return get_children_of_type(self, Event)
 
@@ -122,6 +125,7 @@ class EventTheme(ListableMixin, ProjectPage):
 
     def serve(self, request, *args, **kwargs):
         events_page = get_children_of_type(self.project, ProjectEvents).first()
+
         if events_page is None:
             return HttpResponseRedirect(self.project.url)
 
@@ -140,8 +144,7 @@ class EventSpeaker(Orderable, models.Model):
 
 
 class Event(ListableMixin, ProjectPage):
-    class Meta:
-        ordering = ['start_time']
+    ordering = ['start_time']
 
     template = 'projects/pages/event.html'
     parent_page_types = (ProjectEvents,)
