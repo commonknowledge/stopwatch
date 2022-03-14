@@ -149,6 +149,15 @@ class PersonListBlock(StructBlock):
     heading = CharBlock()
     people = ListBlock(SnippetChooserBlock(Person))
 
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context)
+
+        # We want to render differently if just a single person in the list (full-width on desktop-size screens)
+        if len(value['people']) == 1:
+            context['single_person_list'] = True
+
+        return context
+
 
 class OrganisationListBlock(StructBlock):
     class Meta:
