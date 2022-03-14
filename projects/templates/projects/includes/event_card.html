@@ -1,0 +1,41 @@
+{% load wagtailimages_tags wagtailcore_tags %}
+
+<article class="p-3 bg-white iscroll_item">
+  <div class="mb-3 d-flex flex-direction-column justify-content-between microcopy">
+    <div class="me-2 text-nowrap">
+      <span class="color-circle me-1" style="background-color: {{event.theme.color}};"></span>
+      {{event.theme.title}}
+    </div>
+
+    <div class="text-end">
+      <div class="d-inline-block me-2 text-nowrap">
+        {{event.start_time|date:"D d.m.y"}}
+      </div>
+      <div class="d-inline-block me-2 text-nowrap">
+        {{event.start_time|date:"H:i"}}–{{event.end_time|date:"H:i"}}
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    {% if not no_title %}
+      <h3 class="my-3">
+        {{event.title}}
+      </h3>
+    {% endif %}
+
+    {{event.intro_text|richtext}}
+  </div>
+
+  <div class="mb-1">
+    {% for speaker in event.speakers %}
+      {% include "stopwatch/includes/avatar.html" with person=speaker %}
+    {% endfor %}
+  </div>
+
+  <div>
+    <a href="{{event.registration_page}}" class="btn btn-outline-secondary w-100">
+      Register
+    </a>
+  </div>
+</article>

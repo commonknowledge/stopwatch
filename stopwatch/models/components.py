@@ -1,4 +1,8 @@
+from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
+from django.http.request import HttpRequest
+from commonknowledge.helpers import safe_to_int
 from stopwatch.models.core import Organisation, Person
 from django.utils.html import format_html
 from wagtail.core.blocks.field_block import BooleanBlock, ChoiceBlock, EmailBlock, MultipleChoiceBlock, TextBlock, URLBlock
@@ -109,6 +113,55 @@ class ArticlesListBlock(StructBlock):
         return context
 
 
+class CalendarBlock(StructBlock):
+    '''
+    Display a calendar showing all events underneath a particular page.
+    '''
+
+    class Meta:
+        template = 'stopwatch/components/calendar.html'
+
+    site_area = PageChooserBlock()
+
+    def get_context(self, value, *args, **kwargs):
+        from projects.models import Event
+        parent_context = kwargs['parent_context']
+        block_id = get_block_id(
+            parent_context['page'].body,
+            value,
+            prefix='calendar'
+        )
+
+        request: HttpRequest = parent_context['request']
+        today = date.today()
+        month = safe_to_int(request.GET.get(
+            f'{block_id}-month'), today.month)
+        year = safe_to_int(request.GET.get(
+            f'{block_id}-year'), today.year)
+
+        context = super().get_context(value, *args, **kwargs)
+        site_area = value.get('site_area')
+
+        if site_area:
+            events = Event.objects.descendant_of(site_area)
+        else:
+            events = Event.objects.all()
+
+        events = events.filter(
+            start_time__gte=datetime(year, month, 1),
+            start_time__lt=datetime(year, month, 1) + relativedelta(months=1)
+        ).order_by('start_time').live()
+
+        context['events'] = events
+        context['year'] = year
+        context['month'] = month
+        context['month_name'] = date(year, month, 1).strftime('%b')
+        context['block_id'] = block_id
+        context['url'] = request.get_full_path()
+
+        return context
+
+
 class PullQuoteBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/pull_quote.html'
@@ -201,8 +254,21 @@ CONTENT_MODULES = TEXT_MODULES + (
     ('person_listing', PersonListBlock()),
     ('organisation_listing', OrganisationListBlock()),
     ('alert', AlertBlock()),
+    ('calendar', CalendarBlock())
 )
 
 LANDING_MODULES = CONTENT_MODULES + (
     ('articles_list', ArticlesListBlock()),
 )
+
+
+def get_block_id(stream, value, prefix):
+    i = 0
+
+    for x in stream:
+        if x.value == value:
+            return prefix if i == 0 else f'{prefix}-{i}'
+
+        i += 1
+
+    return None

@@ -1,0 +1,139 @@
+{% load wagtailimages_tags wagtailcore_tags %}
+
+<div id="{{block_id}}" data-month="{{month}}" data-year="{{year}}">
+  <div class="d-flex flex-row mb-3">
+    <button class="btn btn-sm btn-secondary" id="{{block_id}}-prev">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-left" viewBox="0 2 16 16">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+      </svg>
+      
+      Prev
+    </button>
+
+    <div class="heading-large text-uppercase flex-grow-1 text-center">
+      {{month_name}} {{year}}
+    </div>
+    
+    <button class="btn btn-sm btn-secondary" id="{{block_id}}-next">
+      Next
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-right" viewBox="0 2 16">
+        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="row">
+    {% for event in events %}
+      <div class="col col-md-4">
+        <div class="ratio ratio-4x3">
+          <a
+            href="#{{block_id}}-event-{{event.slug}}"
+            data-bs-toggle="modal"
+            class="p-3 d-flex flex-column justify-content-between hover-invert no-hover-text-decoration-change"
+            style="background-color: {{event.theme.background_color|default:"white"}}"
+          >
+            <div>
+              <div class="heading-large lh-1">
+                {{event.start_time|date:"d"}}
+              </div>
+
+              <div class="microcopy">
+                {{event.start_time|date:"M"}}
+              </div>
+            </div>
+
+            <div>
+              <div class="heading-small mt-2">
+                {{event.title}}
+              </div>
+
+              <div class="text-nowrap">
+                {{event.start_time|date:"H:i"}}–{{event.end_time|date:"H:i"}}
+              </div>
+            </div>
+
+
+            {% if event.speakers %}
+              <div class="mt-2 text-sm">
+                With {{event.speakers|join:", "}}
+              </div>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+
+
+      <div
+        class="modal fade"
+        id="{{block_id}}-event-{{event.slug}}"
+        tabindex="-1"
+        role="dialog"
+        aria-label="{{event.title}}"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">{{event.title}}</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            {% include "projects/includes/event_card.html" with no_title=True %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const el = document.getElementById('{{block_id}}')
+    connect()
+
+    function connect() {
+      const prev = document.getElementById(`{{block_id}}-prev`)
+      const next = document.getElementById(`{{block_id}}-next`)
+
+      const month = Number(el.dataset.month)
+      const year = Number(el.dataset.year)
+      
+      prev.addEventListener('click', () => {
+        const prevMonth = month == 1 ? [12, year - 1] : [month - 1, year]
+        fetchMonth(prevMonth)
+      })
+
+      next.addEventListener('click', () => {
+        const nextMonth = month == 12 ? [1, year + 1] : [month + 1, year]
+        fetchMonth(nextMonth)
+      })
+    }
+
+    async function fetchMonth([month, year]) {
+      const params = new URLSearchParams(window.location.search)
+      params.set(`{{block_id}}-month`, month)
+      params.set(`{{block_id}}-year`, year)
+      
+      const url = new URL(window.location.href)
+      url.search = params.toString()
+
+      const res = await fetch(url, {
+        headers: {
+          'content-type': 'text/html'
+        }
+      })
+
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(await res.text(), 'text/html')
+      const newEl = doc.getElementById('{{block_id}}')
+
+      el.dataset.month = newEl.dataset.month
+      el.dataset.year = newEl.dataset.year
+      el.innerHTML = newEl.innerHTML
+
+      connect()
+    }
+  })()
+</script>
+
