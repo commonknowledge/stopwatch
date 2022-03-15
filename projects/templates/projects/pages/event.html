@@ -3,8 +3,43 @@
 
 {% block content %}
 
-<main class="my-4 project-theme container streamfield">
-  {% include_block self.body %}
+<header class="container container-outline p-0 pb-5">
+  <div class="row g-0">
+    <div class="col-8 col-md-4">
+      {% image self.photo height-500 class="img-fit block-lg" %}
+    </div>
+
+    <div class="col-8 col-md-4 order-md-first bg-page-theme p-3 py-5 py-md-7 pt-md-5 streamfield-compact text-page-contrast">
+      <h1 class="heading-xlarge">{{self.title}}</h1>
+
+      <div>
+        <div class="heading-small lh-1 mb-1">{{self.start_time|date:"d F Y"}}</div>
+        {{self.start_time|date:"H:i"}}–{{self.end_time|date:"H:i"}}
+      </div>
+
+      <div class="text-sm">
+        {{self.intro_text|richtext}}
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container container-outline streamfield">
+  <div class="container-narrow">
+    <div class="mb-4">
+      {% include_block self.body %}
+    </div>
+    
+    <a href="{{self.registration_page}}" class="btn btn-outline-secondary w-100 mb-5">
+      Register
+    </a>
+
+    {% if self.speakers %}
+      <h2 class="mb-3">Speakers</h2>
+
+      {% include "stopwatch/includes/person_list.html" with people=self.speakers %}
+    {% endif %}
+  </div>
 </main>
 
 {% endblock content %}
