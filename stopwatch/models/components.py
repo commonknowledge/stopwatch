@@ -120,8 +120,12 @@ class CalendarBlock(StructBlock):
 
     class Meta:
         template = 'stopwatch/components/calendar.html'
+        help_text = ''
 
-    site_area = PageChooserBlock()
+    site_area = PageChooserBlock(
+        required=False,
+        help_text="Show all events in the site that are under this page. If blank, show all events on the site."
+    )
 
     def get_context(self, value, *args, **kwargs):
         from projects.models import Event
@@ -155,7 +159,7 @@ class CalendarBlock(StructBlock):
         context['events'] = events
         context['year'] = year
         context['month'] = month
-        context['month_name'] = date(year, month, 1).strftime('%b')
+        context['month_name'] = date(year, month, 1).strftime('%B')
         context['block_id'] = block_id
         context['url'] = request.get_full_path()
 

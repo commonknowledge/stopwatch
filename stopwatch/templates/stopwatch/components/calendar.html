@@ -2,7 +2,7 @@
 
 <div id="{{block_id}}" data-month="{{month}}" data-year="{{year}}">
   <div class="d-flex flex-row mb-3">
-    <button class="btn btn-sm btn-secondary" id="{{block_id}}-prev">
+    <button class="btn ps-2 btn-outline-secondary" id="{{block_id}}-prev">
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-left" viewBox="0 2 16 16">
         <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
       </svg>
@@ -14,10 +14,10 @@
       {{month_name}} {{year}}
     </div>
     
-    <button class="btn btn-sm btn-secondary" id="{{block_id}}-next">
+    <button class="btn pe-2 btn-outline-secondary" id="{{block_id}}-next">
       Next
 
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-right" viewBox="0 2 16">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-right" viewBox="0 2 16 16">
         <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
       </svg>
     </button>
@@ -39,7 +39,7 @@
               </div>
 
               <div class="microcopy">
-                {{event.start_time|date:"M"}}
+                {{event.start_time|date:"F"}}
               </div>
             </div>
 
@@ -83,9 +83,20 @@
           </div>
         </div>
       </div>
+    {% empty %}
+      <div class="p-3 text-center">
+        <p>
+          We don't have any events listed for {{month_name}} {{year}}.
+        </p>
+      </div>
     {% endfor %}
   </div>
 </div>
+
+
+{% comment %}
+Fetch html over the wire to update calendar on navigation between months.
+{% endcomment %}
 
 <script>
   (() => {
