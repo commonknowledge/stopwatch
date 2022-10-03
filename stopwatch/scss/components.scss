@@ -71,12 +71,20 @@
   --bs-gutter-y: map-get($spacers, 7);
 
   .block-text {
+    h1 {
+      @include heading-xxlarge;
+    }
+
     h2 {
-      @include heading-small;
+      @include heading-medium;
       color: $darkgrey;
     }
 
-    h3,
+    h3 {
+      h3 = 18pt
+      @include heading-small;
+    }
+
     h4,
     h5,
     h6 {
