@@ -186,7 +186,6 @@ class DownloadsBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/downloads.html'
 
-    title = CharBlock(required=False)
     documents = ListBlock(DocumentChooserBlock())
 
 

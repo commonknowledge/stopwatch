@@ -1,16 +1,11 @@
 {% load static ckbootstrap_tags wagtailembeds_tags %}
 
-<div>
-  {% if value.title %}
-  <h2>{{value.title}}</h2>
-  {% else %}
-  <h2 class="mb-3">Downloads</h2>
-  {% endif %}
-
+<div class="my-3">
   {% for download in value.documents %}
-    <a href="{{download.url}}" download class="p-3 mt-2 d-block border border-midgrey link-reset microcopy text-truncate d-flex justify-content-between">
+    <a href="{{download.url}}" download class="p-3 mt-2 d-block border border-midgrey link-reset microcopy text-truncate d-flex justify-content-between align-items-center">
+      <i class="bi bi-file-earmark-arrow-down fs-2 me-2"></i>
       <span>{{download.title}}</span>
-      <span class="text-darkgrey">{{download.file_extension}}</span>
+      <span class="text-darkgrey ms-auto">{{download.file_extension}}</span>
     </a>
   {% endfor %}
 </div>
