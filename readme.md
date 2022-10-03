@@ -27,6 +27,10 @@ Staging: https://stopwatch.commonknowledge.dev/
   - You may need to go to View > Run to look at this configuration.
 - Go to [localhost:8000/admin](localhost:8000/admin)
 - Use the 'import' option on the left to seed the archive with content from the staging site.
+- OR run the setup script to populate some demo pages
+  ```
+  python manage.py setup_pages --scratch True --ensure-site True --ensure-pages True
+  ```
 
 ### Hard mode: Using Dockerfiles
 
