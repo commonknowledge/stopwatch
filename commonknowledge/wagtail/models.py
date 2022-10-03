@@ -3,6 +3,10 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.html import strip_tags
 
 from commonknowledge.helpers import safe_to_int
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from django.http import Http404
+from taggit.models import Tag
+from wagtail.core.models import Page
 
 
 class SortOption(NamedTuple):
@@ -55,8 +59,8 @@ class ChildListMixin:
     def get_filter_form(self, request):
         return None
 
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+    def get_pagination_context(self, request):
+        context = {}
         qs = self.get_child_list_queryset(request)
         filter = self.get_filters(request)
         sort = self.get_sort(request)
@@ -93,3 +97,42 @@ class ChildListMixin:
         context['filter_form'] = self.get_filter_form(request)
 
         return context
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context.update(self.get_pagination_context(request))
+        return context
+
+
+class ArbitraryPaginatedListMixin(ChildListMixin):
+    qs = []
+
+    def __init__(self, qs) -> None:
+        self.qs = qs
+        super().__init__()
+
+
+class ExploreTagsMixin(RoutablePageMixin):
+    can_explore_tags = True
+
+    # will override the default Page serving mechanism
+    @route(r'^tagged/(?P<tag_slug>.+)/$')
+    def tagged_pages(self, request, tag_slug, *args, **kwargs):
+        from stopwatch.models.pages import ArticleTag, Article
+        articles_qs = Article.objects.filter(tags__slug=tag_slug)
+        tag = Tag.objects.filter(slug=tag_slug).first()
+
+        if tag is None:
+            raise Http404(f'The "{tag_slug}" tag doesn\'t exist.')
+
+        class PaginationContext(ChildListMixin, Page):
+            def get_child_list_queryset(self, request):
+                return articles_qs
+
+        pagination_context = PaginationContext(
+            title="Test", slug="Test").get_pagination_context(request)
+
+        return self.render(request, context_overrides={
+            'tag': tag,
+            **pagination_context
+        })
