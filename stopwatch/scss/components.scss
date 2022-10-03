@@ -94,6 +94,12 @@
     > h3:not(:first-child) {
       margin-top: map-get($spacers, 5);
     }
+
+    a {
+      &::before {
+        @include bi-link-45;
+      }
+    }
   }
 
   > :not(.block-text):not(:first-child) {
