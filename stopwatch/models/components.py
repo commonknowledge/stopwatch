@@ -68,7 +68,8 @@ class LinksBlock(StructBlock):
             return self.get_target(value).url
 
     heading = CharBlock()
-    message = RichTextBlock(required=False)
+    message = RichTextBlock(required=False, features=['h1', 'h2', 'h3', 'h4', 'bold',
+                                                      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])
     links = StreamBlock((
         ('alert', AlertBlock()),
         ('website', LinkBlock('url', URLBlock())),
@@ -195,7 +196,8 @@ class CtaBlock(StructBlock):
 
     heading = CharBlock(required=False)
     image = ImageChooserBlock(required=False)
-    content = RichTextBlock(required=False)
+    content = RichTextBlock(required=False, features=['h1', 'h2', 'h3', 'h4', 'bold',
+                                                      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])
     target = PageChooserBlock(required=True)
 
 
@@ -230,7 +232,8 @@ class NewsletterSignupBlock(CtaBlock):
 
     heading = CharBlock(required=False)
     image = ImageChooserBlock(required=False)
-    content = RichTextBlock(required=False)
+    content = RichTextBlock(required=False, features=['h1', 'h2', 'h3', 'h4', 'bold',
+                                                      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])
 
 
 class FormBlock(CtaBlock):
@@ -257,7 +260,7 @@ class SummaryTextBlock(RichTextBlock):
 
 
 TEXT_MODULES = (
-    ('text', RichTextBlock(features=['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'bold',
+    ('text', RichTextBlock(features=['h1', 'h2', 'h3', 'h4', 'bold',
      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])),
     ('quote', PullQuoteBlock()),
     ('embed', EmbedBlock()),
