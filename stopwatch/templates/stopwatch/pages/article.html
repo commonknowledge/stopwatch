@@ -31,17 +31,19 @@
   </div>
 
   {% if self.authors %}
-    <h2 class="microcopy text-darkgrey">About the author</h2>
-  
-    {% for author in self.authors %}
-      <div class="mt-2">
-        <span class="fw-bold">{{author.name}}</span>. {{author.bio}}
-      
-        <div class="mt-1">
-          {% include "stopwatch/includes/person-contact-details.html" with person=author only %}
+    <section class="container-narrow pb-5 pb-md-7">
+      <h2 class="microcopy text-darkgrey">About the author{{ self.authors|pluralize }}</h2>
+    
+      {% for author in self.authors %}
+        <div class="mt-2">
+          <span class="fw-bold">{{author.name}}</span>. {{author.bio}}
+        
+          <div class="mt-1">
+            {% include "stopwatch/includes/person-contact-details.html" with person=author only %}
+          </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </section>
   {% endif %}
 </main>
 
