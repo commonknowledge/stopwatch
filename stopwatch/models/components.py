@@ -251,6 +251,11 @@ class FormBlock(CtaBlock):
         return context
 
 
+class SummaryTextBlock(RichTextBlock):
+    features = ['bold', 'italic', 'ol', 'ul',
+                'link', 'document-link', 'blockquote']
+
+
 TEXT_MODULES = (
     ('text', RichTextBlock(features=['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'bold',
      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])),

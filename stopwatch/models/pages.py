@@ -25,7 +25,7 @@ from commonknowledge.helpers import classproperty
 from wagtailmetadata.models import MetadataPageMixin
 
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
-from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock
+from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock, SummaryTextBlock
 
 
 class ArticleTag(TaggedItemBase):
@@ -162,7 +162,9 @@ class Article(ListableMixin, StopwatchPage):
 
     import_ref = models.IntegerField(null=True, blank=True)
 
-    summary = StreamField(TEXT_MODULES, min_num=0, blank=True)
+    summary = StreamField((
+        ('text', SummaryTextBlock()),
+    ), min_num=0, blank=True)
     body = StreamField(CONTENT_MODULES, min_num=0, blank=True)
 
     @property
