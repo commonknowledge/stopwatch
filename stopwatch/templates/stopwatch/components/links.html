@@ -1,8 +1,9 @@
 {% load static wagtailcore_tags ckbootstrap_tags wagtailembeds_tags %}
 
-<div class="row g-4 {{value.heading|slugify}}">
+<div class="row g-4 {% if value.heading %}{{value.heading|slugify}}{% endif %}">
+  {% if value.heading %}
   <h2>{{value.heading}}</h2>
-
+  {% endif %}
   <div class="linkblock-links-container">
     <div class="linkblock-links-list">
       {% for link_block in self.links %}

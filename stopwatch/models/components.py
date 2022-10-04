@@ -68,7 +68,7 @@ class LinksBlock(StructBlock):
         def get_href(self, value):
             return self.get_target(value).url
 
-    heading = CharBlock()
+    heading = CharBlock(required=False)
     message = RichTextBlock(required=False, features=['h1', 'h2', 'h3', 'h4', 'bold',
                                                       'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])
     links = StreamBlock((
