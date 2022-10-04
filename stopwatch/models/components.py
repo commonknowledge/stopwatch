@@ -262,7 +262,7 @@ class SummaryTextBlock(RichTextBlock):
 TEXT_MODULES = (
     ('text', RichTextBlock(features=['h1', 'h2', 'h3', 'h4', 'bold',
      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])),
-    ('quote', PullQuoteBlock()),
+    # ('quote', PullQuoteBlock()), # NB: there may be historical uses of this, even though it is removed
     ('embed', EmbedBlock()),
     ('downloads', DownloadsBlock()),
 )
