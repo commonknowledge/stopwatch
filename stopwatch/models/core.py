@@ -162,6 +162,10 @@ class SiteSettings(BaseSetting):
         return {
             'heading': 'Sign up to our newsletter',
             'content': self.standard_mailinglist_request,
+            'target': {
+                "title": "Subscribe",
+                "url": self.email_list_url,
+            }
         }
 
 
