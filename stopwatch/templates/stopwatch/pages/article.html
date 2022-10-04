@@ -53,7 +53,7 @@
     <div class="container-mid">
       <h2 class="heading-small text-darkgrey border-bottom border-1 border-primary pb-5 pb-md-6">More articles</h2>
       
-      {% include "stopwatch/includes/article_list.html" with class="container-mid" pages=self.related_articles style="ROWS" only %}
+      {% include "stopwatch/includes/article_list.html" with class="container-mid" pages=self.related_articles style="ROWS" request=request only %}
     </div>
   </div>
 {% endif %}
