@@ -21,7 +21,8 @@ class AlertBlock(StructBlock):
         template = 'stopwatch/components/alert.html'
 
     heading = CharBlock()
-    content = TextBlock()
+    content = RichTextBlock(
+        features=['bold', 'italic', 'ol', 'ul', 'hr', 'link', 'document-link', ])
 
 
 class LinksBlock(StructBlock):

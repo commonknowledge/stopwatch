@@ -1,9 +1,9 @@
-{% load static ckbootstrap_tags wagtailembeds_tags %}
+{% load static ckbootstrap_tags wagtailembeds_tags wagtailcore_tags %}
 
 <div class="mb-5">
   <div class="bg-alert p-3">
     <h3>{{self.heading}}</h3>
   
-    {{self.content}}
+    {{self.content|richtext}}
   </div>
 </div>
