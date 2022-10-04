@@ -80,7 +80,8 @@ class ChildListMixin:
         else:
             paginator = Paginator(search, self.get_page_size())
 
-        page = safe_to_int(request.GET.get('page'), 1)
+        page = min(paginator.num_pages, max(
+            1, safe_to_int(request.GET.get('page'), 1)))
 
         if request.GET.get('empty') == '1':
             try:
@@ -104,35 +105,33 @@ class ChildListMixin:
         return context
 
 
-class ArbitraryPaginatedListMixin(ChildListMixin):
-    qs = []
-
-    def __init__(self, qs) -> None:
-        self.qs = qs
-        super().__init__()
-
-
 class ExploreTagsMixin(RoutablePageMixin):
     can_explore_tags = True
 
     # will override the default Page serving mechanism
     @route(r'^tagged/(?P<tag_slug>.+)/$')
     def tagged_pages(self, request, tag_slug, *args, **kwargs):
-        from stopwatch.models.pages import ArticleTag, Article
-        articles_qs = Article.objects.filter(tags__slug=tag_slug)
+        parent_page = self
         tag = Tag.objects.filter(slug=tag_slug).first()
-
         if tag is None:
             raise Http404(f'The "{tag_slug}" tag doesn\'t exist.')
 
-        class PaginationContext(ChildListMixin, Page):
+        class PaginationContext(ChildListMixin):
             def get_child_list_queryset(self, request):
-                return articles_qs
+                from stopwatch.models.pages import Article
+                qs = Article.objects.filter(tags=tag).descendant_of(
+                    parent_page).live().public().all()
+                return qs
 
-        pagination_context = PaginationContext(
-            title="Test", slug="Test").get_pagination_context(request)
+            def get_filter_form(self, request):
+                from stopwatch.forms import CategoryFilterForm
+                return CategoryFilterForm(data=request.GET)
+
+            def get_page_size(self):
+                return 1
 
         return self.render(request, context_overrides={
+            'display_mode': 'tag_explorer',
             'tag': tag,
-            **pagination_context
+            **PaginationContext().get_pagination_context(request)
         })

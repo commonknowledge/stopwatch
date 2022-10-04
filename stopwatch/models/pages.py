@@ -18,7 +18,7 @@ from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from taggit.models import Tag, TaggedItemBase
 from commonknowledge.wagtail.helpers import get_children_of_type
-from commonknowledge.wagtail.models import ArbitraryPaginatedListMixin, ChildListMixin, ExploreTagsMixin
+from commonknowledge.wagtail.models import ChildListMixin, ExploreTagsMixin
 from commonknowledge.django.cache import django_cached
 from commonknowledge.helpers import classproperty
 from wagtailmetadata.models import MetadataPageMixin

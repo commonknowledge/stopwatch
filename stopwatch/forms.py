@@ -18,7 +18,7 @@ class CategoryFilterForm(forms.Form):
     )
     theme = forms.ChoiceField(required=False, widget=RadioSelectButton)
 
-    def __init__(self, tags, **kwargs):
+    def __init__(self, tags=list(), **kwargs):
         super().__init__(**kwargs)
 
         self.fields['theme'].choices = tuple(
