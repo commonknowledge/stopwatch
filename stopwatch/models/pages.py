@@ -3,7 +3,7 @@ from wagtail.core.blocks.field_block import CharBlock, TextBlock
 from wagtail.images.blocks import ImageChooserBlock
 from stopwatch.models.mixins import ListableMixin
 from django.db.models.fields import URLField
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.core.blocks import StructBlock, PageChooserBlock
 from wagtail.core.blocks.stream_block import StreamBlock
@@ -154,6 +154,34 @@ class ArticleAuthor(Orderable, models.Model):
         SnippetChooserPanel('person'),
     ]
 
+# The real model which combines the abstract model, an
+# Orderable helper class, and what amounts to a ForeignKey link
+# to the model we want to add related links to (BookPage)
+
+
+class RelatedArticles(models.Model):
+    related_article = ParentalKey(
+        'Article',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='article_relations',
+    )
+
+    panels = [
+        PageChooserPanel('related_article')
+    ]
+
+
+class ArticleRelatedArticles(Orderable, RelatedArticles):
+    page = ParentalKey(
+        'Article',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='related_article_links',
+    )
+
 
 class Article(ListableMixin, StopwatchPage):
     template = 'stopwatch/pages/article.html'
@@ -172,7 +200,6 @@ class Article(ListableMixin, StopwatchPage):
         category = self.category
         if category:
             return self.category.hide_related_articles
-
         else:
             return True
 
@@ -202,6 +229,8 @@ class Article(ListableMixin, StopwatchPage):
 
     promote_panels = Page.promote_panels + [
         FieldPanel('tags'),
+        InlinePanel('related_article_links', heading="Related articles",
+                    label="Related article")
     ]
 
     @property
@@ -228,8 +257,8 @@ class Article(ListableMixin, StopwatchPage):
 
     @property
     def related_articles(self):
-        # TODO: Use tags to determine this once we have tags.
-        return list(get_children_of_type(self.get_parent(), Article).exclude(pk=self.id)[:5])
+        relations = self.related_article_links.all().select_related('related_article')
+        return [relation.related_article for relation in relations]
 
 
 class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
