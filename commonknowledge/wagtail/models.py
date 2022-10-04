@@ -127,9 +127,6 @@ class ExploreTagsMixin(RoutablePageMixin):
                 from stopwatch.forms import CategoryFilterForm
                 return CategoryFilterForm(data=request.GET)
 
-            def get_page_size(self):
-                return 1
-
         return self.render(request, context_overrides={
             'display_mode': 'tag_explorer',
             'tag': tag,
