@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.postgres_search',
     'wagtail_transfer',
     'wagtailmetadata',
+    "wagtail.contrib.routable_page",
 
     'modelcluster',
     'taggit',
@@ -219,6 +220,8 @@ WAGTAILEMBEDS_FINDERS = [
         'class': 'wagtail.embeds.finders.oembed',
     },
 ]
+
+WAGTAILEMBEDS_RESPONSIVE_HTML = True
 
 # Rest settings
 

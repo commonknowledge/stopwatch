@@ -18,10 +18,9 @@ from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from taggit.models import Tag, TaggedItemBase
 from commonknowledge.wagtail.helpers import get_children_of_type
-from commonknowledge.wagtail.models import ChildListMixin
+from commonknowledge.wagtail.models import ChildListMixin, ExploreTagsMixin
 from commonknowledge.django.cache import django_cached
 from commonknowledge.helpers import classproperty
-
 from wagtailmetadata.models import MetadataPageMixin
 
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
@@ -290,7 +289,7 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
     ]
 
 
-class Category(ListableMixin, ChildListMixin, StopwatchPage):
+class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     allow_search = True
     template = 'stopwatch/pages/category.html'
 

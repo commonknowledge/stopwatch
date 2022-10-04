@@ -3,6 +3,10 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.html import strip_tags
 
 from commonknowledge.helpers import safe_to_int
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from django.http import Http404
+from taggit.models import Tag
+from wagtail.core.models import Page
 
 
 class SortOption(NamedTuple):
@@ -55,8 +59,8 @@ class ChildListMixin:
     def get_filter_form(self, request):
         return None
 
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+    def get_pagination_context(self, request):
+        context = {}
         qs = self.get_child_list_queryset(request)
         filter = self.get_filters(request)
         sort = self.get_sort(request)
@@ -76,7 +80,8 @@ class ChildListMixin:
         else:
             paginator = Paginator(search, self.get_page_size())
 
-        page = safe_to_int(request.GET.get('page'), 1)
+        page = min(paginator.num_pages, max(
+            1, safe_to_int(request.GET.get('page'), 1)))
 
         if request.GET.get('empty') == '1':
             try:
@@ -93,3 +98,37 @@ class ChildListMixin:
         context['filter_form'] = self.get_filter_form(request)
 
         return context
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context.update(self.get_pagination_context(request))
+        return context
+
+
+class ExploreTagsMixin(RoutablePageMixin):
+    can_explore_tags = True
+
+    # will override the default Page serving mechanism
+    @route(r'^tagged/(?P<tag_slug>.+)/$')
+    def tagged_pages(self, request, tag_slug, *args, **kwargs):
+        parent_page = self
+        tag = Tag.objects.filter(slug=tag_slug).first()
+        if tag is None:
+            raise Http404(f'The "{tag_slug}" tag doesn\'t exist.')
+
+        class PaginationContext(ChildListMixin):
+            def get_child_list_queryset(self, request):
+                from stopwatch.models.pages import Article
+                qs = Article.objects.filter(tags=tag).descendant_of(
+                    parent_page).live().public().all()
+                return qs
+
+            def get_filter_form(self, request):
+                from stopwatch.forms import CategoryFilterForm
+                return CategoryFilterForm(data=request.GET)
+
+        return self.render(request, context_overrides={
+            'display_mode': 'tag_explorer',
+            'tag': tag,
+            **PaginationContext().get_pagination_context(request)
+        })
