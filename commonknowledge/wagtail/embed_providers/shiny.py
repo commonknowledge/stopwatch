@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlparse
 from wagtail.embeds.finders.base import EmbedFinder
 import requests
+from django.utils.text import slugify
 
 
 class ShinyFinder(EmbedFinder):
@@ -33,7 +34,7 @@ class ShinyFinder(EmbedFinder):
             'width': max_width,
             'height': None,
             'thumbnail_url': _ThumbnailExtract.from_page_url(url),
-            'html': f'<iframe src="{url}" width="100%" height="400px"></iframe>'
+            'html': f'<iframe id="shiny-{slugify(url)}" src="{url}"></iframe>'
         }
 
 

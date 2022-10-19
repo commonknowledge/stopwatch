@@ -1,5 +1,10 @@
 {% load static ckbootstrap_tags wagtailembeds_tags %}
 
+
 <div class="embed{% if self.fullscreen %} embed-fullscreen{% endif %}">
   {% embed self.embed_url %}
-</div>
+</div> 
+
+<script>
+  iFrameResize({ log: true }, '#shiny-{{ self.embed_url | slugify }}')
+</script>
