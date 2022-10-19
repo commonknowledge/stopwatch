@@ -214,6 +214,9 @@ WAGTAILEMBEDS_FINDERS = [
         'class': 'commonknowledge.wagtail.embed_providers.flourish.FlourishFinder',
     },
     {
+        'class': 'commonknowledge.wagtail.embed_providers.shiny.ShinyFinder',
+    },
+    {
         'class': 'commonknowledge.wagtail.embed_providers.youtube.YouTubeFinder',
     },
     {
