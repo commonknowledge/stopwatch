@@ -33,7 +33,6 @@ class ShinyFinder(EmbedFinder):
         return {
             'title': f"Shiny app: {org_slug}/{app_slug}",
             'author_name': org_slug,
-            'embed_id': embed_id,
             'provider_name': "Shiny",
             'type': "rich",
             'width': max_width,
