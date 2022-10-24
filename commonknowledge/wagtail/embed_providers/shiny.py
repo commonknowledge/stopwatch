@@ -31,14 +31,14 @@ class ShinyFinder(EmbedFinder):
         embed_id = f'shiny-{slugify(url)}'
 
         return {
-            'title': app_slug,
+            'title': f"Shiny app: {org_slug}/{app_slug}",
             'author_name': org_slug,
             'embed_id': embed_id,
             'provider_name': "Shiny",
             'type': "rich",
             'width': max_width,
             'height': None,
-            'thumbnail_url': _ThumbnailExtract.from_page_url(url),
+            'thumbnail_url': "https://shiny.rstudio.com/images/shinySiteBandOne.png",
             'html': f'<iframe id="{embed_id}" src="{url}"></iframe>'
         }
 
