@@ -9,7 +9,7 @@ from django.utils.text import slugify
 
 class ShinyFinder(EmbedFinder):
     SHINY_URL_PATTERN = re.compile(
-        r'https://stop-watch.shinyapps.io/(.+)/?')
+        r'https://([\w\d-]+).shinyapps.io/([\w\d-]+)/*')
 
     def accept(self, url):
         """
@@ -25,16 +25,21 @@ class ShinyFinder(EmbedFinder):
 
         This is the part that may make requests to external APIs.
         """
+        url_parts = self.SHINY_URL_PATTERN.match(url)
+        org_slug = url_parts.group(1)
+        app_slug = url_parts.group(2)
+        embed_id = f'shiny-{slugify(url)}'
 
         return {
-            'title': "Title of the content",
-            'author_name': "StopWatch",
+            'title': app_slug,
+            'author_name': org_slug,
+            'embed_id': embed_id,
             'provider_name': "Shiny",
             'type': "rich",
             'width': max_width,
             'height': None,
             'thumbnail_url': _ThumbnailExtract.from_page_url(url),
-            'html': f'<iframe id="shiny-{slugify(url)}" src="{url}"></iframe>'
+            'html': f'<iframe id="{embed_id}" src="{url}"></iframe>'
         }
 
 
