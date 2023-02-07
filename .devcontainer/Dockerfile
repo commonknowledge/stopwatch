@@ -14,5 +14,8 @@ ARG INSTALL_NODE="true"
 ARG NODE_VERSION="lts/*"
 RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
 
-# Install system dependencies
+# Install system dependencies 
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmour -o /usr/share/keyrings/yarn-keyring.gpg \
+  && sed -i '1s;^deb;deb [signed-by=/usr/share/keyrings/yarn-keyring.gpg];' /etc/apt/sources.list.d/yarn.list
 RUN curl https://raw.githubusercontent.com/commonknowledge/do-app-baseimage-django-node/main/.bin/prepare.sh | /bin/bash
