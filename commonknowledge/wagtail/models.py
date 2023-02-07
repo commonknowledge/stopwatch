@@ -64,6 +64,7 @@ class ChildListMixin:
         qs = self.get_child_list_queryset(request)
         filter = self.get_filters(request)
         sort = self.get_sort(request)
+        requested_page = safe_to_int(request.GET.get('page'), 1)
 
         if filter:
             if isinstance(filter, dict):
@@ -80,8 +81,11 @@ class ChildListMixin:
         else:
             paginator = Paginator(search, self.get_page_size())
 
-        page = min(paginator.num_pages, max(
-            1, safe_to_int(request.GET.get('page'), 1)))
+        page = min(paginator.num_pages, max(1, requested_page))
+
+        # Stop this function from just returning the first page of results no matter what page was requested
+        if requested_page > page:
+            return {}
 
         if request.GET.get('empty') == '1':
             try:
