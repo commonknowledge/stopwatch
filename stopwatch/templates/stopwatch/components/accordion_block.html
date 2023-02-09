@@ -1,19 +1,24 @@
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags %}
 
-<div id="accordion-{{ forloop.counter }}" role="tablist" aria-multiselectable="false" class="accordion">
 {% for block in self %}
-  <div class="accordion-item">
-    <div class="accordion-header" role="tab" id="heading-{{ forloop.counter }}">
-      <a class="accordion-button" type="button"
-      data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.parentloop.counter }}-{{ forloop.counter }}"  
-      aria-expanded="false" aria-controls="collapse-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-        {% include_block block.value.title %}
-        <i class="fa fa-chevron-down"></i>
-      </a>
+{% with block.id|stringformat:"s" as block_id %}
+  <div id="accordion-{{ block_id }}" role="tablist" aria-multiselectable="false" class="accordion">
+  {% for block in self %}
+    <div class="accordion-block">
+      <div class="accordion-header" role="tab" id="heading-{{ block_id }}">
+        <a class="accordion-block-title heading-large mb-3 collapsed" type="button"
+        data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.parentloop.counter }}-{{ block_id }}"  
+        aria-expanded="false" aria-controls="collapse-{{ forloop.parentloop.counter }}-{{ block_id }}">
+          {% include_block block.value.title %}
+          <i class="bi bi-chevron-down"></i>
+          <i class="bi bi-chevron-up"></i>
+        </a>
+      </div>
+      <div id="collapse-{{ forloop.parentloop.counter }}-{{ block_id }}" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ block_id }}">
+        <div class="accordion-block-body">{% include_block block.value.content %}</div>
+      </div>
     </div>
-    <div id="collapse-{{ forloop.parentloop.counter }}-{{ forloop.counter }}" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ forloop.counter }}">
-      <div class="accordion-body">{% include_block block.value.content %}</div>
-    </div>
+  {% endfor %}
   </div>
+  {% endwith %}
 {% endfor %}
-</div>

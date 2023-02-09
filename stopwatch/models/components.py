@@ -205,7 +205,7 @@ class PersonListBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/person_list.html'
 
-    heading = CharBlock()
+    heading = CharBlock(required=False)
     people = ListBlock(SnippetChooserBlock(Person))
 
     def get_context(self, value, parent_context=None):
@@ -264,15 +264,17 @@ class AccordionStreamBlock(StreamBlock):
     Accordion content block
     """
     required = True
-    block = StructBlock([
+    richtext = StructBlock([
         ('title', CharBlock(
             label='Title',
         )),
-        ('content', RichTextBlock(
-            label='Content',
-            features=['h1', 'h2', 'h3', 'h4', 'bold',
-                      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote']
+        ('content', RichTextBlock()),
+    ])
+    people = StructBlock([
+        ('title', CharBlock(
+            label='Title',
         )),
+        ('content', PersonListBlock()),
     ])
 
     class Meta:

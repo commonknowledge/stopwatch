@@ -278,3 +278,28 @@ input.btn-check:checked + label.btn {
   background: $lightred;
   border: 1px solid $primary;
 }
+
+/* Bootstrap accordion block */
+.accordion-header {
+  .accordion-block-title {
+    text-decoration: none !important;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    i.bi-chevron-up {
+      display: block;
+    }
+    i.bi-chevron-down {
+      display: none;
+    }
+    &.collapsed {
+      i.bi-chevron-down {
+        display: block;
+      }
+      i.bi-chevron-up {
+        display: none;
+      }
+    }
+  }
+}
