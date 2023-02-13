@@ -1,0 +1,24 @@
+{% load static wagtailcore_tags %}
+
+{% for block in self %}
+{% with block.id|stringformat:"s" as block_id %}
+  <div id="accordion-{{ block_id }}" role="tablist" aria-multiselectable="false" class="accordion">
+  {% for block in self %}
+    <div class="accordion-block">
+      <div class="accordion-header" role="tab" id="heading-{{ block_id }}">
+        <a class="accordion-block-title heading-large mb-3 collapsed" type="button"
+        data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.parentloop.counter }}-{{ block_id }}"  
+        aria-expanded="false" aria-controls="collapse-{{ forloop.parentloop.counter }}-{{ block_id }}">
+          {% include_block block.value.title %}
+          <i class="bi bi-chevron-down"></i>
+          <i class="bi bi-chevron-up"></i>
+        </a>
+      </div>
+      <div id="collapse-{{ forloop.parentloop.counter }}-{{ block_id }}" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ block_id }}">
+        <div class="accordion-block-body">{% include_block block.value.content %}</div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+  {% endwith %}
+{% endfor %}

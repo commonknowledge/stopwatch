@@ -205,7 +205,7 @@ class PersonListBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/person_list.html'
 
-    heading = CharBlock()
+    heading = CharBlock(required=False)
     people = ListBlock(SnippetChooserBlock(Person))
 
     def get_context(self, value, parent_context=None):
@@ -259,12 +259,38 @@ class SummaryTextBlock(RichTextBlock):
                 'link', 'document-link', 'blockquote']
 
 
+class AccordionStreamBlock(StreamBlock):
+    """
+    Accordion content block
+    """
+    required = True
+    richtext = StructBlock([
+        ('title', CharBlock(
+            label='Title',
+        )),
+        ('content', RichTextBlock()),
+    ])
+    people = StructBlock([
+        ('title', CharBlock(
+            label='Title',
+        )),
+        ('content', PersonListBlock()),
+    ])
+
+    class Meta:
+        icon = 'folder-open-1'
+        template = 'stopwatch/components/accordion_block.html'
+        label = 'Accordion'
+
+
 TEXT_MODULES = (
     ('text', RichTextBlock(features=['h1', 'h2', 'h3', 'h4', 'bold',
      'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])),
     # ('quote', PullQuoteBlock()), # NB: there may be historical uses of this, even though it is removed
     ('embed', EmbedBlock()),
     ('downloads', DownloadsBlock()),
+
+
 )
 
 CONTENT_MODULES = TEXT_MODULES + (
@@ -275,7 +301,8 @@ CONTENT_MODULES = TEXT_MODULES + (
     ('person_listing', PersonListBlock()),
     ('organisation_listing', OrganisationListBlock()),
     ('alert', AlertBlock()),
-    ('calendar', CalendarBlock())
+    ('calendar', CalendarBlock()),
+    ('accordion', AccordionStreamBlock())
 )
 
 LANDING_MODULES = CONTENT_MODULES + (
