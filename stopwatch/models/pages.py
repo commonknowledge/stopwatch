@@ -387,3 +387,12 @@ class ExternalPage(ListableMixin, StopwatchPage):
 
     def serve(self, request, *args, **kwargs):
         return HttpResponseRedirect(self.target_url)
+
+
+class CustomContentPage(ListableMixin, StopwatchPage):
+    template = 'stopwatch/pages/custom_content_page.html'
+    embed_url = URLField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('embed_url'),
+    ]
