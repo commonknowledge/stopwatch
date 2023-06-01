@@ -392,7 +392,11 @@ class ExternalPage(ListableMixin, StopwatchPage):
 class CustomContentPage(ListableMixin, StopwatchPage):
     template = 'stopwatch/pages/custom_content_page.html'
     embed_url = URLField()
+    summary = StreamField((
+        ('text', SummaryTextBlock()),
+    ), min_num=0, blank=True, help_text="Summary text to be displayed in articles listing page")
 
     content_panels = Page.content_panels + [
         FieldPanel('embed_url'),
+        FieldPanel('summary'),
     ]
