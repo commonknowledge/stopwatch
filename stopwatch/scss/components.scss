@@ -120,6 +120,12 @@
   }
 }
 
+.accordion-block-body  > *:not(:last-child) {
+  margin-bottom: map-get($spacers, 3);
+}
+
+
+
 .streamfield-flow {
   --bs-gutter-x: #{map-get($spacers, 3)};
   --bs-gutter-y: #{map-get($spacers, 7)};
