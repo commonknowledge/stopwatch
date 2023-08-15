@@ -70,7 +70,7 @@
   --bs-gutter-x: map-get($spacers, 3);
   --bs-gutter-y: map-get($spacers, 7);
 
-  .block-text {
+  .block-text, .accordion-block-body {
     h1 {
       @include heading-xxlarge;
     }
@@ -115,14 +115,11 @@
     }
   }
 
-  .block-text > *:not(:last-child) {
+  .block-text, .accordion-block-body > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
   }
 }
 
-.accordion-block-body  > *:not(:last-child) {
-  margin-bottom: map-get($spacers, 3);
-}
 
 
 
@@ -147,7 +144,7 @@
   text-decoration: underline;
 }
 
-.block-text {
+.block-text, .accordion-block-body {
   ul {
     list-style-image: url(./bullet.svg);
   }
