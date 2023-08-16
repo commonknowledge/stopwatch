@@ -5,14 +5,6 @@
   method="GET"
   class="col-8 form-unraised d-flex flex-row align-items-md-start {% if style == 'ROWS' %}col-md-3 col-lg-2 flex-column{% endif %} {{class}}"
 >
-
-    <div class="me-2 mb-2 mb-md-4">
-      <label class="microcopy mb-1" for="tag_filter">Filter</label>
-      <div id="tag_filter" role="radiogroup" class="overflow-auto-md-column align-items-start">
-        {% filter_toggles field=tags label_class="btn filter-ctl" %}
-      </div>
-    </div>
-
   {% if style == 'GRID' %}
   <span class="flex-grow-1 d-none d-md-block"></span>
   {% endif %}
@@ -30,5 +22,11 @@
         <input class="form-control width-md-auto text-naturalcase filter-ctl" aria-label="Search" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">    
       </div>
     {% endif %}
+  </div>
+  <div class="me-2 mb-2 mb-md-4">
+    <label class="microcopy mb-1" for="tag_filter">Filter</label>
+    <div id="tag_filter" role="radiogroup" class="overflow-auto-md-column d-flex flex-wrap align-items-start gap-2">
+      {% filter_toggles field=tags label_class="btn filter-ctl" %}
+    </div>
   </div>
 </form>

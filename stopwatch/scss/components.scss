@@ -317,6 +317,12 @@
   border-bottom: 1px solid $primary;
 }
 
+.form-control {
+  @include media-breakpoint-down(md) {
+    margin-top: 20px;
+  }
+}
+
 .filter-ctl {
   @include media-breakpoint-down(md) {
     padding: $btn-padding-x-sm $btn-padding-y-sm;
