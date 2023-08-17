@@ -334,7 +334,6 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     def get_page_size(self):
         return 25
 
-    @django_cached('stopwatch.models.Category.tags', lambda category: category.get_parent().id)
     def tags(self):
         '''
         Return all tags that apply to articles in this category
