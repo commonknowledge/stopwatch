@@ -3,13 +3,11 @@
 <form
   data-filter-form
   method="GET"
-  class="col-8 form-unraised d-flex flex-row align-items-md-start {% if style == 'ROWS' %}col-md-3 col-lg-2 flex-column{% endif %} {{class}}"
+  class="col-8 form-unraised d-flex flex-column {% if style == 'ROWS' %}col-md-3 col-lg-2 flex-column{% endif %} {{class}}"
 >
-  {% if style == 'GRID' %}
-  <span class="flex-grow-1 d-none d-md-block"></span>
-  {% endif %}
 
-  <div class="d-flex flex-shrink-0 flex-row flex-md-column w-100 w-md-auto">
+
+  <div class="d-flex flex-shrink-0 flex-row flex-md-column w-md-auto">
     {% if sort %}
       <div class="me-2 mb-2 mb-md-4 flex-grow-1 flex-grow-md-0">
         <label class="microcopy mb-1" for="sort-menu">Order</label>
