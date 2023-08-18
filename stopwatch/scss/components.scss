@@ -115,7 +115,11 @@
     }
   }
 
-  .block-text, .accordion-block-body > *:not(:last-child) {
+  .block-text > *:not(:last-child) {
+    margin-bottom: map-get($spacers, 3);
+  }
+
+  .accordion-block-body > *:not(:last-child) {
     margin-bottom: map-get($spacers, 3);
   }
 }
