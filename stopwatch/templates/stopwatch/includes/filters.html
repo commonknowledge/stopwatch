@@ -5,19 +5,11 @@
   method="GET"
   class="col-8 form-unraised d-flex flex-column {% if style == 'ROWS' %}col-md-3 col-lg-2 flex-column{% endif %} {{class}}"
 >
-
-
   <div class="d-flex flex-shrink-0 flex-row flex-md-column w-md-auto">
     {% if sort %}
       <div class="me-2 mb-2 mb-md-4 flex-grow-1 flex-grow-md-0">
         <label class="microcopy mb-1" for="sort-menu">Order</label>
         {% filter_menu id="sort-menu" field=sort class="form-select width-md-auto filter-ctl" %}
-      </div>
-    {% endif %}
-    
-    {% if searchable %}
-      <div class="me-2 mb-2 mb-md-4 flex-grow-1 flex-grow-md-0">
-        <input class="form-control width-md-auto text-naturalcase filter-ctl" aria-label="Search" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">    
       </div>
     {% endif %}
   </div>
