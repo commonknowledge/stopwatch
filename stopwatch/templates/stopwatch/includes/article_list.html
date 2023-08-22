@@ -39,10 +39,11 @@
         <div class="col order-md-first py-3 me-md-3">
           <a href="{{page.url}}">
             <h3 class="heading-medium mb-3 mb-md-4">{{page.title}}</h3>
-          
+          {% if page.intro_text %}
             <div class="mb-3 mb-md-4">
               {{page.intro_text|plaintext}}
             </div>
+            {% endif %}
           </a>
     
           <div>
