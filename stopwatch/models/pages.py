@@ -212,7 +212,8 @@ class Article(ListableMixin, StopwatchPage):
             return True
 
     search_fields = Page.search_fields + [
-        index.FilterField('tag_id')
+        index.SearchField('title'),
+        index.SearchField('body'),
     ]
 
     content_panels = Page.content_panels + [
@@ -397,5 +398,5 @@ class CustomContentPage(ListableMixin, StopwatchPage):
 
     content_panels = Page.content_panels + [
         FieldPanel('embed_url'),
-        FieldPanel('summary'),
+        StreamFieldPanel('summary'),
     ]
