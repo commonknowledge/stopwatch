@@ -214,6 +214,7 @@ class Article(ListableMixin, StopwatchPage):
     search_fields = Page.search_fields + [
         index.SearchField('title'),
         index.SearchField('body'),
+        index.FilterField('tag_id'),
     ]
 
     content_panels = Page.content_panels + [

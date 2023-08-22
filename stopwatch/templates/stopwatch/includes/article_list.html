@@ -6,10 +6,11 @@
       <a class="link-reset iscroll_item bg-white d-flex flex-column hover-invert" href="{{page.url}}">
         <div class="p-3 flex-grow-1">
           <h3 class="heading-large mb-3">{{page.title}}</h3>
-          
+          {% if page.intro_text %}
           <div>
             {{page.intro_text|plaintext}}
           </div>
+          {% endif %}
         </div>
     
         <div class="img-card">

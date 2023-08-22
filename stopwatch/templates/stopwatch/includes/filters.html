@@ -12,11 +12,17 @@
         {% filter_menu id="sort-menu" field=sort class="form-select width-md-auto filter-ctl" %}
       </div>
     {% endif %}
-  </div>
-  <div class="me-2 mb-2 mb-md-4">
-    <label class="microcopy mb-1" for="tag_filter">Filter</label>
-    <div id="tag_filter" role="radiogroup" class="overflow-auto-md-column d-flex flex-wrap align-items-start gap-2">
-      {% filter_toggles field=tags label_class="btn filter-ctl" %}
+    <div class="me-2 mb-2 mb-md-4">
+      <label class="microcopy mb-1" for="tag_filter">Filter</label>
+      <div id="tag_filter" role="radiogroup" class="overflow-auto-md-column d-flex flex-wrap align-items-start gap-2">
+        {% filter_toggles field=tags label_class="btn filter-ctl" %}
+      </div>
     </div>
+    {% if searchable %}
+      <div class="me-2 mb-2 mb-md-4 flex-grow-1 flex-grow-md-0">
+        <input class="form-control width-md-auto text-naturalcase filter-ctl" aria-label="Search" autocapitalize="off" name="query" id="search" placeholder="Search" value="{{filter_form.query.value|default:""}}">    
+      </div>
+    {% endif %}
   </div>
+
 </form>
