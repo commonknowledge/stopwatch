@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
-    'wagtail.contrib.postgres_search',
     'wagtail_transfer',
     'wagtailmetadata',
     "wagtail.contrib.routable_page",
@@ -204,7 +203,7 @@ WAGTAILDOCS_DOCUMENT_MODEL = 'stopwatch.StopWatchDocument'
 
 WAGTAILSEARCH_BACKENDS = {
     'default': {
-        'BACKEND': 'wagtail.contrib.postgres_search.backend',
+         'BACKEND': 'wagtail.search.backends.database',
         'AUTO_UPDATE': True,
     }
 }

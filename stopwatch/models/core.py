@@ -8,8 +8,8 @@ from wagtail.core.models import Page
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.documents.models import Document, AbstractDocument
 from wagtail.snippets.models import register_snippet
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PageChooserPanel, StreamFieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PageChooserPanel, FieldPanel
+from wagtail.images.edit_handlers import FieldPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 
 
@@ -57,7 +57,7 @@ class Person(models.Model):
     panels = [
         FieldPanel('name'),
         FieldPanel('title'),
-        ImageChooserPanel('photo'),
+        FieldPanel('photo'),
         FieldPanel('bio'),
         MultiFieldPanel([
             FieldPanel('email'),
@@ -146,7 +146,7 @@ class SiteSettings(BaseSetting):
             FieldPanel('google_analytics_ua'),
         ], 'Analytics'),
 
-        StreamFieldPanel('bottom_page_links'),
+        FieldPanel('bottom_page_links'),
     ]
 
     @property
