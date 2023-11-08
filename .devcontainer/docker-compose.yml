@@ -7,7 +7,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
       args:
         # [Choice] Python version: 3, 3.8, 3.7, 3.6
-        VARIANT: 3.7
+        VARIANT: 3.11
         # [Choice] Install Node.js
         INSTALL_NODE: "true"
         NODE_VERSION: "lts/*"
@@ -24,7 +24,6 @@ services:
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
-
 
     volumes:
       - ..:/workspace:cached
