@@ -58,6 +58,8 @@ class MainMenuNode (template.Node):
 
     def render(self, context):
         site = Site.find_for_request(context.get('request'))
+        if site is None:
+            return
         tree = self.build_tree(site.root_page)
 
         if self.flat:
