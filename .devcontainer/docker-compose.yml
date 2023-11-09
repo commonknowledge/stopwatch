@@ -7,7 +7,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
       args:
         # [Choice] Python version: 3, 3.8, 3.7, 3.6
-        VARIANT: 3.11
+        VARIANT: 3.8
         # [Choice] Install Node.js
         INSTALL_NODE: "true"
         NODE_VERSION: "lts/*"
@@ -27,7 +27,6 @@ services:
 
     volumes:
       - ..:/workspace:cached
-
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 
@@ -45,7 +44,6 @@ services:
       - POSTGRES_DBNAME=postgres
       - POSTGRES_HOSTNAME=postgres
       - POSTGRES_PORT=5432
-
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
