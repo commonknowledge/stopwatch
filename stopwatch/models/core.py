@@ -10,7 +10,7 @@ from wagtail.documents.models import Document, AbstractDocument
 from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PageChooserPanel, FieldPanel
 from wagtail.images.edit_handlers import FieldPanel
-from wagtail.contrib.settings.models import BaseSetting, register_setting
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 
 
 class User(AbstractUser):
@@ -89,7 +89,7 @@ class Organisation(models.Model):
 
 
 @register_setting
-class SiteSettings(BaseSetting):
+class SiteSettings(BaseSiteSetting):
     class BottomLink(StructBlock):
         page = PageChooserBlock()
         label = CharBlock(required=False)
