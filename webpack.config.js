@@ -100,8 +100,8 @@ module.exports = {
     ...(isProduction
       ? [
         new MiniCssExtractPlugin({
-          filename: "[name].css",
-          chunkFilename: "[id].css",
+          filename: "[name]-[fullhash].css",
+          chunkFilename: "[id].bundle.css",
         }),
       ]
       : []),
