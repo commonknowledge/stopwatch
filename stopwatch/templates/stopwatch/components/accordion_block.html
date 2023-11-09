@@ -3,8 +3,8 @@
 {% for block in self %}
 {% with block.id|stringformat:"s" as block_id %}
   <div id="accordion-{{ block_id }}" role="tablist" aria-multiselectable="false" class="accordion">
-  {% for block in self %}
-    <div class="accordion-block">
+  
+    <div class="accordion-block mb-5">
       <div class="accordion-header" role="tab" id="heading-{{ block_id }}">
         <a class="accordion-block-title heading-large mb-3 collapsed" type="button"
         data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.parentloop.counter }}-{{ block_id }}"  
@@ -18,7 +18,7 @@
         <div class="accordion-block-body">{% include_block block.value.content %}</div>
       </div>
     </div>
-  {% endfor %}
+
   </div>
   {% endwith %}
 {% endfor %}

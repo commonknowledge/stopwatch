@@ -8,14 +8,14 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.core.blocks import StructBlock, PageChooserBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.models import Orderable, Page
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.edit_handlers import FieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.core.fields import RichTextField, StreamField
 from django.http.response import HttpResponseNotFound, HttpResponseRedirect
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, PageChooserPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, PageChooserPanel, FieldPanel
 from wagtail.search import index
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.snippets.edit_handlers import FieldPanel
 from taggit.models import Tag, TaggedItemBase
 from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin, ExploreTagsMixin
@@ -85,10 +85,10 @@ class LandingPage(StopwatchPage):
     body = StreamField(LANDING_MODULES, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
-        ImageChooserPanel('photo'),
+        FieldPanel('photo'),
         PageChooserPanel('newsflash_category'),
-        StreamFieldPanel('tabs'),
-        StreamFieldPanel('body'),
+        FieldPanel('tabs'),
+        FieldPanel('body'),
     ]
 
     @property
@@ -150,7 +150,7 @@ class ArticleAuthor(Orderable, models.Model):
         Person, on_delete=models.CASCADE, related_name='+')
 
     panels = [
-        SnippetChooserPanel('person'),
+        FieldPanel('person'),
     ]
 
 # The real model which combines the abstract model, an
@@ -218,9 +218,9 @@ class Article(ListableMixin, StopwatchPage):
     ]
 
     content_panels = Page.content_panels + [
-        ImageChooserPanel('photo'),
-        StreamFieldPanel('summary'),
-        StreamFieldPanel('body'),
+        FieldPanel('photo'),
+        FieldPanel('summary'),
+        FieldPanel('body'),
         FieldPanel('first_published_at'),
 
         MultiFieldPanel([
@@ -278,9 +278,9 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
 
     content_panels = AbstractEmailForm.content_panels + [
         FieldPanel('intro', classname="full"),
-        ImageChooserPanel('photo'),
+        FieldPanel('photo'),
         InlinePanel('form_fields', label="Form fields"),
-        StreamFieldPanel('thank_you_page', classname="full"),
+        FieldPanel('thank_you_page', classname="full"),
         MultiFieldPanel([
             FieldRowPanel([
                 FieldPanel('from_address', classname="col6"),
@@ -309,7 +309,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
-        ImageChooserPanel('photo'),
+        FieldPanel('photo'),
         FieldPanel('style'),
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
@@ -399,5 +399,5 @@ class CustomContentPage(ListableMixin, StopwatchPage):
 
     content_panels = Page.content_panels + [
         FieldPanel('embed_url'),
-        StreamFieldPanel('summary'),
+        FieldPanel('summary'),
     ]

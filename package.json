@@ -11,7 +11,6 @@
     "bootstrap": "^5.0.1",
     "css-loader": "^5.2.5",
     "mini-css-extract-plugin": "^1.6.0",
-    "node-sass": "^6.0.0",
     "postcss-loader": "^5.3.0",
     "sass-loader": "^11.1.1",
     "style-loader": "^2.0.0",
@@ -31,6 +30,7 @@
     "react-pdf": "^5.3.0",
     "react-virtualized-auto-sizer": "^1.0.5",
     "react-window": "^1.8.6",
-    "react-window-infinite-loader": "^1.0.7"
+    "react-window-infinite-loader": "^1.0.7",
+    "sass": "^1.69.5"
   }
 }

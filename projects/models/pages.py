@@ -5,13 +5,13 @@ from django.db.models.fields.related import ForeignKey
 from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.core.models import Orderable, Page
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, RichTextFieldPanel, StreamFieldPanel, PageChooserPanel, InlinePanel
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldPanel, FieldPanel, PageChooserPanel, InlinePanel
+from wagtail.snippets.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page
 from django.db import models
 from colorfield.fields import ColorField
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.edit_handlers import FieldPanel
 from stopwatch.models import CONTENT_MODULES
 from commonknowledge.wagtail.models import ChildListMixin, SortOption
 from commonknowledge.wagtail.helpers import get_children_of_type
@@ -30,10 +30,10 @@ class Project(ListableMixin, StopwatchPage):
     body = StreamField(CONTENT_MODULES)
 
     content_panels = Page.content_panels + [
-        ImageChooserPanel('photo'),
-        RichTextFieldPanel('description'),
+        FieldPanel('photo'),
+        FieldPanel('description'),
         FieldPanel('color'),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     @property
@@ -116,11 +116,11 @@ class EventTheme(ListableMixin, ProjectPage):
     body = StreamField(CONTENT_MODULES)
 
     content_panels = Page.content_panels + [
-        ImageChooserPanel('photo'),
-        RichTextFieldPanel('description'),
+        FieldPanel('photo'),
+        FieldPanel('description'),
         FieldPanel('color'),
         FieldPanel('background_color'),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     def serve(self, request, *args, **kwargs):
@@ -139,7 +139,7 @@ class EventSpeaker(Orderable, models.Model):
         'stopwatch.Person', on_delete=models.CASCADE, related_name='+')
 
     panels = [
-        SnippetChooserPanel('person'),
+        FieldPanel('person'),
     ]
 
 
@@ -170,10 +170,10 @@ class Event(ListableMixin, ProjectPage):
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
-            ImageChooserPanel('photo'),
+            FieldPanel('photo'),
             PageChooserPanel('theme'),
-            RichTextFieldPanel('registration_page'),
-            RichTextFieldPanel('summary'),
+            FieldPanel('registration_page'),
+            FieldPanel('summary'),
         ], 'Basics'),
 
         MultiFieldPanel([
@@ -185,5 +185,5 @@ class Event(ListableMixin, ProjectPage):
             InlinePanel('event_speakers'),
         ], 'Speakers'),
 
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]

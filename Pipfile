@@ -4,7 +4,7 @@ verify_ssl = true
 name = 'pypi'
 
 [requires]
-python_version = '3.7'
+python_version = '3.11'
 
 [packages]
 boto3 = '>=1.17.77'
@@ -21,7 +21,7 @@ psycopg2 = '>=2.8.6'
 pytz = '>=2021.1'
 requests = '>=2.25.1'
 urllib3 = '>=1.26.4'
-wagtail = '>=2.13'
+wagtail = "==4.1"
 wagtail-transfer = '>=0.8.0'
 wagtail-content-import = "*"
 wagtail-metadata = '*'
