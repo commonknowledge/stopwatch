@@ -8,7 +8,10 @@ const isProduction = process.env.NODE_ENV === "production";
 module.exports = {
   mode: isProduction ? "production" : "development",
   entry: {
-    main: ["./stopwatch/scss/index.scss"],
+    main: [
+      "./stopwatch/scss/index.scss",
+      "./stopwatch/ts/index.ts"
+    ],
   },
   devtool: isProduction ? "eval-source-map" : false,
 
