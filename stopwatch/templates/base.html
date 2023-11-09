@@ -1,4 +1,5 @@
 {% load static wagtailuserbar ckdjango_tags ckwagtail_tags ckbootstrap_tags wagtailcore_tags wagtailmetadata_tags %}
+{% load render_bundle from webpack_loader %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -36,7 +37,7 @@
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
-        {% webpack_bundle 'main' %}
+        {% render_bundle 'main' %}
         
         {% if self %}
             {# Don't show meta tags for non-cms pages as it throws #}

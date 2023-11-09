@@ -90,23 +90,23 @@ module.exports = {
   },
 
   plugins: [
+    new BundleTracker({
+      path: __dirname,
+      filename: "./dist/webpack-stats.json",
+    }),
     ...(isProduction
       ? [
-          new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css",
-          }),
-          new BundleTracker({
-            path: __dirname,
-            filename: "./dist/webpack-stats.json",
-          }),
-        ]
+        new MiniCssExtractPlugin({
+          filename: "[name].css",
+          chunkFilename: "[id].css",
+        }),
+      ]
       : []),
   ],
 
   output: {
-    filename: "[name].js",
-    chunkFilename: "[id].js",
+    filename: "[name]-[fullhash].js",
+    chunkFilename: "[id].bundle.js",
     path: path.resolve(__dirname, "dist"),
     pathinfo: false,
   },
