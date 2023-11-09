@@ -199,6 +199,8 @@ MEDIA_URL = '/media/'
 
 WAGTAIL_SITE_NAME = "stopwatch"
 
+WAGTAILADMIN_BASE_URL = 'https://www.stop-watch.org'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 WAGTAILIMAGES_IMAGE_MODEL = 'stopwatch.StopwatchImage'
 WAGTAILDOCS_DOCUMENT_MODEL = 'stopwatch.StopWatchDocument'
