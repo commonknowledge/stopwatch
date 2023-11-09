@@ -39,10 +39,10 @@
         
         {% if debug %}
           <!-- DEBUG is true -->
-          {% render_bundle 'main' 'css' %}
+          {% render_bundle 'main' %}
         {% else %}
           <!-- DEBUG is false -->
-          {% render_bundle 'main' %}
+          {% render_bundle 'main' 'css' %}
         {% endif %}
         
         {% if self %}
