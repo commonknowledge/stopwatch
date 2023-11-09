@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = "Set up essential pages"
 
     def add_arguments(self, parser):
-        default_base_url = urlparse(settings.BASE_URL)
+        default_base_url = urlparse(settings.WAGTAILADMIN_BASE_URL)
 
         parser.add_argument(
             "--scratch", dest="scratch", type=bool, default=False
