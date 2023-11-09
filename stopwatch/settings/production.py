@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 DEBUG = False
 SECRET_KEY = os.getenv('SECRET_KEY')
 WAGTAILADMIN_BASE_URL = re.sub(r'/$', '', os.getenv('WAGTAILADMIN_BASE_URL', ''))
-ALLOWED_HOSTS = [urlparse(BASE_URL).netloc]
+ALLOWED_HOSTS = [urlparse(WAGTAILADMIN_BASE_URL).netloc]
 
 DEFAULT_FILE_STORAGE = 'commonknowledge.django.storages.DigitalOceanSpacesStorage'
 
