@@ -37,7 +37,13 @@
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
-        {% render_bundle 'main' %}
+        {% if debug %}
+          <!-- DEBUG is true -->
+          {% render_bundle 'main' 'css' %}
+        {% else %}
+          <!-- DEBUG is false -->
+          {% render_bundle 'main' %}
+        {% endif %}
         
         {% if self %}
             {# Don't show meta tags for non-cms pages as it throws #}
