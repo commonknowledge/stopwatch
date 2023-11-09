@@ -38,10 +38,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {% if debug %}
-          <!-- DEBUG is true -->
           {% render_bundle 'main' %}
         {% else %}
-          <!-- DEBUG is false -->
           {% render_bundle 'main' 'css' %}
         {% endif %}
         
