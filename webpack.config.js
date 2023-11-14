@@ -111,6 +111,7 @@ module.exports = {
     filename: "[name]-[fullhash].js",
     chunkFilename: "[id].bundle.js",
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/static/",
     pathinfo: false,
   },
 };
