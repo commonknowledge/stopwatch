@@ -13,18 +13,6 @@ from webpack_loader.templatetags import webpack_loader
 register = template.Library()
 
 
-@register.simple_tag
-def webpack_bundle(name, type='js'):
-    if settings.DEBUG:
-        if type == 'js':
-            return mark_safe(f'<script src="http://localhost:8080/{name}.js"></script>')
-        else:
-            return mark_safe('')
-
-    else:
-        return webpack_loader.render_bundle(name, type)
-
-
 @register.simple_tag(takes_context=True)
 def infinite_scroll_container(context, item_selector='.iscroll_item', page=None, **kwargs):
     request: HttpRequest = context.get('request')
