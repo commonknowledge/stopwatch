@@ -32,3 +32,4 @@ django-bootstrap5 = "*"
 django-colorfield = "*"
 beautifulsoup4 = "*"
 colour = "*"
+whitenoise = {extras = ["brotli"], version = "*"}

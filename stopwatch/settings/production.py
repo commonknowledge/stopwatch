@@ -1,6 +1,8 @@
 from .base import *
 from urllib.parse import urlparse
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 DEBUG = False
 SECRET_KEY = os.getenv('SECRET_KEY')
 WAGTAILADMIN_BASE_URL = re.sub(r'/$', '', os.getenv('WAGTAILADMIN_BASE_URL', ''))
@@ -17,7 +19,6 @@ AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
 MEDIA_URL = os.getenv('MEDIA_URL')
-
 
 ANYMAIL = {
     "MAILGUN_API_URL": os.getenv("MAILGUN_API_URL"),
