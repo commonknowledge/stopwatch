@@ -30,12 +30,7 @@ class LinksBlock(StructBlock):
         template = 'stopwatch/components/links.html'
 
     class LinkBlock(StructBlock):
-        class Meta:
-            template = 'stopwatch/components/links_link.html'
-
-        name = CharBlock()
-        description = TextBlock(required=False)
-
+  
         def __init__(self, tag, link_block, **kwargs):
             local_blocks = (
                 (tag, link_block),
@@ -61,21 +56,31 @@ class LinksBlock(StructBlock):
             return context
 
     class MailtoLinkBlock(LinkBlock):
+        class Meta:
+            template = 'stopwatch/components/email_link.html'
         def get_href(self, value):
             return 'mailto:' + super().get_href(value)
 
-    class InternalLinkBlock(LinkBlock):
+    class InternalPageLinkBlock(LinkBlock):
+        class Meta:
+            template = 'stopwatch/components/internal_link.html'
         def get_href(self, value):
             return self.get_target(value).url
+    
+    class ExternalPageLinkBlock(LinkBlock):
+        class Meta:
+            template = 'stopwatch/components/external_link.html'
+        def get_href(self, value):
+            return self.get_target(value)
 
     heading = CharBlock(required=False)
     message = RichTextBlock(required=False, features=['h1', 'h2', 'h3', 'h4', 'bold',
                                                       'italic', 'ol', 'ul', 'hr', 'link', 'document-link', 'image', 'embed', 'blockquote'])
     links = StreamBlock((
         ('alert', AlertBlock()),
-        ('website', LinkBlock('url', URLBlock())),
+        ('website', ExternalPageLinkBlock('url', URLBlock())),
         ('email', MailtoLinkBlock('address', EmailBlock())),
-        ('page', InternalLinkBlock('page', PageChooserBlock()))
+        ('page', InternalPageLinkBlock('page', PageChooserBlock()))
     ))
 
     def get_context(self, value, *args, **kwargs):
