@@ -1,6 +1,6 @@
 # Stopwatch
 
-An indexed and searchable online database of socialist and radical writings.
+Research and action for fair and accountable policing
 
 Staging: https://stopwatch.commonknowledge.dev/
 
