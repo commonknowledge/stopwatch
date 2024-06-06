@@ -196,18 +196,17 @@ class Article(ListableMixin, StopwatchPage):
 
     @property
     def hide_related_articles(self):
-        category = self.category
-        if category:
-            return self.category.hide_related_articles
-        else:
-            return True
+        if self.is_category_page:
+            category = self.category
+            if category:
+                return self.category.hide_related_articles
+        return False 
 
     @property
     def hide_date(self):
         category = self.category
         if category:
             return self.category.hide_dates
-
         else:
             return True
 
@@ -261,6 +260,10 @@ class Article(ListableMixin, StopwatchPage):
         relations = self.related_article_links.all().select_related('related_article')
         return [relation.related_article for relation in relations]
 
+    @property
+    def is_category_page(self):
+        # Check if the current page is an instance of CategoryPage
+        return isinstance(self, Category)
 
 class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
     template = 'stopwatch/pages/form.html'
