@@ -1,6 +1,8 @@
 const path = require("path");
 const BundleTracker = require("webpack-bundle-tracker");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -13,7 +15,7 @@ module.exports = {
       "./stopwatch/ts/index.ts"
     ],
   },
-  devtool: isProduction ? "eval-source-map" : false,
+  devtool: isProduction ? false : "eval-source-map",
 
   module: {
     rules: [
@@ -33,15 +35,12 @@ module.exports = {
         test: /\.(scss)$/,
         use: [
           {
-            // inject CSS to page
             loader: isProduction ? MiniCssExtractPlugin.loader : "style-loader",
           },
           {
-            // translates CSS into CommonJS modules
             loader: "css-loader",
           },
           {
-            // Run postcss actions
             loader: "postcss-loader",
             options: {
               postcssOptions: {
@@ -60,15 +59,12 @@ module.exports = {
         test: /\.(css)$/,
         use: [
           {
-            // inject CSS to page
             loader: isProduction ? MiniCssExtractPlugin.loader : "style-loader",
           },
           {
-            // translates CSS into CommonJS modules
             loader: "css-loader",
           },
           {
-            // Run postcss actions
             loader: "postcss-loader",
             options: {
               postcssOptions: {
@@ -106,6 +102,30 @@ module.exports = {
       ]
       : []),
   ],
+
+  optimization: {
+    minimize: isProduction,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
+      }),
+      new CssMinimizerPlugin(),
+    ],
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
 
   output: {
     filename: "[name]-[fullhash].js",
