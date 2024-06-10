@@ -34,6 +34,8 @@ class LinksBlock(StructBlock):
         def __init__(self, tag, link_block, **kwargs):
             local_blocks = (
                 (tag, link_block),
+                ('name', CharBlock(required=False)), 
+
             )
             super().__init__(local_blocks=local_blocks, **kwargs)
             self.tag = tag
@@ -45,7 +47,7 @@ class LinksBlock(StructBlock):
             return str(self.get_target(value))
 
         def get_label(self, value):
-            return str(self.get_target(value))
+            return value.get('name', str(self.get_target(value)))
 
         def get_link(self, value):
             return format_html('<a href="{}">{}</a>', self.get_href(value), self.get_label(value))
