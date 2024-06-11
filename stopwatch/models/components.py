@@ -124,7 +124,7 @@ class ArticlesListBlock(StructBlock):
 
 class PinnedPageBlock(StructBlock):
     page = PageChooserBlock(  required=False,
-        help_text="Show all events in the site that are under this page. If blank, show all events on the site."
+        help_text="Select a page to display at the top the category page."
     )
     class Meta:
         icon = 'thumbtack'
