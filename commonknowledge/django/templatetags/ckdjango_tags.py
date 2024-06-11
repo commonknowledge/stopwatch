@@ -35,6 +35,9 @@ def infinite_scroll_container(context, item_selector='.iscroll_item', page=None,
 def filter_toggles(field, all_label='All', label_class="btn", **kwargs):
     classname = kwargs.pop('class', "btn-check")
 
+    if not hasattr(field, 'field') or not hasattr(field, 'name'):
+        return ''
+
     opts = format_html_join(
         '',
         '<input type="radio" class="{}" name="{}" value="{}" id="{}-{}" autocomplete="off" {}>' +
@@ -72,7 +75,6 @@ def filter_toggles(field, all_label='All', label_class="btn", **kwargs):
         all_label,
         opts
     )
-
 
 @register.simple_tag
 def filter_menu(field, **kwargs):
