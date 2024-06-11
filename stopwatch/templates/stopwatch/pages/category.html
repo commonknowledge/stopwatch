@@ -69,7 +69,7 @@
         <div class="border-bottom border-1 border-primary d-md-none"></div>
       {% endif %}
     
-      <img src="{% static 'img/pin.svg' %}" alt="Pin icon">
+      <img src="{% static 'img/pin.svg' %}" alt="Pin icon" class="p-3">
 
       {% include "stopwatch/includes/pinned_pages.html" with pinned_pages=page.pinned_pages pinned_pages_style=page.pinned_pages_style only %}
  
