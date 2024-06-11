@@ -61,13 +61,16 @@
 </header>
 
 <main class="container container-outline pb-5 pt-md-3">
+  
   <div class="row">
     {% include "stopwatch/includes/filters.html" with style=page.style tags=filter_form.theme sort=filter_form.sort searchable=page.searchable class="pb-5 pb-md-0" only %}
-
     <div class="col" {% infinite_scroll_container %}>
       {% if page.style == 'ROWS' %}
         <div class="border-bottom border-1 border-primary d-md-none"></div>
       {% endif %}
+      
+      {% include "stopwatch/includes/pinned_pages.html" with pinned_pages=page.pinned_pages pinned_pages_style=page.pinned_pages_style only %}
+ 
       {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=page.style search_query=filter_form.query.value reset_url=page.url request=request only %}
     </div>
   </div>
