@@ -66,10 +66,12 @@
     {% include "stopwatch/includes/filters.html" with style=page.style tags=filter_form.theme sort=filter_form.sort searchable=page.searchable class="pb-5 pb-md-0" only %}
     
     <div class="col">
+      {% if page.pinned_pages %}
       <div class="pinned-pages-container">
         <img src="{% static 'img/pin.svg' %}" alt="Pin icon" class="p-3">
         {% include "stopwatch/includes/pinned_pages.html" with pinned_pages=page.pinned_pages pinned_pages_style=page.pinned_pages_style only %}
       </div>
+      {% endif %}
       
       <div class="article-list-container" {% infinite_scroll_container item_selector=".article-item" %}>
         {% if page.style == 'ROWS' %}
