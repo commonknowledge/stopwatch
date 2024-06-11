@@ -122,6 +122,14 @@ class ArticlesListBlock(StructBlock):
         return context
 
 
+class PinnedPageBlock(StructBlock):
+    page = PageChooserBlock(  required=False,
+        help_text="Show all events in the site that are under this page. If blank, show all events on the site."
+    )
+    class Meta:
+        icon = 'thumbtack'
+        label = 'Pinned Page'
+
 class CalendarBlock(StructBlock):
     '''
     Display a calendar showing all events underneath a particular page.
