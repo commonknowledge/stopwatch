@@ -180,16 +180,3 @@ models.signals.pre_save.connect(pre_save_image_or_doc, sender=StopwatchImage)
 models.signals.pre_save.connect(
     pre_save_image_or_doc, sender=StopWatchDocument)
 
-
-@register_snippet
-class MultiPageSnippet(models.Model):
-    name = models.CharField(max_length=255)
-    pages = ParentalManyToManyField(Page, blank=True)
-
-    panels = [
-        FieldPanel('name'),
-        FieldPanel('pages'),
-    ]
-
-    def __str__(self):
-        return self.name
