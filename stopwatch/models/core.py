@@ -11,6 +11,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PageChooserPanel, FieldPanel
 from wagtail.images.edit_handlers import FieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+from modelcluster.fields import ParentalManyToManyField
 
 
 class User(AbstractUser):
@@ -178,3 +179,4 @@ def pre_save_image_or_doc(sender, instance, *args, **kwargs):
 models.signals.pre_save.connect(pre_save_image_or_doc, sender=StopwatchImage)
 models.signals.pre_save.connect(
     pre_save_image_or_doc, sender=StopWatchDocument)
+

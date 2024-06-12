@@ -23,8 +23,9 @@ from commonknowledge.django.cache import django_cached
 from commonknowledge.helpers import classproperty
 from wagtailmetadata.models import MetadataPageMixin
 
+
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
-from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock, SummaryTextBlock
+from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock, SummaryTextBlock, PinnedPageBlock
 from django.core.mail import send_mail
 from django.utils.formats import date_format
 import datetime
@@ -353,6 +354,17 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     searchable = models.BooleanField(default=False)
     newsflash = models.BooleanField(default=False)
     navigable = models.BooleanField(default=True)
+    pinned_pages = StreamField([
+        ('pinned_page', PinnedPageBlock()),
+    ], blank=True)
+    pinned_pages_style = models.CharField(
+        max_length=10,
+        choices=(
+            ('grid', 'Grid'),
+            ('rows', 'Rows'),
+        ),
+        default='grid'
+    )
     style = models.CharField(
         max_length=128,
         choices=ArticlesListBlock.StyleChoices.options,
@@ -368,6 +380,8 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
         FieldPanel('navigable'),
+        FieldPanel('pinned_pages'),
+        FieldPanel('pinned_pages_style'),
     ]
 
     @classmethod

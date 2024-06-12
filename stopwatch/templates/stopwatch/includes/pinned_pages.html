@@ -1,0 +1,52 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% if pinned_pages_style == 'grid' %}
+<section class="card-grid {{class}}">
+    {% for block in pinned_pages %}
+
+        <a class="link-reset iscroll_item bg-white d-flex flex-column hover-invert" href="{{ block.value.page.url }}">
+            <div class="p-3 flex-grow-1">
+                <h2 class="heading-large mb-3">{{ block.value.page.title }}</h2>
+                {% if block.value.page.intro_text %}
+                <div>
+                    {{ block.value.page.intro_text }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="img-card">
+                {% image block.value.page.photo height-300 jpegquality-100 %}
+            </div>
+        </a>
+    {% endfor %}
+</section>
+{% else %}
+<section class="{{class}}">
+    {% for block in pinned_pages %}
+        <div class="row g-0 link-reset iscroll_item pages-listitem">
+            {% if block.value.page.photo %}
+            <a href="{{ block.value.page.url }}" class="col-8 col-md-3 pe-md-0 pt-3 pb-md-3">
+                <div class="img-list">
+                    {% image block.value.page.photo width-500 %}
+                </div>
+            </a>
+            {% else %}
+            <div class="col-3 d-none d-md-block"></div>
+            {% endif %}
+            <div class="col order-md-first py-3 me-md-3">
+                <a href="{{ block.value.page.url }}">
+                    <h2 class="heading-medium mb-3 mb-md-4">{{ block.value.page.title }}</h2>
+                    {% if block.value.page.intro_text %}
+                    <div class="mb-3 mb-md-4">
+                        {{ block.value.page.intro_text }}
+                    </div>
+                    {% endif %}
+                </a>
+                <div>
+                    {{ block.value.page.body }}
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</section>
+{% endif %}

@@ -122,6 +122,14 @@ class ArticlesListBlock(StructBlock):
         return context
 
 
+class PinnedPageBlock(StructBlock):
+    page = PageChooserBlock(  required=False,
+        help_text="Select a page to display at the top the category page."
+    )
+    class Meta:
+        icon = 'thumbtack'
+        label = 'Pinned Page'
+
 class CalendarBlock(StructBlock):
     '''
     Display a calendar showing all events underneath a particular page.
