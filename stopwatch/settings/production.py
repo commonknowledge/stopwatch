@@ -29,9 +29,9 @@ ANYMAIL = {
 # or sendgrid.EmailBackend, or...
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 # if you don't already have this in settings
-DEFAULT_FROM_EMAIL = f"noreply@{ANYMAIL['MAILGUN_SENDER_DOMAIN']}"
+DEFAULT_FROM_EMAIL = "mailgun@stop-watch.org"
 # ditto (default from-email for Django errors)
-SERVER_EMAIL = f"admin@{ANYMAIL['MAILGUN_SENDER_DOMAIN']}"
+SERVER_EMAIL = "mailgun@stop-watch.org"
 
 try:
     from .local import *
