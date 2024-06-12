@@ -26,7 +26,9 @@ from wagtailmetadata.models import MetadataPageMixin
 
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
 from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock, SummaryTextBlock, PinnedPageBlock
-
+from django.core.mail import send_mail
+from django.utils.formats import date_format
+import datetime
 
 class ArticleTag(TaggedItemBase):
     content_object = ParentalKey(
@@ -266,15 +268,54 @@ class Article(ListableMixin, StopwatchPage):
         # Check if the current page is an instance of CategoryPage
         return isinstance(self, Category)
 
-class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
+
+class EmailFormMixin:
+    SHORT_DATETIME_FORMAT = 'N j, Y, P'
+    SHORT_DATE_FORMAT = 'N j, Y'
+
+    def send_mail(self, form):
+        # Ensure to_address is a list
+        addresses = [x.strip() for x in self.to_address.split(",") if x.strip()]
+        subject = self.subject or "No Subject"
+        email_content = self.render_email(form)
+
+        send_mail(
+            subject,
+            email_content,
+            self.from_address,
+            addresses,
+        )
+
+    def render_email(self, form):
+        content = []
+
+        cleaned_data = form.cleaned_data
+        for field in form:
+            if field.name not in cleaned_data:
+                continue
+
+            value = cleaned_data.get(field.name)
+
+            if isinstance(value, list):
+                value = ", ".join(value)
+
+            if isinstance(value, datetime.datetime):
+                value = date_format(value, self.SHORT_DATETIME_FORMAT)
+            elif isinstance(value, datetime.date):
+                value = date_format(value, self.SHORT_DATE_FORMAT)
+
+            content.append("{}: {}".format(field.label, value))
+
+        return "\n".join(content)
+
+class Form(ListableMixin, StopwatchPage, AbstractEmailForm, EmailFormMixin):
     template = 'stopwatch/pages/form.html'
     landing_page_template = 'stopwatch/pages/form_submitted.html'
     intro = RichTextField(blank=True)
     thank_you_page = StreamField(CONTENT_MODULES)
 
     class FormField(AbstractFormField):
-        page = ParentalKey('Form', on_delete=models.CASCADE,
-                           related_name='form_fields')
+        page = ParentalKey('Form', on_delete=models.CASCADE, related_name='form_fields')
 
     @property
     def description(self):
@@ -293,6 +334,16 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm):
             FieldPanel('subject'),
         ], "Email"),
     ]
+
+    def process_form_submission(self, form):
+        submission = super().process_form_submission(form)
+        if self.to_address:
+            self.send_mail(form)
+        return submission
+
+    def send_mail(self, form):
+        # Custom send_mail logic to ensure it uses the mixin's send_mail method
+        EmailFormMixin.send_mail(self, form)
 
 
 class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
