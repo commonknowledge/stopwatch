@@ -4,7 +4,7 @@
   {% if value.heading %}
   <h2>{{value.heading}}</h2>
   {% endif %}
-  <div class="linkblock-links-container">
+  <div class="linkblock-links-container {% if not value.heading %}mt-0{% endif %} {% if value.heading %}{{value.heading|slugify}}{% endif %}">
     <div class="linkblock-links-list">
       {% for link_block in self.links %}
         {% include_block link_block %}
