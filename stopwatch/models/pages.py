@@ -433,11 +433,25 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     def get_child_list_queryset(self, request):
         filters = self.get_filters(request)
 
+        # Extract the IDs of the pinned pages
+        pinned_page_ids = [
+            block.value['page'].id
+            for block in self.pinned_pages
+            if block.block_type == 'pinned_page' and block.value['page']
+        ]
+
+        # Get the base queryset
         if filters and 'tags' in filters:
             # Only articles can be filtered by tag
-            return get_children_of_type(self, Article)
+            queryset = get_children_of_type(self, Article)
         else:
-            return self.get_children().live().specific()
+            queryset = self.get_children().live().specific()
+
+        # Exclude the pinned pages
+        if pinned_page_ids:
+            queryset = queryset.exclude(id__in=pinned_page_ids)
+
+        return queryset
 
     @property
     def featured_items(self):
