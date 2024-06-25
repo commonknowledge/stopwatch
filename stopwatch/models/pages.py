@@ -336,7 +336,13 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm, EmailFormMixin):
     ]
 
     def process_form_submission(self, form):
+        # First, handle the form submission and save it without sending an email.
+        original_to_address = self.to_address
+        self.to_address = None
         submission = super().process_form_submission(form)
+        self.to_address = original_to_address
+
+        # Now, send the email using your custom logic.
         if self.to_address:
             self.send_mail(form)
         return submission
