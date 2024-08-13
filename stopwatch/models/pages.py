@@ -408,7 +408,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         return self.navigable
 
     def get_page_size(self):
-        return 25
+        return 100
 
     def tags(self):
         '''
