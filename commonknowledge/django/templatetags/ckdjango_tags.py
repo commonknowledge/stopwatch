@@ -94,15 +94,16 @@ def filter_menu(field, **kwargs):
         ),
     )
 
+    id_html = format_html('id="{}"', kwargs['id']) if 'id' in kwargs else ''
+
     return format_html(
         '<select {} name="{}" {} aria-label="{}">{}</select>',
-        f'id="{kwargs["id"]}"' if 'id' in kwargs else '',
+        id_html,
         field.name,
-        mark_safe(f'class="{classname}"') if classname else '',
+        format_html('class="{}"', classname) if classname else '',
         field.label,
         choices_html
     )
-
 
 @register.inclusion_tag('commonknowledge/django/bind_forms.html')
 def bind_filter_form(**kwargs):
