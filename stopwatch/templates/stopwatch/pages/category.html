@@ -66,18 +66,18 @@
     {% include "stopwatch/includes/filters.html" with style=page.style tags=filter_form.theme sort=filter_form.sort searchable=page.searchable class="pb-5 pb-md-0" only %}
     
     <div class="col">
+
       {% if page.pinned_pages %}
       <div class="pinned-pages-container">
         <img src="{% static 'img/pin.svg' %}" alt="Pin icon" class="p-3">
         {% include "stopwatch/includes/pinned_pages.html" with pinned_pages=page.pinned_pages pinned_pages_style=page.pinned_pages_style only %}
       </div>
       {% endif %}
-      
-      <div class="article-list-container" {% infinite_scroll_container %}>
+      <div class="article-list-container">
         {% if page.style == 'ROWS' %}
           <div class="border-bottom border-1 border-primary d-md-none"></div>
         {% endif %}
-    
+
         {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=page.style search_query=filter_form.query.value reset_url=page.url request=request only %}
       </div>
     </div>
