@@ -28,8 +28,10 @@ def infinite_scroll_container(context, item_selector='.iscroll_item', page=None,
         'append': item_selector,
         'history': False,
     }
-    return mark_safe(f'data-infinite-scroll=\'{json.dumps(config)}\'')
 
+    json_config = json.dumps(config)
+
+    return format_html('data-infinite-scroll="{}"', json_config)
 
 @register.simple_tag
 def filter_toggles(field, all_label='All', label_class="btn", **kwargs):
