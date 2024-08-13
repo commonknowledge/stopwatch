@@ -47,6 +47,7 @@
       {% if self.style == 'ROWS' %}
         <div class="border-bottom border-1 border-primary d-md-none"></div>
       {% endif %}
+      {% include "stopwatch/includes/pinned_pages.html" with pinned_pages=page.pinned_pages pinned_pages_style=page.pinned_pages_style only %}
       {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=self.style search_query=filter_form.query.value reset_url=self.url only %}
     </div>
   </div>

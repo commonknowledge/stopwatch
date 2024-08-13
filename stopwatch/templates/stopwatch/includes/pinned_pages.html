@@ -2,6 +2,7 @@
 
 {% if pinned_pages_style == 'grid' %}
 <section class="card-grid {{class}}">
+    <img src="{% static 'img/pin.svg' %}" alt="Pin icon" class="p-3">
     {% for block in pinned_pages %}
 
         <a class="link-reset iscroll_item bg-white d-flex flex-column hover-invert" href="{{ block.value.page.url }}">
@@ -21,6 +22,7 @@
 </section>
 {% else %}
 <section class="{{class}}">
+    <img src="{% static 'img/pin.svg' %}" alt="Pin icon" class="p-3">
     {% for block in pinned_pages %}
         <div class="row g-0 link-reset iscroll_item pages-listitem">
             {% if block.value.page.photo %}
