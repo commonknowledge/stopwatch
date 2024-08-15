@@ -375,21 +375,21 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     style = models.CharField(
         max_length=128,
         choices=ArticlesListBlock.StyleChoices.options,
-        default=ArticlesListBlock.StyleChoices.GRID)
+        default=ArticlesListBlock.StyleChoices.GRID
+    )
 
     hide_related_articles = models.BooleanField(default=True)
     hide_dates = models.BooleanField(default=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
-        FieldPanel('photo'),
         FieldPanel('style'),
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
         FieldPanel('navigable'),
         FieldPanel('pinned_pages'),
         FieldPanel('pinned_pages_style'),
-        InlinePanel('child_page_sections', label="Child Page Sections"),  # Updated to include child page sections
+        InlinePanel('child_page_sections', label="Child Page Sections"),  # Added child page sections panel
     ]
 
     @classmethod
@@ -421,7 +421,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         for article in get_children_of_type(self, Article).iterator():
             for tag in article.tags.all():
                 all_tags.add(tag.id)
-        
+
         return list(Tag.objects.filter(id__in=all_tags))
 
     def get_filters(self, request):
@@ -448,8 +448,12 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
             if block.block_type == 'pinned_page' and block.value['page']
         ]
 
-        # Get the ordered child pages from all sections
-        queryset = Page.objects.filter(id__in=self.child_page_sections.values_list('ordered_child_pages__page_id', flat=True)).live().specific()
+        # Get the base queryset
+        if filters and 'tags' in filters:
+            # Only articles can be filtered by tag
+            queryset = get_children_of_type(self, Article)
+        else:
+            queryset = self.get_children().live().specific()
 
         # Exclude the pinned pages
         if pinned_page_ids:
@@ -458,15 +462,9 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         return queryset
 
     @property
-    def is_category(self):
-        return True
-
-    @property
     def featured_items(self):
         return self.get_children().live().order_by('-first_published_at').specific()[:10]
 
-
-    
 class CategoryChildPageSection(ClusterableModel, Orderable):
     category = ParentalKey('Category', on_delete=models.CASCADE, related_name='child_page_sections')
     title = models.CharField(max_length=255, help_text="Title for this section of child pages")
