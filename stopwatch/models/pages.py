@@ -22,6 +22,7 @@ from commonknowledge.wagtail.models import ChildListMixin, ExploreTagsMixin
 from commonknowledge.django.cache import django_cached
 from commonknowledge.helpers import classproperty
 from wagtailmetadata.models import MetadataPageMixin
+from modelcluster.models import ClusterableModel
 
 
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
@@ -388,6 +389,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         FieldPanel('navigable'),
         FieldPanel('pinned_pages'),
         FieldPanel('pinned_pages_style'),
+        InlinePanel('child_page_sections', label="Child Page Sections"),  # Updated to include child page sections
     ]
 
     @classmethod
@@ -419,7 +421,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         for article in get_children_of_type(self, Article).iterator():
             for tag in article.tags.all():
                 all_tags.add(tag.id)
-
+        
         return list(Tag.objects.filter(id__in=all_tags))
 
     def get_filters(self, request):
@@ -446,12 +448,8 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
             if block.block_type == 'pinned_page' and block.value['page']
         ]
 
-        # Get the base queryset
-        if filters and 'tags' in filters:
-            # Only articles can be filtered by tag
-            queryset = get_children_of_type(self, Article)
-        else:
-            queryset = self.get_children().live().specific()
+        # Get the ordered child pages from all sections
+        queryset = Page.objects.filter(id__in=self.child_page_sections.values_list('ordered_child_pages__page_id', flat=True)).live().specific()
 
         # Exclude the pinned pages
         if pinned_page_ids:
@@ -460,10 +458,32 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         return queryset
 
     @property
+    def is_category(self):
+        return True
+
+    @property
     def featured_items(self):
         return self.get_children().live().order_by('-first_published_at').specific()[:10]
 
 
+    
+class CategoryChildPageSection(ClusterableModel, Orderable):
+    category = ParentalKey('Category', on_delete=models.CASCADE, related_name='child_page_sections')
+    title = models.CharField(max_length=255, help_text="Title for this section of child pages")
+
+    panels = [
+        FieldPanel('title'),
+        InlinePanel('ordered_child_pages', label="Child Pages", min_num=1),
+    ]
+
+class CategoryChildPage(Orderable):
+    section = ParentalKey('CategoryChildPageSection', on_delete=models.CASCADE, related_name='ordered_child_pages', null=True, blank=True)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='+')
+
+    panels = [
+        PageChooserPanel('page'),
+    ]
+    
 class ExternalPage(ListableMixin, StopwatchPage):
     target_url = URLField()
     description = RichTextField(blank=True, null=True)
