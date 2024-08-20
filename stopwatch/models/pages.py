@@ -361,17 +361,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     searchable = models.BooleanField(default=False)
     newsflash = models.BooleanField(default=False)
     navigable = models.BooleanField(default=True)
-    pinned_pages = StreamField([
-        ('pinned_page', PinnedPageBlock()),
-    ], blank=True)
-    pinned_pages_style = models.CharField(
-        max_length=10,
-        choices=(
-            ('grid', 'Grid'),
-            ('rows', 'Rows'),
-        ),
-        default='grid'
-    )
+
     style = models.CharField(
         max_length=128,
         choices=ArticlesListBlock.StyleChoices.options,
@@ -387,9 +377,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
         FieldPanel('navigable'),
-        FieldPanel('pinned_pages'),
-        FieldPanel('pinned_pages_style'),
-        InlinePanel('child_page_sections', label="Child Page Sections"),  # Added child page sections panel
+        InlinePanel('child_page_sections', label="Child Page Sections"), 
     ]
 
     @classmethod
@@ -441,12 +429,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     def get_child_list_queryset(self, request):
         filters = self.get_filters(request)
 
-        # Extract the IDs of the pinned pages
-        pinned_page_ids = [
-            block.value['page'].id
-            for block in self.pinned_pages
-            if block.block_type == 'pinned_page' and block.value['page']
-        ]
+      
 
         # Get the base queryset
         if filters and 'tags' in filters:
@@ -454,10 +437,6 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
             queryset = get_children_of_type(self, Article)
         else:
             queryset = self.get_children().live().specific()
-
-        # Exclude the pinned pages
-        if pinned_page_ids:
-            queryset = queryset.exclude(id__in=pinned_page_ids)
 
         return queryset
 
