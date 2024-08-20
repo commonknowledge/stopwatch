@@ -356,11 +356,21 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm, EmailFormMixin):
 class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     allow_search = True
     template = 'stopwatch/pages/category.html'
+    
+    DESCRIPTION_CHOICES = (
+        ('articles', 'Display all articles'),
+        ('sections', 'Display chosen articles'),
+    )
 
     description = models.TextField(null=True, blank=True)
     searchable = models.BooleanField(default=False)
     newsflash = models.BooleanField(default=False)
     navigable = models.BooleanField(default=True)
+    display_mode = models.CharField(
+        max_length=20,
+        choices=DESCRIPTION_CHOICES,
+        default='articles',
+    )
 
     style = models.CharField(
         max_length=128,
@@ -373,6 +383,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
+        FieldPanel('display_mode'),
         FieldPanel('style'),
         FieldPanel('searchable'),
         FieldPanel('newsflash'),
@@ -429,15 +440,18 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
     def get_child_list_queryset(self, request):
         filters = self.get_filters(request)
 
-      
-
-        # Get the base queryset
-        if filters and 'tags' in filters:
+        # Set the base queryset based on the display mode
+        if self.display_mode == 'articles':
+            if filters and 'tags' in filters:
             # Only articles can be filtered by tag
-            queryset = get_children_of_type(self, Article)
+                queryset = get_children_of_type(self, Article).filter(tags=filters['tags'])
+            else:
+                queryset = self.get_children().live().specific()            
         else:
-            queryset = self.get_children().live().specific()
-
+            section_ids = self.child_page_sections.values_list('id', flat=True)
+            page_ids = CategoryChildPage.objects.filter(section_id__in=section_ids).values_list('page_id', flat=True)
+            queryset = Page.objects.filter(id__in=page_ids).live().specific()
+        
         return queryset
 
     @property
