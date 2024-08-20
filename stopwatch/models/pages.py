@@ -469,10 +469,10 @@ class CategoryChildPageSection(ClusterableModel, Orderable):
 
 class CategoryChildPage(Orderable):
     section = ParentalKey('CategoryChildPageSection', on_delete=models.CASCADE, related_name='ordered_child_pages', null=True, blank=True)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='+')
+    page = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='+')
 
     panels = [
-        PageChooserPanel('page'),
+         PageChooserPanel('page', ['stopwatch.Article']),
     ]
     
 class ExternalPage(ListableMixin, StopwatchPage):
