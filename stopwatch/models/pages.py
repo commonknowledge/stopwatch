@@ -466,7 +466,6 @@ class CategoryChildPageSection(ClusterableModel, Orderable):
         null=True, 
         help_text="Title for this section of child pages"
     )
-
     panels = [
         FieldPanel('title'),
         InlinePanel('ordered_child_pages', label="Child Pages", min_num=1),
