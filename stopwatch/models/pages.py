@@ -460,7 +460,12 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
 
 class CategoryChildPageSection(ClusterableModel, Orderable):
     category = ParentalKey('Category', on_delete=models.CASCADE, related_name='child_page_sections')
-    title = models.CharField(max_length=255, help_text="Title for this section of child pages")
+    title = models.CharField(
+        max_length=255, 
+        blank=True, 
+        null=True, 
+        help_text="Title for this section of child pages"
+    )
 
     panels = [
         FieldPanel('title'),
