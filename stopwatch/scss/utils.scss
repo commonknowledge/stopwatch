@@ -186,3 +186,9 @@
     background-color: $dark !important;
   }
 }
+
+.section-rows {
+  @include media-breakpoint-up(md) {
+   margin-bottom: 60px;
+  }
+}

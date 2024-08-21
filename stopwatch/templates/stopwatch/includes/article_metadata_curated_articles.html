@@ -1,0 +1,9 @@
+{% load wagtailroutablepage_tags %}
+{% if child_page.page.category or child_page.page.tags.first or not child_page.page.hide_date %}
+    <div class="d-inline-flex flex-row microcopy text-darkgrey {{ class }}">
+        {% if  child_page.page.category %}<div class="pe-3 link-reset">{{ child_page.page.category.title }}</div>{% endif %}
+        {% if not child_page.page.hide_date %}
+            <div class="pe-3">{{ child_page.page.first_published_at|date:"d.m.Y" }}</div>
+        {% endif %}
+    </div>
+{% endif %}

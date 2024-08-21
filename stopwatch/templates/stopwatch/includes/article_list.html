@@ -1,57 +1,47 @@
 {% load static ckbootstrap_tags ckwagtail_tags ckdjango_tags wagtailcore_tags wagtailimages_tags %}
-
 {% if page.display_mode == 'sections' %}
     {% for section in sections %}
-        <h2>{{ section.title }}</h2>  
-
         {% if style == 'GRID' %}
-            <section class="card-grid {{class}}">
+            {% if section.title %}<h2 class="mb-3">{{ section.title }}</h2>{% endif %}
+            <section class="card-grid {{ class }}">
                 {% for child_page in section.ordered_child_pages.all %}
-                    <a class="link-reset iscroll_item bg-white d-flex flex-column hover-invert" href="{{ child_page.page.url }}">
+                    <div class="link-reset iscroll_item bg-white d-flex flex-column">
                         <div class="p-3 flex-grow-1">
-                            <h3 class="heading-large mb-3">{{ child_page.page.title }}</h3>
+                            <h3 class="heading-large mb-3">
+                                <a href="{{ child_page.page.url }}">{{ child_page.page.title }}</a>
+                            </h3>
                             {% if child_page.page.intro_text %}
-                                <div>
-                                    {{ child_page.page.intro_text|plaintext }}
-                                </div>
+                                <div class="mb-3">{{ child_page.page.intro_text|plaintext }}</div>
+                                {% include "stopwatch/includes/article_metadata_curated_articles.html" %}
                             {% endif %}
                         </div>
-
-                        <div class="img-card">
-                            {% image child_page.page.photo height-300 jpegquality-100 %}
-                        </div>
-                    </a>
+                        <div class="img-card">{% image child_page.page.photo height-300 jpegquality-100 %}</div>
+                    </div>
                 {% empty %}
                     {% include "stopwatch/includes/article_list_no_results.html" %}
                 {% endfor %}
             </section>
         {% else %}
-            <section class="{{class}}">
+            {% if section.title %}<h2 class="mt-3">{{ section.title }}</h2>{% endif %}
+            <section class="section-rows {{ class }}">
                 {% for child_page in section.ordered_child_pages.all %}
                     <div class="row g-0 link-reset iscroll_item article-listitem">
                         {% if child_page.page.photo %}
-                            <a href="{{ child_page.page.url }}" class="col-8 col-md-3 pe-md-0 pt-3 pb-md-3">
-                                <div class="img-list">
-                                    {% image child_page.page.photo width-500 %}
-                                </div>
+                            <a href="{{ child_page.page.url }}"
+                               class="col-8 col-md-3 pe-md-0 pt-3 pb-md-3">
+                                <div class="img-list">{% image child_page.page.photo width-500 %}</div>
                             </a>
                         {% else %}
                             <div class="col-3 d-none d-md-block"></div>
                         {% endif %}
-
                         <div class="col order-md-first py-3 me-md-3">
                             <a href="{{ child_page.page.url }}">
                                 <h3 class="heading-medium mb-3 mb-md-4">{{ child_page.page.title }}</h3>
                                 {% if child_page.page.intro_text %}
-                                    <div class="mb-3 mb-md-4">
-                                        {{ child_page.page.intro_text|plaintext }}
-                                    </div>
+                                    <div class="mb-3 mb-md-4">{{ child_page.page.intro_text|plaintext }}</div>
                                 {% endif %}
                             </a>
-
-                            <div>
-                                {% include "stopwatch/includes/article_metadata.html" %}
-                            </div>
+                            <div>{% include "stopwatch/includes/article_metadata_curated_articles.html" %}</div>
                         </div>
                     </div>
                 {% empty %}
@@ -63,53 +53,39 @@
 {% elif page.display_mode == 'articles' %}
     {% if pages %}
         {% if style == 'GRID' %}
-            <section class="card-grid {{class}}">
-                {% for article in pages %}
-                    <a class="link-reset iscroll_item bg-white d-flex flex-column hover-invert" href="{{ article.url }}">
+            <section class="card-grid {{ class }}">
+                {% for page in pages %}
+                    <div class="iscroll_item bg-white d-flex flex-column">
                         <div class="p-3 flex-grow-1">
-                            <h3 class="heading-large mb-3">{{ article.title }}</h3>
-                            {% if article.intro_text %}
-                                <div>
-                                    {{ article.intro_text|plaintext }}
-                                </div>
-                            {% endif %}
+                            <h3 class="heading-large mb-3">
+                                <a href="{{ page.url }}">{{ page.title }}</a>
+                            </h3>
+                            {% if page.intro_text %}<div class="mb-3">{{ page.intro_text|plaintext }}</div>{% endif %}
+                            {% include "stopwatch/includes/article_metadata.html" %}
                         </div>
-
-                        <div class="img-card">
-                            {% image article.photo height-300 jpegquality-100 %}
-                        </div>
-                    </a>
+                        <div class="img-card">{% image page.photo height-300 jpegquality-100 %}</div>
+                    </div>
                 {% empty %}
                     {% include "stopwatch/includes/article_list_no_results.html" %}
                 {% endfor %}
             </section>
         {% else %}
-            <section class="{{class}}">
-                {% for article in pages %}
+            <section class="{{ class }}">
+                {% for page in pages %}
                     <div class="row g-0 link-reset iscroll_item article-listitem">
-                        {% if article.photo %}
-                            <a href="{{ article.url }}" class="col-8 col-md-3 pe-md-0 pt-3 pb-md-3">
-                                <div class="img-list">
-                                    {% image article.photo width-500 %}
-                                </div>
+                        {% if page.photo %}
+                            <a href="{{ page.url }}" class="col-8 col-md-3 pe-md-0 pt-3 pb-md-3">
+                                <div class="img-list">{% image page.photo width-500 %}</div>
                             </a>
                         {% else %}
                             <div class="col-3 d-none d-md-block"></div>
                         {% endif %}
-
                         <div class="col order-md-first py-3 me-md-3">
-                            <a href="{{ article.url }}">
-                                <h3 class="heading-medium mb-3 mb-md-4">{{ article.title }}</h3>
-                                {% if article.intro_text %}
-                                    <div class="mb-3 mb-md-4">
-                                        {{ article.intro_text|plaintext }}
-                                    </div>
-                                {% endif %}
+                            <a href="{{ page.url }}">
+                                <h3 class="heading-medium mb-3 mb-md-4">{{ page.title }}</h3>
+                                {% if page.intro_text %}<div class="mb-3 mb-md-4">{{ page.intro_text|plaintext }}</div>{% endif %}
                             </a>
-
-                            <div>
-                                {% include "stopwatch/includes/article_metadata.html" %}
-                            </div>
+                            <div>{% include "stopwatch/includes/article_metadata.html" %}</div>
                         </div>
                     </div>
                 {% empty %}
@@ -117,7 +93,5 @@
                 {% endfor %}
             </section>
         {% endif %}
-    {% else %}
-        {% include "stopwatch/includes/article_list_no_results.html" %}
     {% endif %}
 {% endif %}
