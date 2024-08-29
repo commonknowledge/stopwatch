@@ -1,30 +1,18 @@
 {% load wagtailroutablepage_tags %}
 {% if category or tag or page.tags.first or not page.hide_date %}
-  <div class="d-inline-flex flex-row microcopy text-darkgrey {{class}}">
-    {% if category %}
-      <div class="pe-3 link-reset">
-        {{category.title}}
-      </div>
-    {% endif %}
-
+  <div class="d-inline-flex flex-row microcopy text-darkgrey {{ class }}">
+    {% if category %}<div class="pe-3 link-reset">{{ category.title }}</div>{% endif %}
     {% with tag|default:page.tags.first as this_tag %}
-    {% if this_tag %}
-      <div class="pe-3">
-        {% if page.get_parent.specific_class.can_explore_tags and request %}
-            <a href='{% routablepageurl page.get_parent.specific "tagged_pages" this_tag.slug %}'>
-                {{ this_tag.name }}
-            </a> 
-        {% else %}
+      {% if this_tag %}
+        <div class="pe-3">
+          {% if page.get_parent.specific_class.can_explore_tags and request %}
+            <a href='{% routablepageurl page.get_parent.specific "tagged_pages" this_tag.slug %}'>{{ this_tag.name }}</a>
+          {% else %}
             {{ this_tag.name }}
-        {% endif %}
-      </div>
-    {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
     {% endwith %}
-
-    {% if not page.hide_date %}
-      <div class="pe-3">
-        {{page.first_published_at|date:"d.m.Y"}}
-      </div>
-    {% endif %}
+    {% if not page.hide_date %}<div class="pe-3">{{ page.first_published_at|date:"d.m.Y" }}</div>{% endif %}
   </div>
 {% endif %}

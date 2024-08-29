@@ -8,6 +8,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 WAGTAILADMIN_BASE_URL = re.sub(r'/$', '', os.getenv('WAGTAILADMIN_BASE_URL', ''))
 ALLOWED_HOSTS = [urlparse(WAGTAILADMIN_BASE_URL).netloc]
 ALLOWED_HOSTS.append('stop-watch-78b7.onrender.com')
+ALLOWED_HOSTS.append('stopwatch-05nu.onrender.com')
 CSRF_TRUSTED_ORIGINS = [f'{urlparse(WAGTAILADMIN_BASE_URL).scheme}://{urlparse(WAGTAILADMIN_BASE_URL).netloc}']
 
 DEFAULT_FILE_STORAGE = 'commonknowledge.django.storages.DigitalOceanSpacesStorage'

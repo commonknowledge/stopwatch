@@ -16,8 +16,8 @@
 
 <header class="position-relative container container-outline container-outline-btm p-0">
   <div class="row gx-0">
-    {% if page.style == 'ROWS' %}
-      <div class="col-md-3 col-lg-2"></div>
+    {% if page.style == 'ROWS' and page.display_mode == 'articles' %}
+    <div class="col-md-3 col-lg-2"></div>
     {% endif %}
 
     {% if page.photo and page.style == 'GRID' %}
@@ -63,24 +63,18 @@
 <main class="container container-outline pb-5 pt-md-3">
   
   <div class="row">
+    {% if page.display_mode == 'articles' %}
     {% include "stopwatch/includes/filters.html" with style=page.style tags=filter_form.theme sort=filter_form.sort searchable=page.searchable class="pb-5 pb-md-0" only %}
-    
+    {% endif %}
     <div class="col">
-
-      {% if page.pinned_pages %}
-      <div class="pinned-pages-container">
-        <img src="{% static 'img/pin.svg' %}" alt="Pin icon" class="p-3">
-        {% include "stopwatch/includes/pinned_pages.html" with pinned_pages=page.pinned_pages pinned_pages_style=page.pinned_pages_style only %}
-      </div>
-      {% endif %}
 
       
       <div class="article-list-container">
         {% if page.style == 'ROWS' %}
           <div class="border-bottom border-1 border-primary d-md-none"></div>
-        {% endif %}
+        {% endif %} 
 
-        {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=page.style search_query=filter_form.query.value reset_url=page.url request=request only %}
+        {% include "stopwatch/includes/article_list.html" with pages=child_list_page style=page.style search_query=filter_form.query.value reset_url=page.url request=request sections=page.child_page_sections.all page=page only %}
       </div>
     </div>
   </div>
