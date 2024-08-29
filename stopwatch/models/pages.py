@@ -466,8 +466,15 @@ class CategoryChildPageSection(ClusterableModel, Orderable):
         null=True, 
         help_text="Title for this section of child pages"
     )
+    style = models.CharField(
+        max_length=128,
+        choices=ArticlesListBlock.StyleChoices.options,
+        default=ArticlesListBlock.StyleChoices.GRID
+    )
+
     panels = [
         FieldPanel('title'),
+        FieldPanel('style'),
         InlinePanel('ordered_child_pages', label="Child Pages", min_num=1),
     ]
 
