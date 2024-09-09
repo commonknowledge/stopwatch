@@ -61,9 +61,8 @@
 </header>
 
 <main class="container container-outline pb-5 pt-md-3">
-  
   <div class="row">
-    {% if page.display_mode == 'articles' %}
+    {% if page.display_mode == 'articles' and self.display_filters is True %}
     {% include "stopwatch/includes/filters.html" with style=page.style tags=filter_form.theme sort=filter_form.sort searchable=page.searchable class="pb-5 pb-md-0" only %}
     {% endif %}
     <div class="col">

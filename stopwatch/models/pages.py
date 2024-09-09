@@ -380,6 +380,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
 
     hide_related_articles = models.BooleanField(default=True)
     hide_dates = models.BooleanField(default=True)
+    display_filters = models.BooleanField(default=True, help_text="Display filters on page when display mode is display all articles")
 
     content_panels = Page.content_panels + [
         FieldPanel('description'),
@@ -396,6 +397,7 @@ class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):
         return super().get_display_options() + [
             FieldPanel('hide_related_articles'),
             FieldPanel('hide_dates'),
+            FieldPanel('display_filters'),
         ]
 
     def serve(self, request, *args, **kwargs):
