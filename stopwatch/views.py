@@ -12,7 +12,6 @@ class CustomAgingPagesReportView(PageReportView):
     index_url_name = "custom_aging_pages_report"
     index_results_url_name = "custom_aging_pages_report_results"
     header_icon = 'time'
-    results_template_name = 'stopwatch/reports/custom_aging_pages_results.html'
     page_title = "Custom aging pages report"
 
     export_headings = dict(
