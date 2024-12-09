@@ -1,0 +1,50 @@
+{% extends "wagtailadmin/base.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+{% render_bundle 'admin' 'js' %}
+
+<div class="report">
+    <h1>{{ view.page_title }}</h1>
+<div class="table-and-form-wrapper">
+    <form method="get" class="filters">
+        {{ filter_form.as_p }}
+        <div class="buttons-wrapper">
+        <button type="submit"  class="button">Apply Filters</button>
+        <a href="{% url view.index_url_name %}" class="button">Clear Filters</a>
+    </div>
+    </form>
+
+    <div class="actions" >
+        <a href="?export=csv&{{ request.GET.urlencode }}" class="button">Export as CSV</a>
+        <a href="?export=xlsx&{{ request.GET.urlencode }}" class="button">Export as Excel</a>
+    </div>
+</div>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align: left;">Title</th>
+                <th style="text-align: left;">First Published</th>
+                <th style="text-align: left;">Last Updated</th>
+                <th style="text-align: left;">Updated By</th>
+                <th style="text-align: left;">Status</th>
+                <th style="text-align: left;">Page Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for page in annotated_pages %}
+            <tr>
+                <td>
+                    <a href="{{ page.edit_url }}" target="_blank">{{ page.title }}</a>
+                </td>
+                <td>{{ page.first_published_at|date:"d F Y" }}</td>                
+                <td>{{ page.last_updated_at|date:"d F Y"  }}</td>
+                <td>{{ page.updated_by }}</td>
+                <td>{{ page.status }}</td>
+                <td>{{ page.page_type }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
