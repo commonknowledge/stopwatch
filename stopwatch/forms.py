@@ -31,14 +31,14 @@ class CategoryFilterForm(forms.Form):
 
 class AgingPagesFilterForm(forms.Form):
   
-    last_updated_before = forms.DateField(
+    first_published_before = forms.DateField(
         required=False,
        widget=forms.DateInput(
             attrs={
                 'type': 'date',
             }
         ),
-        label="Last Updated Before",
+        label="First Published Before",
     )
     status = forms.ChoiceField(
         required=False,

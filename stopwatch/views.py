@@ -34,13 +34,13 @@ class CustomAgingPagesReportView(PageReportView):
             three_years_ago = timezone.now() - timedelta(days=3 * 365)
             queryset = queryset.filter(first_published_at__lte=three_years_ago)
 
-            last_updated_before = self.request.GET.get('last_updated_before')
+            first_published_before = self.request.GET.get('first_published_before')
             status = self.request.GET.get('status')
             page_type = self.request.GET.get('page_type')
 
             # Apply date filters
-            if last_updated_before:
-                queryset = queryset.filter(last_published_at__lte=last_updated_before)
+            if first_published_before:
+                queryset = queryset.filter(last_published_at__lte=first_published_before)
 
             # Apply status filter
             if status == 'live':
