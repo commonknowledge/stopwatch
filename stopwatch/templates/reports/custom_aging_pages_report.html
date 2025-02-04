@@ -2,84 +2,88 @@
 
 {% block content %}
 
-
 <style>
     .report {
         padding: 30px;
     }
-    
+
     form {
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 10px;
     }
-    
+
     label {
         margin-right: 5px;
     }
-    
+
     th {
         text-align: left;
     }
-    
+
     .buttons-wrapper {
         display: flex;
     }
-    
+
     .table-and-form-wrapper {
         margin-bottom: 30px;
     }
-    
+
     @media (min-width: 768px) {
         .table-and-form-wrapper {
             display: flex;
             justify-content: space-between;
         }
     }
-    </style>
-    
-    <div class="report">
-        <h1>{{ view.page_title }}</h1>
-        <div class="table-and-form-wrapper">
-            <form method="get" class="filters">
-                {{ filter_form.as_p }}
-                <div class="buttons-wrapper">
-                    <button type="submit" class="button">Apply Filters</button>
-                    <a href="{% url view.index_url_name %}" class="button">Clear Filters</a>
-                </div>
-            </form>
-    
-            <div class="actions">
-                <a href="?export=csv&{{ request.GET.urlencode }}" class="button">Export as CSV</a>
-                <a href="?export=xlsx&{{ request.GET.urlencode }}" class="button">Export as Excel</a>
+</style>
+
+<div class="report">
+    <h1>{{ view.page_title|default:"Report" }}</h1>
+    <div class="table-and-form-wrapper">
+        <form method="get" class="filters">
+            {{ filter_form.as_p }}
+            <div class="buttons-wrapper">
+                <button type="submit" class="button">Apply Filters</button>
+                <a href="{% url view.index_url_name %}" class="button">Clear Filters</a>
             </div>
+        </form>
+
+        <div class="actions">
+            <a href="?export=csv&{{ request.GET.urlencode }}" class="button">Export as CSV</a>
+            <a href="?export=xlsx&{{ request.GET.urlencode }}" class="button">Export as Excel</a>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>First Published</th>
-                    <th>Last Updated</th>
-                    <th>Updated By</th>
-                    <th>Status</th>
-                    <th>Page Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for page in annotated_pages %}
-                <tr>
-                    <td>
-                        <a href="{{ page.edit_url }}" target="_blank">{{ page.title }}</a>
-                    </td>
-                    <td>{{ page.first_published_at|date:"d F Y" }}</td>
-                    <td>{{ page.last_updated_at|date:"d F Y" }}</td>
-                    <td>{{ page.updated_by }}</td>
-                    <td>{{ page.status }}</td>
-                    <td>{{ page.page_type }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
-    {% endblock %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>First Published</th>
+                <th>Last Updated</th>
+                <th>Updated By</th>
+                <th>Status</th>
+                <th>Page Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for page in annotated_pages %}
+            <tr>
+                <td>
+                    <a href="{{ page.edit_url|default:'#' }}" target="_blank">{{ page.title|default:"(No Title)" }}</a>
+                </td>
+                <td>{{ page.first_published_at|default_if_none:"N/A"|date:"d F Y" }}</td>
+                <td>{{ page.last_updated_at|default_if_none:"N/A"|date:"d F Y" }}</td>
+                <td>{{ page.updated_by|default:"Unknown" }}</td>
+                <td>{{ page.status|default:"Unknown" }}</td>
+                <td>{{ page.page_type|default:"Unknown" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No pages found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
