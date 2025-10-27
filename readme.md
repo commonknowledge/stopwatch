@@ -1,6 +1,6 @@
 # Stopwatch
 
-Research and action for fair and accountable policing
+Turning a spotlight on stop and search.
 
 Staging: https://stopwatch.commonknowledge.dev/
 
