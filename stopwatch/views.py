@@ -6,20 +6,34 @@ import openpyxl
 from django.utils import timezone
 from datetime import timedelta
 from stopwatch.forms import AgingPagesFilterForm
-from wagtail.models import Page
 from django.urls import reverse
-
-from wagtail.models import Page
 from django.utils.timezone import make_naive
 
 
-class CustomAgingPagesReportView(PageReportView):
+class StaleContentAuditReport(PageReportView):
+    """
+    Content audit report for identifying pages published 3+ years ago.
+    
+    This report identifies potentially stale content by filtering pages based on their
+    first_published_at date. Note that first_published_at can be:
+    - Imported from legacy systems (see ArticleResource)
+    - Manually set by editors via the Wagtail admin
+    - Automatically set by Wagtail when a page is first published
+    
+    The report provides:
+    - Filtering by publication date, status (live/draft), and page type
+    - Display of both original publication date and last revision date
+    - Export functionality to CSV and Excel formats
+    
+    All aging calculations are based exclusively on first_published_at to ensure
+    imported content with historic dates is correctly identified as stale.
+    """
         template_name = "reports/custom_aging_pages_report.html"
         model = Page  
-        index_url_name = "custom_aging_pages_report"
-        index_results_url_name = "custom_aging_pages_report_results"
+        index_url_name = "stale_content_audit"
+        index_results_url_name = "stale_content_audit_results"
         header_icon = 'time'
-        page_title = "Custom Aging Pages Report"
+        page_title = "Stale Content Audit – By First Published At"
         export_headings = dict(
             page_title='Page Title',
             first_published_at='First Published At',
@@ -29,8 +43,13 @@ class CustomAgingPagesReportView(PageReportView):
         )
 
         def get_queryset(self):
+            """
+            Build queryset of pages published 3+ years ago.
+            
+            Applies base aging filter using first_published_at, then applies any
+            user-specified filters for date, status, and page type.
+            """
             queryset = self.model.objects.all()
-            # Apply the aging filter (pages older than 3 years)
             three_years_ago = timezone.now() - timedelta(days=3 * 365)
             queryset = queryset.filter(first_published_at__lte=three_years_ago)
 
@@ -38,17 +57,14 @@ class CustomAgingPagesReportView(PageReportView):
             status = self.request.GET.get('status')
             page_type = self.request.GET.get('page_type')
 
-            # Apply date filters
             if first_published_before:
-                queryset = queryset.filter(last_published_at__lte=first_published_before)
+                queryset = queryset.filter(first_published_at__lte=first_published_before)
 
-            # Apply status filter
             if status == 'live':
                 queryset = queryset.filter(live=True)
             elif status == 'draft':
                 queryset = queryset.filter(live=False)
 
-            # Apply page type filter
             if page_type:
                 queryset = queryset.filter(content_type__model__icontains=page_type)
 
@@ -56,7 +72,7 @@ class CustomAgingPagesReportView(PageReportView):
 
 
         def format_status(self, page):
-            """Return the status of the page."""
+            """Format page status as human-readable string."""
             if page.live:
                 if page.has_unpublished_changes:
                     return "Live + Draft"
@@ -64,56 +80,57 @@ class CustomAgingPagesReportView(PageReportView):
             return "Draft"
 
         def format_page_type(self, page):
-            """Return the specific type of the page."""
+            """Return the specific page type class name."""
             return page.specific_class.__name__
 
         
         def get_context_data(self, **kwargs):
+            """
+            Prepare display data for the report template.
+            
+            Enriches page data with edit URLs, formatted status, last update info,
+            and user who made the last update. Uses first_published_at for original
+            publication date and latest_revision_created_at for last update tracking.
+            """
             context = super().get_context_data(**kwargs)
 
-            annotated_data = []
+            annotated_pages = []
             for page in self.get_queryset():
-                last_updated_user = (
-                    page.latest_revision.user
-                    if page.latest_revision and page.latest_revision.user
-                    else "Unknown"
-                )
-
-                annotated_data.append({
+                page_data = type('PageData', (), {
                     'title': page.title,
                     'edit_url': reverse('wagtailadmin_pages:edit', args=[page.id]),
                     'first_published_at': page.first_published_at,
-                    'last_updated_at': page.latest_revision_created_at,
-                    'updated_by': last_updated_user,  
+                    'last_updated_at': page.latest_revision_created_at or page.last_published_at,
+                    'updated_by': page.latest_revision.user if page.latest_revision and page.latest_revision.user else "Unknown",
                     'status': self.format_status(page),
                     'page_type': self.format_page_type(page),
-                })
+                })()
+                annotated_pages.append(page_data)
 
-            context['annotated_pages'] = annotated_data
+            context['annotated_pages'] = annotated_pages
             context['filter_form'] = AgingPagesFilterForm(self.request.GET)
             return context
-            
-        def format_status(self, page):
-                """Return the status of the page."""
-                if page.live:
-                    if page.has_unpublished_changes:
-                        return "Live + Draft"
-                    return "Live"
-                return "Draft"
 
         def export_to_csv(self):
+                """
+                Export report data to CSV format.
+                
+                Includes all filtered pages with their publication date, last update,
+                status, and page type in a downloadable CSV file.
+                """
                 queryset = self.get_queryset()
                 response = HttpResponse(content_type='text/csv')
-                response['Content-Disposition'] = 'attachment; filename="custom_aging_pages_report.csv"'
+                response['Content-Disposition'] = 'attachment; filename="stale_content_audit.csv"'
 
                 writer = csv.writer(response)
                 writer.writerow(self.export_headings.values())
 
                 for page in queryset:
+                    last_updated = page.latest_revision_created_at or page.last_published_at
                     row = [
                         page.title,
                         self.format_datetime(page.first_published_at),
-                        self.format_datetime(page.latest_revision_created_at),
+                        self.format_datetime(last_updated),
                         self.format_status(page),
                         self.format_page_type(page),  
                     ]
@@ -122,30 +139,35 @@ class CustomAgingPagesReportView(PageReportView):
                 return response
 
         def export_to_xlsx(self):
+                """
+                Export report data to Excel format.
+                
+                Creates an Excel workbook with datetime values properly formatted.
+                Converts timezone-aware datetimes to naive for Excel compatibility.
+                """
                 queryset = self.get_queryset()
 
                 workbook = openpyxl.Workbook()
                 sheet = workbook.active
-                sheet.title = "Custom Aging Pages"
+                sheet.title = "Stale Content Audit"
 
                 headers = list(self.export_headings.values())
                 sheet.append(headers)
 
                 for page in queryset:
-                    # Convert datetime fields to naive
                     first_published_at = page.first_published_at
-                    latest_revision_created_at = page.latest_revision_created_at
+                    last_updated_at = page.latest_revision_created_at or page.last_published_at
 
                     if first_published_at:
                         first_published_at = make_naive(first_published_at)
-
-                    if latest_revision_created_at:
-                        latest_revision_created_at = make_naive(latest_revision_created_at)
+                    
+                    if last_updated_at:
+                        last_updated_at = make_naive(last_updated_at)
 
                     row = [
                         page.title,
                         first_published_at,
-                        self.latest_revision_created_at,
+                        last_updated_at,
                         self.format_status(page),
                         self.format_page_type(page),
                     ]
@@ -154,12 +176,17 @@ class CustomAgingPagesReportView(PageReportView):
                 response = HttpResponse(
                     content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 )
-                response['Content-Disposition'] = 'attachment; filename="custom_aging_pages_report.xlsx"'
+                response['Content-Disposition'] = 'attachment; filename="stale_content_audit.xlsx"'
 
                 workbook.save(response)
                 return response
                     
         def dispatch(self, request, *args, **kwargs):
+                """
+                Route requests to appropriate export methods or display view.
+                
+                Handles export query parameters to trigger CSV or Excel downloads.
+                """
                 export_format = request.GET.get('export')
                 if export_format == 'csv':
                     return self.export_to_csv()
@@ -169,7 +196,7 @@ class CustomAgingPagesReportView(PageReportView):
                 return super().dispatch(request, *args, **kwargs)
             
         def format_datetime(self, datetime_obj):
-                """Format the datetime object to 'd F Y' format."""
+                """Format datetime object as 'd Month YYYY' string for display."""
                 if datetime_obj:
                         return datetime_obj.strftime('%d %B %Y')  
                 return ''
