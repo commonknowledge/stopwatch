@@ -89,6 +89,7 @@ class LandingPage(StopwatchPage):
     body = StreamField(LANDING_MODULES, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
+        FieldPanel('page_description'),
         FieldPanel('photo'),
         PageChooserPanel('newsflash_category'),
         FieldPanel('tabs'),
