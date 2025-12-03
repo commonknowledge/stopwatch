@@ -182,7 +182,7 @@
                 return false;
             }
             
-            const confirmed = confirm(`Are you sure you want to unpublish ${checkedCount} page${checkedCount !== 1 ? 's' : ''}?`);
+            const confirmed = confirm(`Are you sure you want to unpublish ${checkedCount} page${checkedCount !== 1 ? 's' : ''}? They will become drafts.`);
             if (!confirmed) {
                 e.preventDefault();
                 return false;
