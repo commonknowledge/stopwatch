@@ -36,10 +36,47 @@
             justify-content: space-between;
         }
     }
+
+    .bulk-actions {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .bulk-actions button {
+        margin-left: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td, th {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .checkbox-cell {
+        width: 30px;
+    }
 </style>
 
 <div class="report">
     <h1>{{ view.page_title|default:"Report" }}</h1>
+    
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
     <div class="table-and-form-wrapper">
         <form method="get" class="filters">
             {{ filter_form.as_p }}
@@ -54,36 +91,104 @@
             <a href="?export=xlsx&{{ request.GET.urlencode }}" class="button">Export as Excel</a>
         </div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>First Published</th>
-                <th>Last Updated</th>
-                <th>Updated By</th>
-                <th>Status</th>
-                <th>Page Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for page in annotated_pages %}
-            <tr>
-                <td>
-                    <a href="{{ page.edit_url|default:'#' }}" target="_blank">{{ page.title|default:"(No Title)" }}</a>
-                </td>
-                <td>{{ page.first_published_at|default_if_none:"N/A"|date:"d F Y" }}</td>
-                <td>{{ page.last_updated_at|default_if_none:"N/A"|date:"d F Y" }}</td>
-                <td>{{ page.updated_by|default:"Unknown" }}</td>
-                <td>{{ page.status|default:"Unknown" }}</td>
-                <td>{{ page.page_type|default:"Unknown" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No pages found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    
+    <form method="post" id="bulk-action-form">
+        {% csrf_token %}
+        <div class="bulk-actions">
+            <input type="checkbox" id="select-all" />
+            <label for="select-all">Select all</label>
+            <span id="selected-count">0 pages selected</span>
+            <button type="submit" class="button button-secondary" id="unpublish-button" disabled>
+                Unpublish Selected
+            </button>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th class="checkbox-cell"></th>
+                    <th>Title</th>
+                    <th>First Published</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
+                    <th>Status</th>
+                    <th>Page Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for page in annotated_pages %}
+                <tr>
+                    <td class="checkbox-cell">
+                        {% if page.can_unpublish %}
+                            <input type="checkbox" name="page_ids" value="{{ page.id }}" class="page-checkbox" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ page.edit_url|default:'#' }}" target="_blank">{{ page.title|default:"(No Title)" }}</a>
+                    </td>
+                    <td>{{ page.first_published_at|default_if_none:"N/A"|date:"d F Y" }}</td>
+                    <td>{{ page.last_updated_at|default_if_none:"N/A"|date:"d F Y" }}</td>
+                    <td>{{ page.updated_by|default:"Unknown" }}</td>
+                    <td>{{ page.status|default:"Unknown" }}</td>
+                    <td>{{ page.page_type|default:"Unknown" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No pages found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
 </div>
+
+<script>
+    (function() {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const pageCheckboxes = document.querySelectorAll('.page-checkbox');
+        const selectedCountSpan = document.getElementById('selected-count');
+        const unpublishButton = document.getElementById('unpublish-button');
+        const bulkActionForm = document.getElementById('bulk-action-form');
+
+        function updateSelectedCount() {
+            const checkedCount = document.querySelectorAll('.page-checkbox:checked').length;
+            selectedCountSpan.textContent = `${checkedCount} page${checkedCount !== 1 ? 's' : ''} selected`;
+            unpublishButton.disabled = checkedCount === 0;
+        }
+
+        selectAllCheckbox.addEventListener('change', function() {
+            pageCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateSelectedCount();
+        });
+
+        pageCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateSelectedCount();
+                
+                // Update select-all checkbox state
+                const allChecked = Array.from(pageCheckboxes).every(cb => cb.checked);
+                const someChecked = Array.from(pageCheckboxes).some(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+                selectAllCheckbox.indeterminate = someChecked && !allChecked;
+            });
+        });
+
+        bulkActionForm.addEventListener('submit', function(e) {
+            const checkedCount = document.querySelectorAll('.page-checkbox:checked').length;
+            if (checkedCount === 0) {
+                e.preventDefault();
+                return false;
+            }
+            
+            const confirmed = confirm(`Are you sure you want to unpublish ${checkedCount} page${checkedCount !== 1 ? 's' : ''}?`);
+            if (!confirmed) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    })();
+</script>
 
 {% endblock %}

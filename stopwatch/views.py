@@ -1,6 +1,6 @@
 from wagtail.admin.views.reports import PageReportView
 from wagtail.models import Page
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import csv
 import openpyxl
 from django.utils import timezone
@@ -8,6 +8,8 @@ from datetime import timedelta
 from stopwatch.forms import AgingPagesFilterForm
 from django.urls import reverse
 from django.utils.timezone import make_naive
+from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 
 class StaleContentAuditReport(PageReportView):
@@ -48,6 +50,7 @@ class StaleContentAuditReport(PageReportView):
         
         Applies base aging filter using first_published_at, then applies any
         user-specified filters for date, status, and page type.
+        Results are ordered by first_published_at (oldest first).
         """
         queryset = self.model.objects.all()
         three_years_ago = timezone.now() - timedelta(days=3 * 365)
@@ -68,7 +71,7 @@ class StaleContentAuditReport(PageReportView):
         if page_type:
             queryset = queryset.filter(content_type__model__icontains=page_type)
 
-        return queryset
+        return queryset.order_by('first_published_at')
 
     def format_status(self, page):
         """Format page status as human-readable string."""
@@ -95,6 +98,7 @@ class StaleContentAuditReport(PageReportView):
         annotated_pages = []
         for page in self.get_queryset():
             page_data = type('PageData', (), {
+                'id': page.id,
                 'title': page.title,
                 'edit_url': reverse('wagtailadmin_pages:edit', args=[page.id]),
                 'first_published_at': page.first_published_at,
@@ -102,6 +106,7 @@ class StaleContentAuditReport(PageReportView):
                 'updated_by': page.latest_revision.user if page.latest_revision and page.latest_revision.user else "Unknown",
                 'status': self.format_status(page),
                 'page_type': self.format_page_type(page),
+                'can_unpublish': page.live,
             })()
             annotated_pages.append(page_data)
 
@@ -183,8 +188,12 @@ class StaleContentAuditReport(PageReportView):
         """
         Route requests to appropriate export methods or display view.
         
-        Handles export query parameters to trigger CSV or Excel downloads.
+        Handles export query parameters to trigger CSV or Excel downloads,
+        and POST requests for bulk unpublish actions.
         """
+        if request.method == 'POST':
+            return self.handle_bulk_action(request)
+        
         export_format = request.GET.get('export')
         if export_format == 'csv':
             return self.export_to_csv()
@@ -192,6 +201,38 @@ class StaleContentAuditReport(PageReportView):
             return self.export_to_xlsx()
 
         return super().dispatch(request, *args, **kwargs)
+    
+    def handle_bulk_action(self, request):
+        """
+        Handle bulk unpublish action for selected pages.
+        
+        Unpublishes (archives) selected pages from the report.
+        """
+        page_ids = request.POST.getlist('page_ids')
+        
+        if not page_ids:
+            messages.error(request, "No pages selected.")
+            return self.get(request)
+        
+        unpublished_count = 0
+        for page_id in page_ids:
+            try:
+                page = Page.objects.get(id=page_id)
+                if page.live:
+                    page.unpublish()
+                    unpublished_count += 1
+            except Page.DoesNotExist:
+                continue
+        
+        if unpublished_count > 0:
+            messages.success(
+                request, 
+                f"Successfully unpublished {unpublished_count} page{'s' if unpublished_count != 1 else ''}."
+            )
+        else:
+            messages.warning(request, "No pages were unpublished.")
+        
+        return self.get(request)
 
     def format_datetime(self, datetime_obj):
         """Format datetime object as 'd Month YYYY' string for display."""
