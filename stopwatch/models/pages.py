@@ -8,14 +8,12 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.core.blocks import StructBlock, PageChooserBlock
 from wagtail.core.blocks.stream_block import StreamBlock
 from wagtail.core.models import Orderable, Page
-from wagtail.images.edit_handlers import FieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.core.fields import RichTextField, StreamField
 from django.http.response import HttpResponseNotFound, HttpResponseRedirect
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, PageChooserPanel, FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, PageChooserPanel
 from wagtail.search import index
-from wagtail.snippets.edit_handlers import FieldPanel
 from taggit.models import Tag, TaggedItemBase
 from commonknowledge.wagtail.helpers import get_children_of_type
 from commonknowledge.wagtail.models import ChildListMixin, ExploreTagsMixin
