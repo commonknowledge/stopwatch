@@ -3,5 +3,6 @@
   "editor.formatOnSave": true,
   "[html]": {
     "editor.formatOnSave": false
-  }
+  },
+  "python-envs.defaultEnvManager": "ms-python.python:pipenv"
 }
