@@ -79,9 +79,6 @@
             {{settings.stopwatch.SiteSettings.tagline|richtext}}
             <div class="d-none d-md-block">
                 <a class="btn text-muteddarkgrey" href="/about-stopwatch">About</a>
-                <a class="btn text-muteddarkgrey" href="https://twitter.com/StopWatchUK" target="_blank" rel="noopener noreferrer">Twitter</a>
-                <a class="btn text-muteddarkgrey" href="https://www.instagram.com/stopwatch_uk/" target="_blank" rel="noopener noreferrer">Instagram</a>
-                <a class="btn text-muteddarkgrey" href="https://www.facebook.com/StopWatchUK" target="_blank" rel="noopener noreferrer">Facebook</a>
                 <a href="{{settings.stopwatch.SiteSettings.donate_page.url}}" class="btn btn-primary">Donate</a>
             </div>
         </div>
@@ -173,9 +170,6 @@
                         <li class="nav-item">
                             <a class="nav-link px-3 py-2" href="/about-stopwatch">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 py-2 " href="https://twitter.com/StopWatchUK" target="_blank" rel="noopener noreferrer">Twitter</a>
-                        </li>
                         <li class="nav-item bg-primary">
                             <a href="{{settings.stopwatch.SiteSettings.donate_page.url}}" class="px-3 py-2 nav-link text-white">Donate</a>
                         </ul>
@@ -224,6 +218,25 @@
                         {% endmainmenu %}
                     </div>
 
+                    <div class="row mb-4 g-4">
+                        <div class="col-8 col-md-4">
+                            <div class="d-flex gap-3">
+                              <a href="https://www.instagram.com/stopwatch_uk/" target="_blank" rel="noopener noreferrer" class="text-white" aria-label="Instagram">
+                                <i class="bi-instagram fs-5"></i>
+                              </a>
+                              <a href="https://bsky.app/profile/stopwatchuk.bsky.social" target="_blank" rel="noopener noreferrer" class="text-white" aria-label="BlueSky">
+                                <i class="bi-bluesky fs-5"></i>
+                              </a>
+                              <a href="https://www.tiktok.com/@stopwatch_uk" target="_blank" rel="noopener noreferrer" class="text-white" aria-label="TikTok">
+                                <i class="bi-tiktok fs-5"></i>
+                              </a>
+                              <a href="https://www.linkedin.com/company/stopwatchuk/" target="_blank" rel="noopener noreferrer" class="text-white" aria-label="LinkedIn">
+                                  <i class="bi-linkedin fs-5"></i>
+                              </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row mb-2 g-4">
                         <div class="col-8 col-md-4 microcopy">
                             <div class="mb-2">{{site_settings.address}}</div>
@@ -253,7 +266,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css">
         <script src="https://public.flourish.studio/resources/embed.js"></script>
         <script src="/static/util.js"></script>
    
