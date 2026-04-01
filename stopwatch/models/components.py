@@ -205,6 +205,18 @@ class DownloadsBlock(StructBlock):
     documents = ListBlock(DocumentChooserBlock())
 
 
+class ReportBlock(StructBlock):
+    class Meta:
+        icon = 'doc-full-inverse'
+        template = 'stopwatch/components/report.html'
+
+    year = CharBlock(required=False)
+    title = CharBlock()
+    description = TextBlock(required=False)
+    cover_image = ImageChooserBlock(required=False)
+    document = DocumentChooserBlock()
+
+
 class CtaBlock(StructBlock):
     class Meta:
         template = 'stopwatch/components/cta.html'
@@ -317,7 +329,8 @@ CONTENT_MODULES = TEXT_MODULES + (
     ('organisation_listing', OrganisationListBlock()),
     ('alert', AlertBlock()),
     ('calendar', CalendarBlock()),
-    ('accordion', AccordionStreamBlock())
+    ('accordion', AccordionStreamBlock()),
+    ('report', ReportBlock()),
 )
 
 LANDING_MODULES = CONTENT_MODULES + (

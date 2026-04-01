@@ -1,0 +1,23 @@
+{% load wagtailimages_tags %}
+
+<section class="bg-light">
+  <div class="d-flex flex-column flex-md-row gap-3">
+    {% if value.cover_image %}
+      <div class="order-1 order-md-2 flex-shrink-0">
+        {% image value.cover_image width-200 class="img-fluid" %}
+      </div>
+    {% endif %}
+    <div class="order-2 order-md-1 flex-grow-1">
+      {% if value.year %}
+        <p class="microcopy text-primary mb-2"><strong>{{ value.year }}</strong></p>
+      {% endif %}
+      <h2 class="heading-large mb-3">{{ value.title }}</h2>
+      {% if value.description %}
+        <p class="mb-3">{{ value.description }}</p>
+      {% endif %}
+      <a href="{{ value.document.url }}" download class="btn btn-outline-danger" aria-label="Download {{ value.document.file_extension|upper }}: {{ value.title }}">
+        Download {{ value.document.file_extension|upper }}
+      </a>
+    </div>
+  </div>
+</section>
