@@ -32,6 +32,8 @@ Staging: https://stopwatch.commonknowledge.dev/
   python manage.py setup_pages --scratch True --ensure-site True --ensure-pages True
   ```
 
+If you're having issues getting started this way, see [Troubleshooting](#troubleshooting-setup) for some ideas.
+
 ### Hard mode: Using Dockerfiles
 
 Figure it out for yourself based on the .devcontainer dockerfile and write it up here ;)
@@ -47,3 +49,15 @@ They both run .bin in ./.bin to configure their environments and install depende
 - Base container configuration, which is run infrequently (installing apt packages, etc) should be configured in prepare.sh.
 - Frequently-run .bin (installing pip packages, etc) should go in install.sh. The difference between these is that changing prepare.sh triggers a full rebuild of the development container, whereas install.sh is only run after the container is built.
 - build.sh is the last thing run on deploy to production
+
+## Troubleshooting setup
+
+This is based on the experience of @freemvmt trying to set up the project on [Easy mode](#easy-mode-vscode-dev-container) for the first time in March 2026.
+
+1. The `Clone Repository in Container Volume` function, which pulls `main` from the remote and tries to build it in a local Docker container, didn't work for me, whereas `Open Folder in Container` (i.e. using my local copy of the repo) did.
+
+2. Once inside the container, `install.sh` was failing due to multiple copies of `virtualenv` being available. I fixed this by changing all references of `pipenv` to `python -m pipenv`, to ensure that we use the version associated with the python installation (merged in via #[86](https://github.com/commonknowledge/stopwatch/pull/86)).
+
+3. The 'import' option in Wagtail admin dashboard only appeared after populating the `stopwatch/settings/local.py` file. Even then, the import function proved error prone, so we instead used a psql dump from staging to produce a relevant dev environment (i.e. I ran something like `PGPASSWORD=postgres psql -h db -U postgres -d postgres < /workspace/stopwatch_staging.psql`).
+
+4. The dev site was not initially styled, despite the webpack server that runs as part of the 'App' config in `launch.json` - I ran `yarn webpack` manually to fix that.
