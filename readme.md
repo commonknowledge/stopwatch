@@ -58,6 +58,6 @@ This is based on the experience of @freemvmt trying to set up the project on [Ea
 
 2. Once inside the container, `install.sh` was failing due to multiple copies of `virtualenv` being available. I fixed this by changing all references of `pipenv` to `python -m pipenv`, to ensure that we use the version associated with the python installation (merged in via #[86](https://github.com/commonknowledge/stopwatch/pull/86)).
 
-3. The 'import' option in Wagtail admin dashboard only appeared after populating the `stopwatch/settings/local.py` file. Even then, the import function proved error prone, so we instead used a psql dump from staging to produce a relevant dev environment (i.e. I ran something like `PGPASSWORD=postgres psql -h db -U postgres -d postgres < /workspace/stopwatch_staging.psql`).
+3. The 'import' option in Wagtail admin dashboard only appeared after populating the `stopwatch/settings/local.py` file. Even then, the import function proved error prone, so we instead used a psql dump from staging to produce a relevant dev environment (i.e. I ran something like `PGPASSWORD=postgres psql -h db -U postgres -d postgres < /workspace/stopwatch_staging.psql`) - note that you'll need to manually install `postgresql` in the devcontainer beforehand.
 
 4. The dev site was not initially styled, despite the webpack server that runs as part of the 'App' config in `launch.json` - I ran `yarn webpack` manually to fix that.
