@@ -253,6 +253,21 @@
   background-color: $lightgrey;
 }
 
+// ensure that landing page banner images have a max size (consistent with .img-homepage-hero)
+#content .tab-pane .row > a:has(img) {
+  max-height: 300px;
+  overflow: hidden;
+
+  @include media-breakpoint-up(md) {
+    max-height: 400px;
+  }
+
+  // if an image is cropped we show the top-most part
+  img {
+    object-position: top;
+  }
+}
+
 .btn-wide {
   @include media-breakpoint-up(md) {
     padding-left: 113px;
