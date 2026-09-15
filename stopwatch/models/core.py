@@ -180,3 +180,15 @@ models.signals.pre_save.connect(pre_save_image_or_doc, sender=StopwatchImage)
 models.signals.pre_save.connect(
     pre_save_image_or_doc, sender=StopWatchDocument)
 
+
+
+class MailHeartbeat(models.Model):
+    """
+    Records the last time the site sent a heartbeat email. Mailgun disables
+    domains that go months without sending, so stopwatch.middleware sends a
+    weekly email to keep the account active. See MAIL_HEARTBEAT_TO in settings.
+    """
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        get_latest_by = 'sent_at'

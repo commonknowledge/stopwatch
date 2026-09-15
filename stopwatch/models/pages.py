@@ -26,8 +26,12 @@ from modelcluster.models import ClusterableModel
 from stopwatch.models.core import Person, SiteSettings, StopwatchImage
 from stopwatch.models.components import CONTENT_MODULES, TEXT_MODULES, LANDING_MODULES, ArticlesListBlock, SummaryTextBlock, PinnedPageBlock
 from django.core.mail import send_mail
+from django.template.response import TemplateResponse
 from django.utils.formats import date_format
 import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ArticleTag(TaggedItemBase):
     content_object = ParentalKey(
@@ -308,6 +312,10 @@ class EmailFormMixin:
 
         return "\n".join(content)
 
+class FormEmailError(Exception):
+    """Raised when a form submission was saved but the notification email could not be sent."""
+
+
 class Form(ListableMixin, StopwatchPage, AbstractEmailForm, EmailFormMixin):
     template = 'stopwatch/pages/form.html'
     landing_page_template = 'stopwatch/pages/form_submitted.html'
@@ -335,6 +343,17 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm, EmailFormMixin):
         ], "Email"),
     ]
 
+    unavailable_template = 'stopwatch/pages/form_unavailable.html'
+
+    def serve(self, request, *args, **kwargs):
+        try:
+            return super().serve(request, *args, **kwargs)
+        except FormEmailError:
+            # The submission has already been saved (visible in the Wagtail
+            # admin under Forms), only the notification email failed. Tell the
+            # visitor how to reach us instead of showing a 500 page.
+            return TemplateResponse(request, self.unavailable_template, self.get_context(request))
+
     def process_form_submission(self, form):
         # First, handle the form submission and save it without sending an email.
         original_to_address = self.to_address
@@ -348,8 +367,13 @@ class Form(ListableMixin, StopwatchPage, AbstractEmailForm, EmailFormMixin):
         return submission
 
     def send_mail(self, form):
-        # Custom send_mail logic to ensure it uses the mixin's send_mail method
-        EmailFormMixin.send_mail(self, form)
+        # Called once the submission has been saved. Uses the mixin's
+        # formatting rather than Wagtail's default.
+        try:
+            EmailFormMixin.send_mail(self, form)
+        except Exception as e:
+            logger.exception('Failed to send form notification email for %s', self.url)
+            raise FormEmailError() from e
 
 
 class Category(ExploreTagsMixin, ListableMixin, ChildListMixin, StopwatchPage):

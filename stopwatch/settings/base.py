@@ -80,7 +80,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    'stopwatch.middleware.MailHeartbeatMiddleware',
 ]
+
+# Weekly heartbeat email to keep the Mailgun account active (see
+# stopwatch/middleware.py). Comma-separated addresses; unset disables it.
+MAIL_HEARTBEAT_TO = os.getenv('MAIL_HEARTBEAT_TO')
 
 ROOT_URLCONF = 'stopwatch.urls'
 
